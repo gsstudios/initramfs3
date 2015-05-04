@@ -28,10 +28,10 @@ on init
 
 on fs
 # verify filesystem (UMS)
-    exec sformat /dev/block/mmcblk0p11 %TYPE%
-    
+    exec sformat /dev/block/mmcblk0p11 vfat
+
 # make sure sdcard is mounted because we need apps2sd to work and we may have our data and cache partitions on it
-    mount %TYPE% /dev/block/mmcblk0p11 /mnt/.secondrom wait utf8
+    mount vfat /dev/block/mmcblk0p11 /mnt/.secondrom wait utf8
     mkdir /mnt/.secondrom/.android_secure 0700 root root
     mkdir /mnt/.secondrom/.secondrom 0700 root root
 

@@ -30,9 +30,6 @@ echo "2" > /proc/sys/kernel/sysrq;
 # bypass for reboot command till fixed.
 rm -f /sbin/reboot;
 
-# fix storage folder owner
-$BB chown system.sdcard_rw /storage;
-
 PIDOFINIT=$(pgrep -f "/sbin/ext/post-init.sh");
 for i in $PIDOFINIT; do
 	echo "-600" > /proc/"$i"/oom_score_adj;

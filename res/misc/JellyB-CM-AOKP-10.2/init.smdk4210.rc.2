@@ -23,10 +23,10 @@ on init
 
 on fs
 # verify filesystem (UMS)
-    exec sformat /dev/block/mmcblk0p11 %TYPE%
+    exec sformat /dev/block/mmcblk0p11 vfat
 
 # make sure sdcard is mounted because we may have our data and cache partitions on it
-    mount %TYPE% /dev/block/mmcblk0p11 /mnt/.secondrom wait utf8
+    mount vfat /dev/block/mmcblk0p11 /mnt/.secondrom wait utf8
 
 # mount partitions.
     mount ext4 loop@/res/dev/cache /cache nosuid nodev wait

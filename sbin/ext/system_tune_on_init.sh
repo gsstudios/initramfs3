@@ -39,6 +39,34 @@ $BB chmod 0744 /proc/cmdline;
 $BB chmod -R 0770 /data/property/;
 $BB chmod -R 0400 /data/tombstones;
 
+LOG_SDCARDS=/log-sdcards
+FIX_BINARY=/sbin/fsck_msdos
+
+SDCARD_FIX()
+{
+	# fixing sdcards
+	$BB date > $LOG_SDCARDS;
+	$BB echo "FIXING STORAGE" >> $LOG_SDCARDS;
+
+	if [ -e /dev/block/mmcblk1p1 ]; then
+		$BB echo "EXTERNAL SDCARD CHECK" >> $LOG_SDCARDS;
+		$BB cp /sbin/libexfat_utils.so /system/lib/;
+		$BB mount -t exfat /dev/block/mmcblk1p1 /mnt/tmp;
+		EXFAT_CHECK=$(cat /proc/self/mounts | grep "/dev/block/mmcblk1p1" | wc -l);
+		if [ "$EXFAT_CHECK" -eq "1" ]; then
+			$BB sh -c "/sbin/fsck.exfat -R /dev/block/mmcblk1p1" >> $LOG_SDCARDS;
+			$BB umount /mnt/tmp;
+		else
+			$BB sh -c "$FIX_BINARY -p -f /dev/block/mmcblk1p1" >> $LOG_SDCARDS;
+		fi;
+	else
+		$BB echo "EXTERNAL SDCARD NOT EXIST" >> $LOG_SDCARDS;
+	fi;
+
+	$BB echo "INTERNAL SDCARD CHECK" >> $LOG_SDCARDS;
+	$BB sh -c "$FIX_BINARY -p -f /dev/block/mmcblk0p11" >> $LOG_SDCARDS;
+	$BB echo "DONE" >> $LOG_SDCARDS;
+}
 
 BOOT_ROM()
 {
@@ -60,5 +88,12 @@ if [ -e /tmp/wrong_kernel ]; then
 	sync;
 	reboot;
 else
+	if [ -e /system/bin/fsck_msdos ]; then
+		FIX_BINARY=/system/bin/fsck_msdos
 		BOOT_ROM;
+		SDCARD_FIX;
+	else
+		BOOT_ROM;
+		SDCARD_FIX;
+	fi;
 fi;
