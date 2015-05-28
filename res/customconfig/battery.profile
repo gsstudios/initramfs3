@@ -182,6 +182,7 @@ cron_db_optimizing=off
 cron_clear_app_cache=off
 cron_fix_permissions=off
 cron_zipalign=off
+cron_trim_partitions=off
 gpsregion=No_GPS_Zone_changes
 usb_mode=default
 auto_mount_sd=on
