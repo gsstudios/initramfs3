@@ -17,5 +17,5 @@
 /devices/platform/s3c_otghcd/usb                auto    auto    defaults        voldmanaged=usbdisk0:auto
 
 # kernel mount path
-/dev/block/mmcblk0p5                        /boot                   emmc      defaults      recoveryonly
-/dev/block/mmcblk0p6                        /recovery               emmc      defaults      recoveryonly
+/dev/block/mmcblk0p5				/boot		emmc		defaults	recoveryonly
+/dev/block/mmcblk0p6				/recovery	emmc		defaults	recoveryonly

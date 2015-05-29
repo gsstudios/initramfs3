@@ -143,10 +143,10 @@ on boot
 
 on fs
 # verify filesystem (UMS)
-    exec sformat /dev/block/mmcblk0p11 vfat
+    exec sformat /dev/block/mmcblk0p11 %TYPE%
 
 # make sure sdcard is mounted because we may have our data and cache partitions on it
-    mount vfat /dev/block/mmcblk0p11 /mnt/.secondrom wait utf8
+    mount %TYPE% /dev/block/mmcblk0p11 /mnt/.secondrom wait utf8
 
 # Mount all
     mount ext4 loop@/res/dev/cache /cache nosuid nodev wait
