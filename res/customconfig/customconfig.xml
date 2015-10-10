@@ -201,7 +201,7 @@
 
 	<settingsPane description="ZZMOOVE Gov Configuration, see descriptions" name="ZZMOOVE GOV CONFIGURATON">
 
-<spinner description="Switch zzmoove profiles (Default: Default)" name="profile_number" action="generic /sys/devices/system/cpu/cpufreq/zzmoove/profile_number">
+		<spinner description="Switch zzmoove profiles (Default: Default)" name="profile_number" action="generic_cortex /tmp/profile_number">
 			<spinnerItem name="Default" value="1"/> 
 			<spinnerItem name="Yank Battery" value="2"/> 
 			<spinnerItem name="Yank Battery Extreme" value="3"/> 
