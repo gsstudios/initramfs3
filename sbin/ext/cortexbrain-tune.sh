@@ -539,12 +539,12 @@ CPU_GOV_TWEAKS()
 			freq_for_responsiveness_tmp="$freq_responsiveness_tmp";
 		fi;
 
-		local sampling_down_max_mom_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/sampling_down_max_mom";
+		local sampling_down_max_mom_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/sampling_down_max_momentum";
 		if [ ! -e "$sampling_down_max_mom_tmp" ]; then
 			sampling_down_max_mom_tmp="/dev/null";
 		fi;
 
-		local sampling_down_mom_sens_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/sampling_down_mom_sens";
+		local sampling_down_mom_sens_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/sampling_down_momentum_sensitivity";
 		if [ ! -e "$sampling_down_mom_sens_tmp" ]; then
 			sampling_down_mom_sens_tmp="/dev/null";
 		fi;
