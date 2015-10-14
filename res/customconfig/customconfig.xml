@@ -234,9 +234,9 @@
 
 		<seekBar description="Limit frequency. (possible values 0 disable limit, 100000 kHz - 1600000 kHz) (Default: 0 kHz)" name="freq_limit" action="generic_cortex /tmp/freq_limit" unit="kHz" min="0" reversed="false" step="100000" max="1600000"/>
 
-		<seekBar description="1-4 number of scaling jumps only for upscaling, 5-8 equivalent to 1-4 for up and down scaling. (Default: 0)" name="fast_scaling_up" action="generic_cortex /tmp/fast_scaling_up" unit="int" min="0" reversed="false" step="1" max="8"/>
+		<seekBar description="1-4 number of scaling jumps only for upscaling, 5 is for auto scaling. (Default: 0)" name="fast_scaling_up" action="generic_cortex /tmp/fast_scaling_up" unit="int" min="0" reversed="false" step="1" max="5"/>
 
-		<seekBar description="1-4 number of scaling jumps only for downscaling, 5-8 equivalent to 1-4 for up and down scaling. (Default: 0)" name="fast_scaling_down" action="generic_cortex /tmp/fast_scaling_down" unit="int" min="0" reversed="false" step="1" max="8"/>
+		<seekBar description="1-4 number of scaling jumps only for downscaling, 5 is for auto scaling. (Default: 0)" name="fast_scaling_down" action="generic_cortex /tmp/fast_scaling_down" unit="int" min="0" reversed="false" step="1" max="5"/>
 
 		<spinner description="Switch to enable/disable early demand functionality (possible values 0 disable or 1 enable. (Default: Disabled)" name="early_demand" action="generic_cortex /tmp/early_demand">
 			<spinnerItem name="Disabled" value="0"/> 
