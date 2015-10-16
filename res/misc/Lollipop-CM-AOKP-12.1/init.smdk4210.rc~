@@ -9,6 +9,7 @@ on init
     mkdir /mnt/media_rw/sdcard1 0700 media_rw media_rw
     mkdir /mnt/media_rw/usbdisk0 0700 media_rw media_rw
 
+    mkdir /storage 0775 system system
     mkdir /storage/sdcard0 0770 root root
     mkdir /storage/sdcard1 0770 root root
     mkdir /storage/usbdisk0 0770 root root
