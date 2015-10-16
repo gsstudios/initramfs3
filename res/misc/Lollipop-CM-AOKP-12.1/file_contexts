@@ -272,7 +272,6 @@
 # Camera
 /dev/s3c-mfc                            u:object_r:mfc_device:s0
 /dev/s5p-jpeg                           u:object_r:video_device:s0
-/dev/exynos-mem                         u:object_r:video_device:s0
 
 # Bluetooth
 /dev/ttySAC0                            u:object_r:hci_attach_dev:s0
@@ -318,7 +317,6 @@
 
 #############################
 # performance-related sysfs files (CM)
-/sys/kernel/mm/ksm(/.*)?       --          u:object_r:sysfs_writable:s0
 /sys/devices/system/cpu.*/cpufreq(/.*)? --  u:object_r:sysfs_devices_system_cpu:s0
 /sys/block/mmcblk.*/queue/scheduler  --    u:object_r:sysfs_devices_system_iosched:s0
 
@@ -334,3 +332,12 @@
 
 # Lockscreen wallpaper
 /data/system/users/[0-9]+/keyguard_wallpaper   u:object_r:wallpaper_file:s0
+
+# Persistent properties
+/persist/properties(/.*)?         u:object_r:persist_property_file:s0
+
+# LiveDisplay
+/sys/devices/virtual/graphics/fb0/aco           u:object_r:livedisplay_sysfs:s0
+/sys/devices/virtual/graphics/fb0/cabc          u:object_r:livedisplay_sysfs:s0
+/sys/devices/virtual/graphics/fb0/rgb           u:object_r:livedisplay_sysfs:s0
+/sys/devices/virtual/graphics/fb0/sre           u:object_r:livedisplay_sysfs:s0

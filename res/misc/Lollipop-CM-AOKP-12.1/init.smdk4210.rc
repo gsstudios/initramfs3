@@ -1,4 +1,5 @@
 import init.smdk4210.usb.rc
+import init.gps.rc
 
 on init
     export EXTERNAL_STORAGE /storage/sdcard0
@@ -8,7 +9,6 @@ on init
     mkdir /mnt/media_rw/sdcard1 0700 media_rw media_rw
     mkdir /mnt/media_rw/usbdisk0 0700 media_rw media_rw
 
-    mkdir /storage 0775 system system
     mkdir /storage/sdcard0 0770 root root
     mkdir /storage/sdcard1 0770 root root
     mkdir /storage/usbdisk0 0770 root root
@@ -31,6 +31,7 @@ on init
 
 on fs
     mount_all /fstab.smdk4210
+    swapon_all /fstab.smdk4210
 
     mkdir /efs/bluetooth
     mkdir /efs/wifi
@@ -53,6 +54,9 @@ on charger
     write /sys/devices/platform/s5p-ehci/power/control auto
 
 on post-fs-data
+# insmod kernel modules
+    insmod /system/lib/modules/j4fs.ko
+    insmod /system/lib/modules/Si4709_driver.ko
     
 # mount param.lfs
     mount j4fs /dev/block/mmcblk0p4 /mnt/.lfs
@@ -181,7 +185,6 @@ on post-fs-data
     chown system radio /sys/devices/virtual/sec/sec_key/sec_key_pressed
 
     chown system radio /sys/devices/virtual/sec/sec_touchkey/force_disable
-    chown system radio /sys/devices/virtual/sec/sec_touchkey/enable_disable
     chown system radio /sys/devices/virtual/sec/sec_touchkey/recommended_version
     chown system radio /sys/devices/virtual/sec/sec_touchkey/touch_sensitivity
     chown system radio /sys/devices/virtual/sec/sec_touchkey/brightness
@@ -327,9 +330,6 @@ on boot
     chmod 0600 /dev/pn544
     chown nfc nfc /dev/pn544
 
-# Device Encryption by B2B Security Lab. 
-    setprop ro.crypto.keyfile.userdata /efs/metadata
-
 # fake some battery state
     setprop status.battery.state Slow
     setprop status.battery.level 5
@@ -439,3 +439,16 @@ service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/sdcard1
 service fuse_usbdisk0 /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/usbdisk0 /storage/usbdisk0
     class late_start
     disabled
+
+## CyanogenMod Performance Profiles
+# Powersave
+on property:sys.perf.profile=0
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor powersave
+
+# Balanced
+on property:sys.perf.profile=1
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor ondemand
+
+# Performance
+on property:sys.perf.profile=2
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor performance

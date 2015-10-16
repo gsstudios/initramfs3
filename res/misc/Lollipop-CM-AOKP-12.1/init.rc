@@ -1,20 +1,17 @@
-# Copyright (c) 2013, The Linux Foundation. All rights reserved.
-# Not a Contribution.
-#
 # Copyright (C) 2012 The Android Open Source Project
 #
 # IMPORTANT: Do not create world writable files or directories.
 # This is a common source of Android security bugs.
 #
 
-# THIS INIT.RC is FOR CM/AOKP 12.1 Lollipop ROM!
-
 import /init.environ.rc
 import /init.usb.rc
 import /init.${ro.hardware}.rc
 import /init.${ro.zygote}.rc
 import /init.trace.rc
-import /init.smdk4210.dm_kernel.rc
+# Include CM's extra init file
+import /init.cm.rc
+
 
 on early-init
     # Set init and its forked children's oom_adj.
@@ -35,22 +32,12 @@ on early-init
     # create mountpoints
     mkdir /mnt 0775 root system
 
-# Allow system UID to setenforce and set booleans.
-#   chown system system /selinux/enforce
-#   chown system system /sys/fs/selinux/enforce
-#   chown -R system system /selinux/booleans
-#   chown -R system system /sys/fs/selinux/booleans
-#   chown system system /selinux/commit_pending_bools
-#   chown system system /sys/fs/selinux/commit_pending_bools
-
 on init
     sysclktz 0
 
-sysclktz 0
+    loglevel 3
 
-loglevel 3
-
-# Backward compatibility
+    # Backward compatibility
     symlink /system/etc /etc
     symlink /sys/kernel/debug /d
 
@@ -75,6 +62,7 @@ loglevel 3
     write /sys/fs/cgroup/memory/sw/memory.move_charge_at_immigrate 1
     chown root system /sys/fs/cgroup/memory/sw/tasks
     chmod 0660 /sys/fs/cgroup/memory/sw/tasks
+    chmod 0220 /sys/fs/cgroup/memory/cgroup.event_control
 
     mkdir /system
     mkdir /data 0771 system system
@@ -202,7 +190,7 @@ on late-init
 
 on post-fs
     # once everything is setup, no need to modify /
-    mount rootfs rootfs / rw remount
+    mount rootfs rootfs / ro remount
     # mount shared so changes propagate into child namespaces
     mount rootfs rootfs / shared rec
 
@@ -215,8 +203,6 @@ on post-fs
     # This may have been created by the recovery system with odd permissions
     chown system cache /cache/recovery
     chmod 0770 /cache/recovery
-# This may have been created by the recovery system with the wrong context.
-    restorecon /cache/recovery
 
     #change permissions on vmallocinfo so we can grab it from bugreports
     chown root log /proc/vmallocinfo
@@ -290,7 +276,6 @@ on post-fs-data
     chmod 0660 /data/misc/wifi/wpa_supplicant.conf
     mkdir /data/local 0751 root root
     mkdir /data/misc/media 0700 media media
-    restorecon_recursive /data/misc/media
 
     # For security reasons, /data/local/tmp should always be empty.
     # Do not place files or directories in /data/local/tmp
@@ -301,20 +286,12 @@ on post-fs-data
     mkdir /data/app-lib 0771 system system
     mkdir /data/app 0771 system system
     mkdir /data/property 0700 root root
-    mkdir /data/ssh 0750 root shell
-    mkdir /data/ssh/empty 0700 root root
-    mkdir /data/radio 0770 radio radio
 
-# set correct permissions on /data/property
-    chown root root /data/property
-    chmod 0700 /data/property
+    # create dalvik-cache, so as to enforce our permissions
+    mkdir /data/dalvik-cache 0771 root root
+    mkdir /data/dalvik-cache/profiles 0711 system system
 
-# create dalvik-cache and double-check the perms, so as to enforce our permissions
-    mkdir /data/dalvik-cache 0771 system system
-    chown system system /data/dalvik-cache
-    chmod 0771 /data/dalvik-cache
-
-# create resource-cache and double-check the perms
+    # create resource-cache and double-check the perms
     mkdir /data/resource-cache 0771 system system
     chown system system /data/resource-cache
     chmod 0771 /data/resource-cache
@@ -353,9 +330,6 @@ on post-fs-data
     # Set indication (checked by vold) that we have finished this action
     #setprop vold.post_fs_data_done 1
 
-# Include extra init file
-    import /init.cm.rc
-
 on boot
     # basic network init
     ifup lo
@@ -371,13 +345,13 @@ on boot
     write /proc/sys/vm/overcommit_memory 1
     write /proc/sys/vm/min_free_order_shift 4
     chown root system /sys/module/lowmemorykiller/parameters/adj
-    chmod 0664 /sys/module/lowmemorykiller/parameters/adj
+    chmod 0220 /sys/module/lowmemorykiller/parameters/adj
     chown root system /sys/module/lowmemorykiller/parameters/minfree
-    chmod 0664 /sys/module/lowmemorykiller/parameters/minfree
+    chmod 0220 /sys/module/lowmemorykiller/parameters/minfree
 
     # Tweak background writeout
     write /proc/sys/vm/dirty_expire_centisecs 200
-    write /proc/sys/vm/dirty_background_ratio  15
+    write /proc/sys/vm/dirty_background_ratio  5
 
     # Permissions for System Server and daemons.
     chown radio system /sys/android_power/state
@@ -394,16 +368,33 @@ on boot
     chmod 0660 /sys/power/wake_lock
     chmod 0660 /sys/power/wake_unlock
 
-    # Assume SMP uses shared cpufreq policy for all CPUs
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
-    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
-    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/timer_rate
+    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/timer_rate
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/timer_slack
+    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/timer_slack
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
+    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
+    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/target_loads
+    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/target_loads
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
+    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
+    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/boost
+    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/boost
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/boostpulse
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/input_boost
+    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/input_boost
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration
+    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
+    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
 
-    chown system system /sys/block/mmcblk0/queue/scheduler
-    chmod 0664 /sys/block/mmcblk0/queue/scheduler
+    # Assume SMP uses shared cpufreq policy for all CPUs
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
 
     chown system system /sys/class/timed_output/vibrator/enable
     chown system system /sys/class/leds/keyboard-backlight/brightness
@@ -425,17 +416,7 @@ on boot
     chown system system /sys/kernel/ipv4/tcp_rmem_min
     chown system system /sys/kernel/ipv4/tcp_rmem_def
     chown system system /sys/kernel/ipv4/tcp_rmem_max
-    chown system system /sys/class/power_supply/battery/temp
     chown root radio /proc/cmdline
-
-# Set these so we can remotely update SELinux policy
-#   chown system system /sys/fs/selinux/load
-#   chown system system /sys/fs/selinux/enforce
-
-# Assign TCP buffer thresholds to be ceiling value of technology maximums
-# Increased technology maximums should be reflected here.
-    write /proc/sys/net/core/rmem_max  2097152
-    write /proc/sys/net/core/wmem_max  2097152
 
     # Define default initial receive window size in segments.
     setprop net.tcp.default_init_rwnd 60
@@ -658,10 +639,6 @@ service dumpstate /system/bin/dumpstate -s
     disabled
     oneshot
 
-service sshd /system/bin/start-ssh
-    class main
-    disabled
-
 service mdnsd /system/bin/mdnsd
     class main
     user mdnsr
@@ -673,9 +650,4 @@ service mdnsd /system/bin/mdnsd
 service pre-recovery /system/bin/uncrypt
     class main
     disabled
-    oneshot
-
-service postinit /sbin/ext/post-init.sh
-    class core
-    user root
     oneshot
