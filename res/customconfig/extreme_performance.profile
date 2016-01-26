@@ -117,6 +117,7 @@ sleep_scheduler=zen
 auto_oom=on
 oom_config_screen_on=default
 oom_config_screen_off=default
+lowmem_reserve=boosted
 dirty_background_ratio=5
 dirty_ratio=20
 zramtweaks=2

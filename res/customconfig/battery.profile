@@ -117,6 +117,7 @@ sleep_scheduler=sio
 auto_oom=on
 oom_config_screen_on=default
 oom_config_screen_off=default
+lowmem_reserve=default
 dirty_background_ratio=5
 dirty_ratio=20
 zramtweaks=2
