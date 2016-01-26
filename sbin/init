@@ -16,8 +16,53 @@ $BB mount -t rootfs -o remount,rw rootfs;
 if $BB grep -q bootmode=2 /proc/cmdline; then
 	# recovery mode
 	echo "0" > /proc/sys/kernel/rom_feature_set;
+
+
+	# attempt isorec (isolated recovery) boot
+
+	# make the /dev/block/platform/dw_mmc/by-name/RECOVERY
+	# (/dev/block/mmcblk0p6) partition accessible
+	mkdir -p /stage1/junk
+	mknod /stage1/dev-mmcblk0p6 b 179 6;
+
+	# if the raw partition contains valid lzop-compressed data
+	if $BB lzop -dc /stage1/dev-mmcblk0p6 > /stage1/isorec.cpio ; then
+		# and if said data is a valid cpio archive
+		if $BB cpio -t < /stage1/isorec.cpio ; then
+
+			# isorec boot
+
+			# unmount everything
+			$BB umount /sys
+			$BB umount /proc
+
+			# move busybox to /stage1
+			$BB mv $BB /stage1/busybox
+			BB=/stage1/busybox
+
+			# remove everything not in /stage1
+			$BB mv /* /stage1/junk
+			$BB rm -rf /stage1/junk
+			$BB rm -f /.*
+
+			# extract the isorec ramdisk
+			$BB cpio -i < /stage1/isorec.cpio
+
+			# remove /stage1 and pass control
+			$BB rm -rf /stage1
+			exec /init
+
+		fi
+	fi
+
+	# clean up for non-isorec boot
+	$BB rm -rf /stage1
+
+
 	$BB cp /res/images/recovery-icon.png /res/images/icon_clockwork.png;
 	$BB cp -a /recovery.rc /init.rc;
+	# BUG: these mknod commands do nothing because /dev/block does not exist!
+	# FIX: mkdir -p /dev/block
 	mknod /dev/block/mmcblk0p1 b 179 1;
 	mknod /dev/block/mmcblk0p7 b 179 7;
 	mknod /dev/block/mmcblk1p1 b 179 9;
