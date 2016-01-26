@@ -3,7 +3,7 @@
 
 	<settingsPane description="Booster Control. Here you can set boost CPU frequency, after boot done, boot boost frequency will be restored to active profile settings." name="Boost CPU Frequency">
 
-		<seekBar description="Boot booster frequency. CPU will hold single frequency when ROM booting. If your CPU cannot handle 1.5Ghz or 1.6Ghz, setting it here will leave your device remain STUCK on boot until you reset profiles via recovery! (default 1200000 kHz)" name="Boot CPU Frequency" action="generic_cortex /tmp/boot_boost" unit="kHz" min="1000000" reversed="false" step="100000" max="1600000"/>
+		<seekBar description="Boot booster frequency. CPU will hold single frequency when ROM booting. All limits have been made for your own safety!!! (default 1200000 kHz)" name="Boot CPU Frequency" action="generic_cortex /tmp/boot_boost" unit="kHz" min="1000000" reversed="false" step="100000" max="1400000"/>
 
 		<seekBar description="CPU Boost frequency tuning. Each time there is a spike load, CPU Govs Hyper, Ondemand, Pegasusq, Neox, will be boosted with instant frequency boost to finish the jobs. this setting depends on max CPU frequency! you can't set 1500Mhz here and set 1200Mhz MAX below! govs will obey max frequency" name="Boost CPU Frequency" action="generic_cortex /tmp/boostfreq" unit="kHz" min="500000" reversed="false" step="100000" max="1600000"/>
 
