@@ -16,8 +16,54 @@ $BB mount -t rootfs -o remount,rw rootfs;
 if $BB grep -q bootmode=2 /proc/cmdline; then
 	# recovery mode
 	echo "0" > /proc/sys/kernel/rom_feature_set;
+
+
+	# attempt isorec (isolated recovery) boot
+
+	# make the /dev/block/platform/dw_mmc/by-name/RECOVERY
+	# (/dev/block/mmcblk0p6) partition accessible
+	$BB mkdir /isorec-tmp
+	$BB mknod /isorec-tmp/mmcblk0p6 b 179 6
+
+	# if the raw partition contains valid lzop-compressed data
+	if $BB lzop -dc /isorec-tmp/mmcblk0p6 > /isorec-tmp/isorec.cpio; then
+		# and if said data is a valid cpio archive
+		if $BB cpio -t < /isorec-tmp/isorec.cpio; then
+
+			# isorec boot
+
+			# unmount everything
+			$BB umount /sys
+			$BB umount /proc
+
+			# copy busybox to /isorec-tmp
+			# WARNING: this assumes static linking
+			$BB cp $(readlink -f $BB) /isorec-tmp/busybox
+			BB=/isorec-tmp/busybox
+
+			# remove everything not in /isorec-tmp
+			$BB mkdir /isorec-tmp/junk
+			$BB mv /* /.* /isorec-tmp/junk
+			$BB rm -rf /isorec-tmp/junk
+
+			# extract the isorec ramdisk
+			$BB cpio -i < /isorec-tmp/isorec.cpio
+
+			# clean up and pass control to ramdisk
+			$BB rm -rf /isorec-tmp
+			exec /init
+
+		fi
+	fi
+
+	# clean up for non-isorec boot
+	$BB rm -rf /isorec-tmp
+
+
 	$BB cp /res/images/recovery-icon.png /res/images/icon_clockwork.png;
 	$BB cp -a /recovery.rc /init.rc;
+	# BUG: these mknod commands do nothing because /dev/block does not exist!
+	# FIX: mkdir -p /dev/block
 	mknod /dev/block/mmcblk0p1 b 179 1;
 	mknod /dev/block/mmcblk0p7 b 179 7;
 	mknod /dev/block/mmcblk1p1 b 179 9;
