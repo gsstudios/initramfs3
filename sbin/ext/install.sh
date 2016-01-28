@@ -48,7 +48,7 @@ if [ -e /tmp/cm10.1-installed ]; then
 		NEW_SU=0;
 fi;
 
-if [ -e /tmp/cm10.2-installed ] || [ -e /tmp/sammy_rom ]; then
+if [ -e /tmp/cm10.2-installed ] || [ -e /tmp/cm11-installed ] || [ -e /tmp/sammy_rom ]; then
 	if [ -e /system/app/SuperSU.apk ] && [ -e /system/xbin/daemonsu ]; then
 		if [ -e /system/chainfire/SuperSU.apk ]; then
 			sumd5sum=$($BB md5sum /system/app/SuperSU.apk | $BB awk '{print $1}');
@@ -70,7 +70,7 @@ if [ -e /tmp/cm10.2-installed ] || [ -e /tmp/sammy_rom ]; then
 	fi;
 fi;
 
-if [ "$install_root" == "on" ]; then
+if [ "$install_root" == "on" ] && [ ! -e /tmp/cm12.1-installed ]; then
 	if [ "$NEW_SU" -eq "0" ]; then
 		echo "SuperSU already exists";
 		$BB chmod 06755 /system/xbin/su;
@@ -178,8 +178,8 @@ if [ "$install_root" == "on" ]; then
 		fi;
 
 		# kill superuser pid
-		pkill -f "com.noshufou.android.su";
-		pkill -f "eu.chainfire.supersu";
+		$BB pkill -f "com.noshufou.android.su";
+		$BB pkill -f "eu.chainfire.supersu";
 		/system/xbin/daemonsu --auto-daemon &
 	fi;
 fi;
@@ -212,26 +212,51 @@ if [ "$STWEAKS_CHECK" -eq "1" ]; then
 	$BB rm -f /data/data/com.gokhanmoral.stweaks*/* > /dev/null 2>&1;
 fi;
 
-if [ -f /system/app/STweaks.apk ]; then
-	stmd5sum=$($BB md5sum /system/app/STweaks.apk | $BB awk '{print $1}');
-	stmd5sum_kernel=$(cat /res/stweaks_md5);
-	if [ "$stmd5sum" != "$stmd5sum_kernel" ]; then
-		$BB rm -f /system/app/STweaks.apk > /dev/null 2>&1;
-		$BB rm -f /data/data/com.gokhanmoral.stweaks*/* > /dev/null 2>&1;
+if [ ! -e /tmp/cm12.1-installed ]; then
+	if [ -e /system/app/STweaks.apk ]; then
+		stmd5sum=$($BB md5sum /system/app/STweaks.apk | $BB awk '{print $1}');
+		stmd5sum_kernel=$(cat /res/stweaks_md5);
+		if [ "$stmd5sum" != "$stmd5sum_kernel" ]; then
+			$BB rm -f /system/app/STweaks.apk > /dev/null 2>&1;
+			$BB rm -f /data/data/com.gokhanmoral.stweaks*/* > /dev/null 2>&1;
+			$BB rm -f /data/dalvik-cache/*gokhanmoral.*weak*.apk* > /dev/null 2>&1;
+			$BB rm -f /cache/dalvik-cache/*gokhanmoral.*weak*.apk* > /dev/null 2>&1;
+			$BB cp -a /res/misc/payload/STweaks.apk /system/app/;
+			$BB chown 0.0 /system/app/STweaks.apk;
+			$BB chmod 644 /system/app/STweaks.apk;
+		fi;
+	else
+		$BB rm -f /data/app/com.gokhanmoral.*weak*.apk > /dev/null 2>&1;
+		$BB rm -rf /data/data/com.gokhanmoral.*weak*/ > /dev/null 2>&1;
 		$BB rm -f /data/dalvik-cache/*gokhanmoral.*weak*.apk* > /dev/null 2>&1;
 		$BB rm -f /cache/dalvik-cache/*gokhanmoral.*weak*.apk* > /dev/null 2>&1;
-		$BB cp /res/misc/payload/STweaks.apk /system/app/;
+		$BB cp -a /res/misc/payload/STweaks.apk /system/app/;
 		$BB chown 0.0 /system/app/STweaks.apk;
 		$BB chmod 644 /system/app/STweaks.apk;
 	fi;
-else
-	$BB rm -f /data/app/com.gokhanmoral.*weak*.apk > /dev/null 2>&1;
-	$BB rm -r /data/data/com.gokhanmoral.*weak*/* > /dev/null 2>&1;
-	$BB rm -f /data/dalvik-cache/*gokhanmoral.*weak*.apk* > /dev/null 2>&1;
-	$BB rm -f /cache/dalvik-cache/*gokhanmoral.*weak*.apk* > /dev/null 2>&1;
-	$BB cp -a /res/misc/payload/STweaks.apk /system/app/;
-	$BB chown 0.0 /system/app/STweaks.apk;
-	$BB chmod 644 /system/app/STweaks.apk;
+fi;
+
+if [ -e /tmp/cm12.1-installed ]; then
+	if [ -e /system/app/STweaks/STweaks.apk ]; then
+		stmd5sum=$($BB md5sum /system/app/STweaks/STweaks.apk | $BB awk '{print $1}');
+		stmd5sum_kernel=$(cat /res/stweaks_md5);
+		if [ "$stmd5sum" != "$stmd5sum_kernel" ]; then
+			$BB rm -f /system/app/STweaks/STweaks.apk > /dev/null 2>&1;
+			$BB rm -f /data/data/com.gokhanmoral.stweaks*/* > /dev/null 2>&1;
+			$BB cp -a /res/misc/payload/STweaks.apk /system/app/STweaks/;
+			$BB chown 0.0 /system/app/STweaks/STweaks.apk;
+			$BB chmod 644 /system/app/STweaks/STweaks.apk;
+		fi;
+	else
+		$BB rm -rf /data/app/com.gokhanmoral.*weak*/ > /dev/null 2>&1;
+		$BB rm -rf /data/data/com.gokhanmoral.*weak*/ > /dev/null 2>&1;
+		$BB mkdir /system/app/STweaks;
+		$BB chown 0.0 /system/app/STweaks;
+		$BB chmod 755 /system/app/STweaks;
+		$BB cp -a /res/misc/payload/STweaks.apk /system/app/STweaks/;
+		$BB chown 0.0 /system/app/STweaks/STweaks.apk;
+		$BB chmod 644 /system/app/STweaks/STweaks.apk;
+	fi;
 fi;
 
 $BB mount -o remount,rw /;
