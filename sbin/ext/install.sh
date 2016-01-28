@@ -212,26 +212,26 @@ if [ "$STWEAKS_CHECK" -eq "1" ]; then
 	$BB rm -f /data/data/com.gokhanmoral.stweaks*/* > /dev/null 2>&1;
 fi;
 
-if [ -f /system/priv-app/STweaks.apk ]; then
-	stmd5sum=$($BB md5sum /system/priv-app/STweaks.apk | $BB awk '{print $1}');
+if [ -f /system/app/STweaks.apk ]; then
+	stmd5sum=$($BB md5sum /system/app/STweaks.apk | $BB awk '{print $1}');
 	stmd5sum_kernel=$(cat /res/stweaks_md5);
 	if [ "$stmd5sum" != "$stmd5sum_kernel" ]; then
-		$BB rm -f /system/priv-app/STweaks.apk > /dev/null 2>&1;
+		$BB rm -f /system/app/STweaks.apk > /dev/null 2>&1;
 		$BB rm -f /data/data/com.gokhanmoral.stweaks*/* > /dev/null 2>&1;
 		$BB rm -f /data/dalvik-cache/*gokhanmoral.*weak*.apk* > /dev/null 2>&1;
 		$BB rm -f /cache/dalvik-cache/*gokhanmoral.*weak*.apk* > /dev/null 2>&1;
-		$BB cp /res/misc/payload/STweaks.apk /system/priv-app/;
-		$BB chown 0.0 /system/priv-app/STweaks.apk;
-		$BB chmod 644 /system/priv-app/STweaks.apk;
+		$BB cp /res/misc/payload/STweaks.apk /system/app/;
+		$BB chown 0.0 /system/app/STweaks.apk;
+		$BB chmod 644 /system/app/STweaks.apk;
 	fi;
 else
 	$BB rm -f /data/app/com.gokhanmoral.*weak*.apk > /dev/null 2>&1;
 	$BB rm -r /data/data/com.gokhanmoral.*weak*/* > /dev/null 2>&1;
 	$BB rm -f /data/dalvik-cache/*gokhanmoral.*weak*.apk* > /dev/null 2>&1;
 	$BB rm -f /cache/dalvik-cache/*gokhanmoral.*weak*.apk* > /dev/null 2>&1;
-	$BB cp -a /res/misc/payload/STweaks.apk /system/priv-app/;
-	$BB chown 0.0 /system/priv-app/STweaks.apk;
-	$BB chmod 644 /system/priv-app/STweaks.apk;
+	$BB cp -a /res/misc/payload/STweaks.apk /system/app/;
+	$BB chown 0.0 /system/app/STweaks.apk;
+	$BB chmod 644 /system/app/STweaks.apk;
 fi;
 
 $BB mount -o remount,rw /;
