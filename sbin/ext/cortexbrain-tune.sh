@@ -50,8 +50,8 @@ else
 fi;
 
 # set initial vm.dirty vales
-echo "600" > /proc/sys/vm/dirty_writeback_centisecs;
-echo "3000" > /proc/sys/vm/dirty_expire_centisecs;
+echo "500" > /proc/sys/vm/dirty_writeback_centisecs;
+echo "200" > /proc/sys/vm/dirty_expire_centisecs;
 
 # ==============================================================
 # FILES FOR VARIABLES || we need this for write variables from child-processes to parent
@@ -724,13 +724,13 @@ fi;
 MEMORY_TWEAKS()
 {
 	if [ "$cortexbrain_memory" == "on" ]; then
-		echo "$dirty_background_ratio" > /proc/sys/vm/dirty_background_ratio; # default: 10
+		echo "$dirty_background_ratio" > /proc/sys/vm/dirty_background_ratio; # default: 5
 		echo "$dirty_ratio" > /proc/sys/vm/dirty_ratio; # default: 20
 		echo "4" > /proc/sys/vm/min_free_order_shift; # default: 4
 		echo "1" > /proc/sys/vm/overcommit_memory; # default: 1
 		echo "50" > /proc/sys/vm/overcommit_ratio; # default: 50
 		echo "3" > /proc/sys/vm/page-cluster; # default: 3
-		echo "8192" > /proc/sys/vm/min_free_kbytes;
+		#echo "8192" > /proc/sys/vm/min_free_kbytes;
 
 		log -p i -t "$FILE_NAME" "*** MEMORY_TWEAKS ***: enabled";
 
