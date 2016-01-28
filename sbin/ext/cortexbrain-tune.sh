@@ -308,7 +308,7 @@ CPU_HOTPLUG_TWEAKS()
 	fi;
 
 	if [ "$hotplug_enable" -eq "1" ]; then
-		if [ "$SYSTEM_GOVERNOR" == "nightmare" ] || [ "$SYSTEM_GOVERNOR" == "darkness" ] || [ "$SYSTEM_GOVERNOR" == "zzmanX" ]; then
+		if [ "$SYSTEM_GOVERNOR" == "nightmare" ] || [ "$SYSTEM_GOVERNOR" == "darkness" ] || [ "$SYSTEM_GOVERNOR" == "zzmoove" ]; then
 			#disable intelli_plug
 			if [ "$intelli_value_tmp" -eq "1" ]; then
 				echo "0" > $intelli_plug_active_tmp;
@@ -652,7 +652,7 @@ CPU_GOV_TWEAKS()
 			echo "$sampling_down_factor" > "$sampling_down_factor_tmp";
 			echo "$down_differential" > "$down_differential_tmp";
 			echo "$freq_step_at_min_freq" > "$freq_step_at_min_freq_tmp";
-			if [ "$SYSTEM_GOVERNOR" == "zzmanX" ]; then
+			if [ "$SYSTEM_GOVERNOR" == "zzmoove" ]; then
 				echo "5" > "$freq_step_tmp";
 			else
 				echo "$freq_step" > "$freq_step_tmp";
