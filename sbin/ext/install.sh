@@ -225,7 +225,7 @@ if [ -f /system/priv-app/STweaks.apk ]; then
 		$BB chmod 644 /system/priv-app/STweaks.apk;
 	fi;
 
-if [ -f /system/app/STweaks.apk ]; then
+elif [ -f /system/app/STweaks.apk ]; then
 	stmd5sum=$($BB md5sum /system/app/STweaks.apk | $BB awk '{print $1}');
 	stmd5sum_kernel=$(cat /res/stweaks_md5);
 	if [ "$stmd5sum" != "$stmd5sum_kernel" ]; then
