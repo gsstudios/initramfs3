@@ -407,6 +407,23 @@ TWEAK_HOTPLUG_ECO()
 	log -p i -t "$FILE_NAME" "*** TWEAK_HOTPLUG_ECO: $state ***";
 }
 
+WORKQUEUE_CONTROL()
+{
+	local state="$1";
+
+	if [ "$state" == "awake" ]; then
+		if [ "$power_efficient" == "on" ]; then
+			echo "Y" > /sys/module/workqueue/parameters/power_efficient;
+		else
+			echo "N" > /sys/module/workqueue/parameters/power_efficient;
+		fi;
+	elif [ "$state" == "sleep" ]; then
+		echo "Y" > /sys/module/workqueue/parameters/power_efficient;
+	fi;
+	log -p i -t "$FILE_NAME" "*** WORKQUEUE_CONTROL ***: done";
+}
+
+
 CPU_GOV_TWEAKS()
 {
 	local state="$1";

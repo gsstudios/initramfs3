@@ -1,0 +1,119 @@
+From c4bf0a58f9036f09bba2cc85a9a8027e7b9013fc Mon Sep 17 00:00:00 2001
+From: gsstudios <josh.lay@exemail.com.au>
+Date: Tue, 26 Jan 2016 10:50:51 +1100
+Subject: [PATCH] Add power efficient workqueues toggle to stweaks
+
+---
+ res/customconfig/battery.profile             |  1 +
+ res/customconfig/customconfig.xml            |  2 ++
+ res/customconfig/default.profile             |  1 +
+ res/customconfig/extreme_battery.profile     |  1 +
+ res/customconfig/extreme_performance.profile |  1 +
+ res/customconfig/performance.profile         |  1 +
+ sbin/ext/cortexbrain-tune.sh                 | 17 +++++++++++++++++
+ 7 files changed, 24 insertions(+)
+
+diff --git a/res/customconfig/battery.profile b/res/customconfig/battery.profile
+index 60e2d13..9e81c7c 100755
+--- a/res/customconfig/battery.profile
++++ b/res/customconfig/battery.profile
+@@ -8,6 +8,7 @@ GENTLE_FAIR_SLEEPERS=off
+ ARCH_POWER=on
+ enable_mask=3
+ enable_mask_sleep=3
++power_efficient=on
+ busfreq_up_threshold=30
+ busfreq_up_threshold_sleep=30
+ scaling_max_suspend_freq=800000
+diff --git a/res/customconfig/customconfig.xml b/res/customconfig/customconfig.xml
+index 07001b2..3d5553d 100755
+--- a/res/customconfig/customconfig.xml
++++ b/res/customconfig/customconfig.xml
+@@ -46,6 +46,8 @@
+ 			<spinnerItem name="Idle only" value="0"/> 
+ 		</spinner>
+ 
++		<checkbox description="Enable or disable Power-efficient work queues will help to reduce power consumption at the cost of slight performance overhead. By enabling this, PE work queues are used for unbound scheduled work to save load on sibling CPU cores and queuing work on CPU 0. (Default: On)" name="Power-efficient Work queues"  action="generic01 /sys/module/workqueue/parameters/power_efficient" label="Power-efficient Workqueues"/>
++
+ 		<seekBar description="This is for CPU BUS-FREQ UP-FREQ-Scaling, based on CPU load. It sets the the load threshold on which BUS frequency will rise. (Default: 25%)" name="busfreq_up_threshold" action="generic /sys/devices/system/cpu/cpufreq/busfreq_up_threshold" unit="%" min="23" reversed="false" step="1" max="90"/>
+ 
+ 		<seekBar description="This is for CPU BUS-FREQ UP-FREQ-Scaling on sleep, based on CPU load. It sets the the load threshold on which BUS frequency will rise. (Default sleep: 30%)" name="busfreq_up_threshold_sleep" action="generic_cortex /tmp/busfreq_up_threshold_sleep" unit="%" min="23" reversed="false" step="1" max="90"/>
+diff --git a/res/customconfig/default.profile b/res/customconfig/default.profile
+index 928bcc2..894b79f 100755
+--- a/res/customconfig/default.profile
++++ b/res/customconfig/default.profile
+@@ -8,6 +8,7 @@ GENTLE_FAIR_SLEEPERS=off
+ ARCH_POWER=on
+ enable_mask=3
+ enable_mask_sleep=3
++power_efficient=on
+ busfreq_up_threshold=25
+ busfreq_up_threshold_sleep=30
+ scaling_max_suspend_freq=800000
+diff --git a/res/customconfig/extreme_battery.profile b/res/customconfig/extreme_battery.profile
+index a7ebc28..b151e89 100755
+--- a/res/customconfig/extreme_battery.profile
++++ b/res/customconfig/extreme_battery.profile
+@@ -8,6 +8,7 @@ GENTLE_FAIR_SLEEPERS=off
+ ARCH_POWER=on
+ enable_mask=3
+ enable_mask_sleep=3
++power_efficient=on
+ busfreq_up_threshold=40
+ busfreq_up_threshold_sleep=30
+ scaling_max_suspend_freq=800000
+diff --git a/res/customconfig/extreme_performance.profile b/res/customconfig/extreme_performance.profile
+index 2922317..86fa20c 100755
+--- a/res/customconfig/extreme_performance.profile
++++ b/res/customconfig/extreme_performance.profile
+@@ -8,6 +8,7 @@ GENTLE_FAIR_SLEEPERS=off
+ ARCH_POWER=on
+ enable_mask=3
+ enable_mask_sleep=3
++power_efficient=off
+ busfreq_up_threshold=25
+ busfreq_up_threshold_sleep=25
+ scaling_max_suspend_freq=800000
+diff --git a/res/customconfig/performance.profile b/res/customconfig/performance.profile
+index 8169e91..3f71791 100755
+--- a/res/customconfig/performance.profile
++++ b/res/customconfig/performance.profile
+@@ -8,6 +8,7 @@ GENTLE_FAIR_SLEEPERS=off
+ ARCH_POWER=on
+ enable_mask=3
+ enable_mask_sleep=3
++power_efficient=off
+ busfreq_up_threshold=25
+ busfreq_up_threshold_sleep=25
+ scaling_max_suspend_freq=800000
+diff --git a/sbin/ext/cortexbrain-tune.sh b/sbin/ext/cortexbrain-tune.sh
+index 3ae54d7..039a2f4 100755
+--- a/sbin/ext/cortexbrain-tune.sh
++++ b/sbin/ext/cortexbrain-tune.sh
+@@ -407,6 +407,23 @@ TWEAK_HOTPLUG_ECO()
+ 	log -p i -t "$FILE_NAME" "*** TWEAK_HOTPLUG_ECO: $state ***";
+ }
+ 
++WORKQUEUE_CONTROL()
++{
++	local state="$1";
++
++	if [ "$state" == "awake" ]; then
++		if [ "$power_efficient" == "on" ]; then
++			echo "Y" > /sys/module/workqueue/parameters/power_efficient;
++		else
++			echo "N" > /sys/module/workqueue/parameters/power_efficient;
++		fi;
++	elif [ "$state" == "sleep" ]; then
++		echo "Y" > /sys/module/workqueue/parameters/power_efficient;
++	fi;
++	log -p i -t "$FILE_NAME" "*** WORKQUEUE_CONTROL ***: done";
++}
++
++
+ CPU_GOV_TWEAKS()
+ {
+ 	local state="$1";
+-- 
+1.9.1
+

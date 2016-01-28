@@ -8,6 +8,7 @@ GENTLE_FAIR_SLEEPERS=off
 ARCH_POWER=on
 enable_mask=3
 enable_mask_sleep=3
+power_efficient=on
 busfreq_up_threshold=40
 busfreq_up_threshold_sleep=30
 scaling_max_suspend_freq=800000
