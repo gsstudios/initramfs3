@@ -4,7 +4,7 @@ BB=/sbin/busybox
 
 $BB mount -t rootfs -o remount,rw rootfs
 
-$BB ln -s /sbin/busybox /sbin/sh
+ln -s /sbin/busybox /sbin/sh
 
 $BB chmod -R 777 /proc/
 

@@ -28,7 +28,7 @@ echo "-1000" > /proc/1/oom_score_adj;
 echo "2" > /proc/sys/kernel/sysrq;
 
 # bypass for reboot command till fixed.
-$BB rm -f /sbin/reboot;
+rm -f /sbin/reboot;
 
 # fix storage folder owner
 $BB chown system.sdcard_rw /storage;
@@ -44,14 +44,14 @@ if [ "$(cat /tmp/sec_rom_boot)" -eq "1" ]; then
 	$BB mount -o remount,rw /
 	$BB umount -l /preload;
 	if [ ! -e /data_pri_rom ]; then
-		$BB mkdir /data_pri_rom;
+		mkdir /data_pri_rom;
 		$BB mount -t ext4 /dev/block/mmcblk0p10 /data_pri_rom;
-		$BB chmod 700 /data_pri_rom;
+		chmod 700 /data_pri_rom;
 	fi;
 	if [ ! -e /system_pri_rom ]; then
-		$BB mkdir /system_pri_rom;
+		mkdir /system_pri_rom;
 		$BB mount -t ext4 /dev/block/mmcblk0p9 /system_pri_rom;
-		$BB chmod 700 /system_pri_rom;
+		chmod 700 /system_pri_rom;
 	fi;
 else
 	$BB mount -o remount,rw,noauto_da_alloc,journal_async_commit /preload;
@@ -71,11 +71,11 @@ echo "$CHECK_VER" > /data/.siyah/check_ver;
 sed -i "s/-Siyah*//g" /data/.siyah/check_ver;
 CHANGE_VER=$(cat /data/.siyah/check_ver);
 echo "$CHANGE_VER" > /proc/sys/kernel/osrelease;
-$BB rm -f /data/.siyah/check_ver;
+rm /data/.siyah/check_ver;
 
 # reset config-backup-restore
 if [ -f /data/.siyah/restore_running ]; then
-	$BB rm -f /data/.siyah/restore_running;
+	rm -f /data/.siyah/restore_running;
 fi;
 
 # reset profiles auto trigger to be used by kernel ADMIN, in case of need, if new value added in default profiles
@@ -87,7 +87,7 @@ fi;
 if [ "$(cat /data/.siyah/reset_profiles)" -eq "$RESET_MAGIC" ]; then
 	echo "no need to reset profiles";
 else
-	$BB rm -f /data/.siyah/*.profile;
+	rm -f /data/.siyah/*.profile;
 	echo "$RESET_MAGIC" > /data/.siyah/reset_profiles;
 fi;
 
@@ -112,10 +112,10 @@ if [ "$mdniemod" == "on" ]; then
 fi;
 
 # Apps and ROOT Install
-$BB sh /sbin/ext/install.sh;
+# $BB sh /sbin/ext/install.sh;
 
 # Clean /res/ from no longer needed files to free modules kernel allocated mem
-$BB rm -rf /res/misc/sql /res/images /res/misc/JellyB-* /res/misc/KitKat-CM-AOKP-* /res/misc/Lollipop-CM-AOSP-12.1 /res/misc/vendor;
+$BB rm -rf /res/misc/sql /res/images /res/misc/JellyB-* /res/misc/KitKat-CM-AOKP-* /res/misc/Lollipop-CM-AOKP-12.1 /res/misc/vendor;
 
 (
 	# check cpu voltage group and report to tmp file, and set defaults for STweaks
@@ -256,7 +256,7 @@ echo "-900" > /proc/"$CORTEX"/oom_score_adj;
 
 # create init.d folder if missing
 if [ ! -d /system/etc/init.d ]; then
-	$BB mkdir -p /system/etc/init.d/
+	mkdir -p /system/etc/init.d/
 	$BB chmod 755 /system/etc/init.d/;
 fi;
 
@@ -293,8 +293,8 @@ $BB sh /sbin/ext/properties.sh;
 ROOT_RW;
 
 (
-	# mount apps2sd partition point for CM11 and above versions CM
-	if [ -e /tmp/cm-installed ]; then
+	# mount apps2sd partition point for CM11
+	if [ -e /tmp/cm11-installed ]; then
 		if [ "$(cat /tmp/sec_rom_boot)" -eq "1" ]; then
 			$BB mount --bind /mnt/.secondrom/.android_secure /mnt/secure/asec;
 		fi;
@@ -316,7 +316,7 @@ ROOT_RW;
 	fi;
 
 	# Mount Sec/Pri ROM DATA on Boot, we need to wait till sdcard is mounted.
-	if [ "$(cat /tmp/pri_rom_boot)" -eq "1" ] && [ ! -e /tmp/cm-installed ]; then
+	if [ "$(cat /tmp/pri_rom_boot)" -eq "1" ] && [ ! -e /tmp/cm11-installed ]; then
 		if [ -e /sdcard/.secondrom/data.img ] || [ -e /storage/sdcard0/.secondrom/data.img ]; then
 			$BB mkdir /data_sec_rom;
 			FREE_LOOP=$(losetup -f);
@@ -349,7 +349,7 @@ ROOT_RW;
 		fi;
 		echo "500000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
 		echo "$boot_boost" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
-		$BB pkill -f "com.gokhanmoral.stweaks.app";
+		pkill -f "com.gokhanmoral.stweaks.app";
 		echo "Waiting For UCI to finish";
 		sleep 3;
 		COUNTER=$((COUNTER+1));
@@ -401,8 +401,8 @@ ROOT_RW;
 
 	# apply STweaks settings
 	echo "booting" > /data/.siyah/booting;
-	$BB chmod 777 /data/.siyah/booting;
-	$BB pkill -f "com.gokhanmoral.stweaks.app";
+	chmod 777 /data/.siyah/booting;
+	pkill -f "com.gokhanmoral.stweaks.app";
 	nohup $BB sh /res/uci.sh restore;
 	UCI_PID=$(pgrep -f "/res/uci.sh");
 	echo "-800" > /proc/"$UCI_PID"/oom_score_adj;
@@ -411,7 +411,7 @@ ROOT_RW;
 
 	# restore all the PUSH Button Actions back to there location
 	$BB mv /res/no-push-on-boot/* /res/customconfig/actions/push-actions/;
-	$BB pkill -f "com.gokhanmoral.stweaks.app";
+	pkill -f "com.gokhanmoral.stweaks.app";
 
 	# change USB mode MTP or Mass Storage
 	$BB sh /res/uci.sh usb-mode "$usb_mode";
