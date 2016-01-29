@@ -887,7 +887,7 @@ elif [ "$CM_AOKP_11_KITKAT" -eq "1" ]; then
 
 elif [ "$CM_AOSP_12_1_LP" -eq "1" ]; then
 	echo "3" > /proc/sys/kernel/rom_feature_set;
-	$BB cp -a /res/misc/Lollipop-CM_AOSP-12.1/* /;
+	$BB cp -a /res/misc/Lollipop-CM-AOSP-12.1/* /;
 	$BB rm -rf /res/misc/JellyB-*;
 	$BB rm -rf /res/misc/KitKat-*;
 	$BB rm -rf /res/misc/Lollipop-*;
