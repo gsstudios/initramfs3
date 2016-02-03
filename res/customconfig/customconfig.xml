@@ -127,13 +127,6 @@
 			<spinnerItem name="powersave" value="powersave"/>
 		</spinner>
 
-		<spinner description="CPU Governor Hot plugging Configuration. if this options is set to Disabled, Second core will always be OFF or ON. if set to Enabled Auto, cortex will choose the best hotplug code for active GOV, or you can force using Alucard HotPlug code, or Inteli HotPlug code, best leave it AUTO (Default: Enabled Auto)" name="hotplug_enable" action="generic_cortex /tmp/hotplug_enable">
-			<spinnerItem name="Disabled" value="0"/> 
-			<spinnerItem name="Enabled Auto" value="1"/> 
-			<spinnerItem name="Alucard HotPlug" value="2"/> 
-			<spinnerItem name="Inteli HotPlug" value="3"/> 
-		</spinner>
-
 		<button description="Use this button to push all new changes to GOV core in real time! The sleep tuning will be auto added on screen off, to screen off governor. You must press this button otherwise all changes the CPU governors will be ignored." name="GOV Policy Install" action="push-actions/cpu_tuning_update" label="Push CPU Tuning To GOV Core"/>
 
 	</settingsPane>
@@ -181,14 +174,6 @@
 		<seekBar description="Basically if the next step target frequency drop inside the range of 100 mhz, cpu will decide if the frequency shift will be loudly enough, so that higher than the parameter value. This will act so that the next target frequency will be one step higher than before. Let us suppose that the actual frequency is 600 Mhz, and the target one is gonna be 721 Mhz. Target frequency is within the range that goes from 700 to 800 Mhz, Computing will be therefeore 721-700= 21 Mhz. If the obtained value(for this sample will be 21) is gonna be greater than the parameter value, the target frequency will upgrade its own value to 800 Mhz, instead, if the value(21) will be smaller or equal than the parameter value, target frequency will be 700 Mhz. An higher value means performance reduction. (Nightmare, Darkness). (Default: 0)" name="up_sf_step" action="generic_cortex /tmp/up_sf_step" unit="int" min="0" reversed="false" step="1" max="99"/>
 
 		<seekBar description="Basically if the next step target frequency drop inside the range of 100 mhz, cpu will decide if the frequency shift will be loudly enough, so that higher than the parameter value. This will act so that the next target frequency will be one step higher than before. Let us suppose that the actual frequency is 600 Mhz, and the target one is gonna be 421 Mhz. Target frequency is within the range that goes from 400 to 500 Mhz, Computing will be therefeore 421-400= 21 Mhz. If the obtained value(for this sample will be 21) is gonna be greater than the parameter value, the target frequency will upgrade its own value to 500 Mhz, instead, if the value(21) will be smaller or equal than the parameter value, target frequency will be 400 Mhz. An higher value means performance reduction. (Nightmare, Darkness). (Default: 0)" name="down_sf_step" action="generic_cortex /tmp/down_sf_step" unit="int" min="0" reversed="false" step="1" max="99"/>
-
-		<seekBar description="Up threshold frequency to turn second core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 1 1 and run queue length is greater than hotplug_rq 1 1) Hotplug IN Second Core. Higher value correpsonds to delay in turning on second core. (Only when Nightmare, Darkness hotplugging is Enabled) (Default: 600000 kHz)" name="hotplug_freq_fst" action="generic_cortex /tmp/hotplug_freq_fst" unit="kHz" min="100000" reversed="false" step="100000" max="1600000"/>
-
-		<seekBar description="Down threshold frequency to turn second core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 2 0 and run queue length is less than or equal to hotplug_rq 2 0) Hotplug OUT Second Core. Lower value correpsonds to delay in turning off second core. (Only when Nightmare, Darkness hotplugging is Enabled) (Default: 300000 kHz)" name="hotplug_freq_snd" action="generic_cortex /tmp/hotplug_freq_snd" unit="kHz" min="100000" reversed="false" step="100000" max="1600000"/>
-
-		<seekBar description="The frequency at which governor scales CPU up. Cur Load equal or greater than up_load: Cpu Hotplug IN. Value corresponding to 101 causes not HOTPLUG IN. (Only when Nightmare, Darkness hotplugging is Enabled) (Default: 50%)" name="up_load" action="generic_cortex /tmp/up_load" unit="%" min="10" reversed="false" step="1" max="101"/>
-
-		<seekBar description="The frequency at which governor scales CPU down. Cur Load less than down_load: Cpu Hotplug OUT. Value corresponding to 101 causes immediately HOTPLUG OUT. (Only when Nightmare, Darkness hotplugging is Enabled) (Default: 30%)" name="down_load" action="generic_cortex /tmp/down_load" unit="%" min="0" reversed="false" step="1" max="101"/>
 
 		<spinner description="When this option is enabled, governor will force cpu to go among configured frequencies following cpu policy limit. Possible steps are: 16 (100...1600 mHz), 12 (100, 200, 400, 500, 600, 800, 1000, 1100, 1200, 1300, 1400, 1500 mHz), 10 (100, 200, 400, 500, 600, 800, 1000, 1200, 1300, 1500 mHz), 8 (100, 200, 500, 800, 1000, 1200, 1300, 1500 mHz). This option is valid for awake and sleep and only with Darkness governor. (Default: 16)" name="force_freqs_step" action="generic_cortex /tmp/force_freqs_step">
 			<spinnerItem name="16 Steps" value="0"/> 
@@ -310,13 +295,44 @@
 
 		<seekBar description="Basically if the next step target frequency drop inside the range of 100 mhz, cpu will decide if the frequency shift will be loudly enough, so that higher than the parameter value. This will act so that the next target frequency will be one step higher than before. Let us suppose that the actual frequency is 600 Mhz, and the target one is gonna be 421 Mhz. Target frequency is within the range that goes from 400 to 500 Mhz, Computing will be therefeore 421-400= 21 Mhz. If the obtained value(for this sample will be 21) is gonna be greater than the parameter value, the target frequency will upgrade its own value to 500 Mhz, instead, if the value(21) will be smaller or equal than the parameter value, target frequency will be 400 Mhz. An higher value means performance reduction. (Nightmare, Darkness). (Default: 0)" name="down_sf_step_sleep" action="generic_cortex /tmp/down_sf_step_sleep" unit="int" min="0" reversed="false" step="1" max="99"/>
 
-		<seekBar description="Up threshold frequency to turn second core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 1 1 and run queue length is greater than hotplug_rq 1 1) Hotplug IN Second Core. Higher value correpsonds to delay in turning on second core. (Only when Nightmare, Darkness hotplugging is Enabled) (Default: 600000 kHz)" name="hotplug_freq_fst_sleep" action="generic_cortex /tmp/hotplug_freq_fst_sleep" unit="kHz" min="100000" reversed="false" step="100000" max="1600000"/>
+	</settingsPane>
 
-		<seekBar description="Down threshold frequency to turn second core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 2 0 and run queue length is less than or equal to hotplug_rq 2 0) Hotplug OUT Second Core. Lower value correpsonds to delay in turning off second core. (Only when Nightmare, Darkness hotplugging is Enabled) (Default: 300000 kHz)" name="hotplug_freq_snd_sleep" action="generic_cortex /tmp/hotplug_freq_snd_sleep" unit="kHz" min="100000" reversed="false" step="100000" max="1600000"/>
+</settingsTab>
 
-		<seekBar description="The frequency at which governor scales CPU up. Cur Load equal or greater than up_load: Cpu Hotplug IN. Value corresponding to 101 causes not HOTPLUG IN. (Only when Nightmare, Darkness hotplugging is Enabled) (Default: 65%)" name="up_load_sleep" action="generic_cortex /tmp/up_load_sleep" unit="%" min="10" reversed="false" step="1" max="101"/>
+<settingsTab name="HOTPLUG">
 
-		<seekBar description="The frequency at which governor scales CPU down. Cur Load less than down_load: Cpu Hotplug OUT. Value corresponding to 101 causes immediately HOTPLUG OUT. (Only when Nightmare, Darkness hotplugging is Enabled) (Default: 30%)" name="down_load_sleep" action="generic_cortex /tmp/down_load_sleep" unit="%" min="0" reversed="false" step="1" max="101"/>
+	<settingsPane description="Here you can manage hotplugging settings. These settings are active only if the screen is on. !!! Depends on CortexBrain-Background-Process and CortexBrain-CPU-Tweaks!!!" name="Hotplug tuning">
+
+		<spinner description="CPU Governor Hot plugging Configuration. if this options is set to Disabled, Second core will always be OFF or ON. if set to Enabled Auto, cortex will choose the best hotplug code for active GOV, or you can force using Alucard HotPlug code, or Inteli HotPlug code, best leave it AUTO (Default: Enabled Auto)" name="hotplug_enable" action="generic_cortex /tmp/hotplug_enable">
+			<spinnerItem name="Disabled" value="0"/> 
+			<spinnerItem name="Enabled Auto" value="1"/> 
+			<spinnerItem name="Alucard HotPlug" value="2"/> 
+			<spinnerItem name="Inteli HotPlug" value="3"/> 
+		</spinner>
+
+	</settingsPane>
+
+	<settingsPane description="Here you can tune hotplugging variables for the selected hotplug method when screen is on" name="Hotplug variables (AWAKE)">
+
+		<seekBar description="Up threshold frequency to turn second core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 1 1 and run queue length is greater than hotplug_rq 1 1) Hotplug IN Second Core. Higher value correpsonds to delay in turning on second core. (Only for Alucard hotplug) (Default: 500000 kHz)" name="hotplug_freq_fst" action="generic_cortex /tmp/hotplug_freq_fst" unit="kHz" min="100000" reversed="false" step="100000" max="1600000"/>
+
+		<seekBar description="Down threshold frequency to turn second core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 2 0 and run queue length is less than or equal to hotplug_rq 2 0) Hotplug OUT Second Core. Lower value correpsonds to delay in turning off second core. (Only for Alucard hotplug) (Default: 300000 kHz)" name="hotplug_freq_snd" action="generic_cortex /tmp/hotplug_freq_snd" unit="kHz" min="100000" reversed="false" step="100000" max="1600000"/>
+
+		<seekBar description="The frequency at which governor scales CPU up. Cur Load equal or greater than up_load: Cpu Hotplug IN. Value corresponding to 101 causes not HOTPLUG IN. (Only for Alucard hotplug) (Default: 60%)" name="up_load" action="generic_cortex /tmp/up_load" unit="%" min="10" reversed="false" step="1" max="101"/>
+
+		<seekBar description="The frequency at which governor scales CPU down. Cur Load less than down_load: Cpu Hotplug OUT. Value corresponding to 101 causes immediately HOTPLUG OUT. (Only for Alucard hotplug) (Default: 30%)" name="down_load" action="generic_cortex /tmp/down_load" unit="%" min="0" reversed="false" step="1" max="101"/>
+
+	</settingsPane>
+
+	<settingsPane description="Here you can tune hotplugging variables for the selected hotplug method when screen is off" name="Hotplug variables (SLEEP)">
+
+		<seekBar description="Up threshold frequency to turn second core On, when some other conditions is also met. ie If (minimum frequency greater than or equal to hotplug_freq 1 1 and run queue length is greater than hotplug_rq 1 1) Hotplug IN Second Core. Higher value correpsonds to delay in turning on second core. (Only for Alucard hotplug) (Default: 500000 kHz)" name="hotplug_freq_fst_sleep" action="generic_cortex /tmp/hotplug_freq_fst_sleep" unit="kHz" min="100000" reversed="false" step="100000" max="1600000"/>
+
+		<seekBar description="Down threshold frequency to turn second core Off, when some other conditions is also met. ie If (maximum frequency less than hotplug_freq 2 0 and run queue length is less than or equal to hotplug_rq 2 0) Hotplug OUT Second Core. Lower value correpsonds to delay in turning off second core. (Only for Alucard hotplug) (Default: 300000 kHz)" name="hotplug_freq_snd_sleep" action="generic_cortex /tmp/hotplug_freq_snd_sleep" unit="kHz" min="100000" reversed="false" step="100000" max="1600000"/>
+
+		<seekBar description="The frequency at which governor scales CPU up. Cur Load equal or greater than up_load: Cpu Hotplug IN. Value corresponding to 101 causes not HOTPLUG IN. (Only for Alucard hotplug) (Default: 60%)" name="up_load_sleep" action="generic_cortex /tmp/up_load_sleep" unit="%" min="10" reversed="false" step="1" max="101"/>
+
+		<seekBar description="The frequency at which governor scales CPU down. Cur Load less than down_load: Cpu Hotplug OUT. Value corresponding to 101 causes immediately HOTPLUG OUT. (Only for Alucard hotplug) (Default: 30%)" name="down_load_sleep" action="generic_cortex /tmp/down_load_sleep" unit="%" min="0" reversed="false" step="1" max="101"/>
 
 	</settingsPane>
 
