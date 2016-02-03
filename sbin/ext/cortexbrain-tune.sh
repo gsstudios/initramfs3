@@ -357,6 +357,8 @@ CPU_HOTPLUG_TWEAKS()
 
 	# sleep-settings
 	if [ "$state" == "sleep" ]; then
+		echo "$cpu_up_rate_sleep" > "$cpu_up_rate_tmp";
+		echo "$cpu_down_rate_sleep" > "$cpu_down_rate_tmp";
 		echo "$hotplug_freq_fst_sleep" > "$hotplug_freq_fst_tmp";
 		echo "$hotplug_freq_snd_sleep" > "$hotplug_freq_snd_tmp";
 		echo "$up_load_sleep" > "$up_load_tmp";
@@ -364,6 +366,8 @@ CPU_HOTPLUG_TWEAKS()
 		echo "1" > "$maxcoreslimit_tmp";
 	# awake-settings
 	elif [ "$state" == "awake" ]; then
+		echo "$cpu_up_rate" > "$cpu_up_rate_tmp";
+		echo "$cpu_down_rate" > "$cpu_down_rate_tmp";
 		echo "$hotplug_freq_fst" > "$hotplug_freq_fst_tmp";
 		echo "$hotplug_freq_snd" > "$hotplug_freq_snd_tmp";
 		echo "$up_load" > "$up_load_tmp";
