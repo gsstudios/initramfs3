@@ -127,7 +127,7 @@
 			<spinnerItem name="powersave" value="powersave"/>
 		</spinner>
 
-		<button description="Use this button to push all new changes to GOV core in real time! The sleep tuning will be auto added on screen off, to screen off governor. You must press this button otherwise all changes the CPU governors will be ignored." name="GOV Policy Install" action="push-actions/cpu_tuning_update" label="Push CPU Tuning To GOV Core"/>
+		<button description="Use this button to push all new changes to GOV core in real time! The sleep tuning will be auto added on screen off, to screen off governor. You must press this button otherwise all changes to CPU governors will be ignored." name="GOV Policy Install" action="push-actions/cpu_tuning_update" label="Push CPU Tuning To GOV Core"/>
 
 	</settingsPane>
 
@@ -309,6 +309,8 @@
 			<spinnerItem name="Alucard HotPlug" value="2"/> 
 			<spinnerItem name="Intelli HotPlug" value="3"/> 
 		</spinner>
+
+		<button description="Use this button to push all new changes to GOV core in real time! The sleep tuning will be auto added on screen off. You must press this button otherwise all changes to hotplugging will be ignored." name="Hotplug Policy Install" action="push-actions/cpu_tuning_update" label="Push Hotplugging Tuning"/>
 
 	</settingsPane>
 
