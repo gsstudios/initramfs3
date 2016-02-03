@@ -289,6 +289,8 @@ CPU_HOTPLUG_TWEAKS()
 	else
 		hotplug_enable_tmp="/dev/null";
 		alucard_value_tmp="/dev/null";
+		cpu_up_rate_tmp="/dev/null";
+		cpu_down_rate_tmp="/dev/null";
 		hotplug_freq_fst_tmp="/dev/null";
 		hotplug_freq_snd_tmp="/dev/null";
 		up_load_tmp="/dev/null";
