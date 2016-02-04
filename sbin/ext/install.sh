@@ -70,7 +70,7 @@ if [ -e /tmp/cm10.2-installed ] || [ -e /tmp/cm11-installed ] || [ -e /tmp/sammy
 	fi;
 fi;
 
-if [ "$install_root" == "on" ] && [ ! -e /tmp/cm12.1-installed ]; then
+if [ "$install_root" == "on" ] && [ ! -e /tmp/cm13-installed ]; then
 	if [ "$NEW_SU" -eq "0" ]; then
 		echo "SuperSU already exists";
 		$BB chmod 06755 /system/xbin/su;
@@ -212,7 +212,7 @@ if [ "$STWEAKS_CHECK" -eq "1" ]; then
 	$BB rm -f /data/data/com.gokhanmoral.stweaks*/* > /dev/null 2>&1;
 fi;
 
-if [ ! -e /tmp/cm12.1-installed ]; then
+if [ ! -e /tmp/cm13-installed ]; then
 	if [ -e /system/app/STweaks.apk ]; then
 		stmd5sum=$($BB md5sum /system/app/STweaks.apk | $BB awk '{print $1}');
 		stmd5sum_kernel=$(cat /res/stweaks_md5);
@@ -236,7 +236,7 @@ if [ ! -e /tmp/cm12.1-installed ]; then
 	fi;
 fi;
 
-if [ -e /tmp/cm12.1-installed ]; then
+if [ -e /tmp/cm13-installed ]; then
 	if [ -e /system/app/STweaks/STweaks.apk ]; then
 		stmd5sum=$($BB md5sum /system/app/STweaks/STweaks.apk | $BB awk '{print $1}');
 		stmd5sum_kernel=$(cat /res/stweaks_md5);

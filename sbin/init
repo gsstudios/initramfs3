@@ -678,6 +678,7 @@ CM_AOKP_10_JB=$($BB cat /system/build.prop | $BB grep "ro.build.version.release=
 CM_AOKP_4_3_JB=$($BB cat /system/build.prop | $BB grep "ro.build.version.release=4.3" | wc -l);
 CM_AOKP_11_KITKAT=$($BB cat /system/build.prop | $BB grep "ro.build.version.release=4.4" | wc -l);
 CM_AOSP_12_1_LP=$($BB cat /system/build.prop | $BB grep "ro.build.version.release=5.1" | wc -l);
+CM_AOSP_13_MM=$($BB cat /system/build.prop | $BB grep "ro.build.version.release=6.0" | wc -l);
 CM_AOKP_PAC=$(find /system/framework/framework-pac.jar | wc -l);
 CM_AOKP_BAM=$(find /system/framework/framework-bam.jar | wc -l);
 JBSAMMY=$(find /system/lib/libSamsungAnimation.so | wc -l);
@@ -696,6 +697,9 @@ USER_ACTIONS()
 		$BB chmod 755 /sbin/adbd;
 	elif [ "$CM_AOSP_12_1_LP" -eq "1" ]; then
 		$BB cp -a /sbin/adbd.cm12.1 /sbin/adbd;
+		$BB chmod 755 /sbin/adbd;
+	elif [ "$CM_AOSP_13_MM" -eq "1" ]; then
+		$BB cp -a /sbin/adbd.cm13 /sbin/adbd;
 		$BB chmod 755 /sbin/adbd;
 	fi;
 
@@ -816,6 +820,7 @@ if [ "$JBSAMMY" -eq "1" ] || [ "$JBSAMMY2" -eq "1" ]; then
 	$BB rm -rf /res/misc/JellyB-*;
 	$BB rm -rf /res/misc/KitKat-*;
 	$BB rm -rf /res/misc/Lollipop-*;
+	$BB rm -rf /res/misc/Marshmallow-*;
 	if [ -e /sys/devices/virtual/sec/sec_key/set_homekey ]; then
 		echo "172" > /sys/devices/virtual/sec/sec_key/set_homekey;
 	fi;
@@ -839,6 +844,7 @@ elif [ "$CM_AOKP_10_JB" -eq "1" ]; then
 	$BB rm -rf /res/misc/JellyB-*;
 	$BB rm -rf /res/misc/KitKat-*;
 	$BB rm -rf /res/misc/Lollipop-*;
+	$BB rm -rf /res/misc/Marshmallow-*;
 	# for sbin/ext/install.sh
 	echo "1" > /tmp/cm10.1-installed;
 
@@ -857,6 +863,7 @@ elif [ "$CM_AOKP_4_3_JB" -eq "1" ]; then
 	$BB rm -rf /res/misc/JellyB-*;
 	$BB rm -rf /res/misc/KitKat-*;
 	$BB rm -rf /res/misc/Lollipop-*;
+	$BB rm -rf /res/misc/Marshmallow-*;
 	# for sbin/ext/install.sh
 	echo "1" > /tmp/cm10.2-installed;
 
@@ -879,6 +886,7 @@ elif [ "$CM_AOKP_11_KITKAT" -eq "1" ]; then
 	$BB rm -rf /res/misc/JellyB-*;
 	$BB rm -rf /res/misc/KitKat-*;
 	$BB rm -rf /res/misc/Lollipop-*;
+	$BB rm -rf /res/misc/Marshmallow-*;
 	# for sbin/ext/install.sh and sbin/ext/post_init.sh
 	echo "1" > /tmp/cm-installed;
 	echo "1" > /tmp/cm11-installed;
@@ -891,9 +899,23 @@ elif [ "$CM_AOSP_12_1_LP" -eq "1" ]; then
 	$BB rm -rf /res/misc/JellyB-*;
 	$BB rm -rf /res/misc/KitKat-*;
 	$BB rm -rf /res/misc/Lollipop-*;
+	$BB rm -rf /res/misc/Marshmallow-*;
 	# for sbin/ext/install.sh and sbin/ext/post_init.sh
 	echo "1" > /tmp/cm-installed;
 	echo "1" > /tmp/cm12.1-installed;
+
+	SECROM_FUNCTION_AOSP;
+
+elif [ "$CM_AOSP_13_MM" -eq "1" ]; then
+	echo "3" > /proc/sys/kernel/rom_feature_set;
+	$BB cp -a /res/misc/Marshmallow-CM-AOSP-13/* /;
+	$BB rm -rf /res/misc/JellyB-*;
+	$BB rm -rf /res/misc/KitKat-*;
+	$BB rm -rf /res/misc/Lollipop-*;
+	$BB rm -rf /res/misc/Marshmallow-*;
+	# for sbin/ext/install.sh and sbin/ext/post_init.sh
+	echo "1" > /tmp/cm-installed;
+	echo "1" > /tmp/cm13-installed;
 
 	SECROM_FUNCTION_AOSP;
 else
