@@ -259,5 +259,10 @@ if [ -e /tmp/cm12.1-installed ]; then
 	fi;
 fi;
 
+#remove low latency xml as it is not supported by dorimanX kernel!
+if [ -e /system/etc/permissions/android.hardware.audio.low_latency.xml ]; then
+	$BB rm -f /system/etc/permissions/android.hardware.audio.low_latency.xml > /dev/null 2>&1;
+fi;
+
 $BB mount -o remount,rw /;
 $BB mount -o remount,rw /system;
