@@ -7,11 +7,12 @@ ro.allow.mock.location=0
 ro.debuggable=1
 ro.zygote=zygote32
 persist.sys.usb.config=mass_storage,adb
-dalvik.vm.dex2oat-Xms=64m
-dalvik.vm.dex2oat-Xmx=512m
 dalvik.vm.image-dex2oat-Xms=64m
 dalvik.vm.image-dex2oat-Xmx=64m
+dalvik.vm.dex2oat-Xms=64m
+dalvik.vm.dex2oat-Xmx=512m
 ro.dalvik.vm.native.bridge=0
+debug.atrace.tags.enableflags=0
 
 # needed to boot SlimSaber ROM! do not delete.
 ro.zygote.disable_gl_preload=true
