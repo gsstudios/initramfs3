@@ -186,7 +186,7 @@
 
 	<settingsPane description="ZZMOOVE Gov Configuration, see descriptions" name="ZZMOOVE GOV CONFIGURATON">
 
-		<spinner description="Switch zzmoove profiles (Default: Default)" name="profile_number" action="generic_cortex /tmp/profile_number">
+		<spinner description="Switch zzmoove profiles (Default: No profile)" name="profile_number" action="generic_cortex /tmp/profile_number">
 			<spinnerItem name="No profile (tunable mode)" value="0"/> 
 			<spinnerItem name="Default" value="1"/> 
 			<spinnerItem name="Yank Battery" value="2"/> 
