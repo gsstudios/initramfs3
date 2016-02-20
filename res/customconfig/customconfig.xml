@@ -545,20 +545,22 @@
 
 	<settingsPane description="Other Settings" name="Other Settings">
 
-		<spinner description="MDNIE mode. Setting this option allows you to select from a few predefined MDNIE modes via their values between 0 and 3. Depending on kernel, rom and platform, different values are being supported and also their meaning is different. Affects colours and contrast. (Default: Dynamic)" name="MDNIE mode" action="generic /sys/devices/platform/samsung-pd.2/mdnie/mdnie/mdnie/mode">
-			<spinnerItem name="Dynamic" value="0"/> 
-			<spinnerItem name="Standard" value="1"/> 
-			<spinnerItem name="Natural" value="2"/> 
-			<spinnerItem name="Movie" value="3"/> 
+		<checkbox description="Enable or Disable stweaks to override ROMs MDNIE settings. If enabled, the MDNIE settings below will be applied to the ROM." name="MDNIE Override" action="generic_cortex /tmp/mdnie_override" label="MDNIE Override"/>
+
+		<spinner description="MDNIE mode. Setting this option allows you to select from a few predefined MDNIE modes via their values between 0 and 3. Depending on kernel, rom and platform, different values are being supported and also their meaning is different. Affects colours and contrast. (Default: Dynamic)" name="MDNIE mode" action="mdnie_mode">
+			<spinnerItem name="Dynamic" value="dynamic"/> 
+			<spinnerItem name="Standard" value="standard"/> 
+			<spinnerItem name="Natural" value="natural"/> 
+			<spinnerItem name="Movie" value="movie"/> 
 		</spinner>
 
-		<spinner description="MDNIE scenario. Setting this option allows you to select from a few predefined MDNIE scenarios via their values between 0 and 7. Depending on kernel, rom and platform, different values are being supported and also their meaning is different. Affects colours and contrast. (Default: UI_MODE)" name="MDNIE scenario" action="generic /sys/devices/platform/samsung-pd.2/mdnie/mdnie/mdnie/scenario">
-			<spinnerItem name="UI_MODE" value="0"/> 
-			<spinnerItem name="VIDEO_MODE" value="1"/> 
-			<spinnerItem name="CAMERA_MODE" value="4"/> 
-			<spinnerItem name="NAVI_MODE" value="5"/> 
-			<spinnerItem name="GALLARY_MODE" value="6"/> 
-			<spinnerItem name="VT_MODE" value="7"/> 
+		<spinner description="MDNIE scenario. Setting this option allows you to select from a few predefined MDNIE scenarios via their values between 0 and 7. Depending on kernel, rom and platform, different values are being supported and also their meaning is different. Affects colours and contrast. (Default: UI_MODE)" name="MDNIE scenario" action="mdnie_scenario">
+			<spinnerItem name="UI_MODE" value="ui"/> 
+			<spinnerItem name="VIDEO_MODE" value="video"/> 
+			<spinnerItem name="CAMERA_MODE" value="camera"/> 
+			<spinnerItem name="NAVI_MODE" value="navi"/> 
+			<spinnerItem name="GALLARY_MODE" value="gallary"/> 
+			<spinnerItem name="VT_MODE" value="vt"/> 
 		</spinner>
 
 		<seekBar description="User adjustable gamma shift. (Default: 0)" name="Gamma shift" action="generic /sys/class/lcd/panel/user_gamma_adjust" unit="" min="-50" reversed="false" step="5" max="50"/>
