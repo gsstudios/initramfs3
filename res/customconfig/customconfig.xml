@@ -397,7 +397,7 @@
 
 		<checkbox description="Enable AUTO OOM control using below profiles, disable if you want to set your own OOM tuning via APP or Script." name="Auto OOM" action="generic01 /sys/module/lowmemorykiller/parameters/auto_oom" label="AUTO OOM CONTROL"/>
 
-		<spinner description="Here you can set the level of low mem management by kernel lowmemkiller function. More aggressive, equals more free RAM but more killed apps." name="OOM Level Screen ON" action="oom_config_screen_on">
+		<spinner description="Here you can set the level of low mem management by kernel lowmemkiller function. More aggressive, equals more free RAM but more killed apps. It is not recommended to set this to low! For best performance, keep this set to default or higher!" name="OOM Level Screen ON" action="oom_config_screen_on">
 			<spinnerItem name="low" value="low"/> 
 			<spinnerItem name="medium" value="medium"/> 
 			<spinnerItem name="default" value="default"/> 
@@ -405,7 +405,7 @@
 			<spinnerItem name="exterminate" value="exterminate"/> 
 		</spinner>
 
-		<spinner description="Here you can set the level of low mem management by kernel lowmemkiller function. More aggressive equals more free RAM but more killed apps." name="OOM Level Screen OFF" action="oom_config_screen_off">
+		<spinner description="Here you can set the level of low mem management by kernel lowmemkiller function. More aggressive equals more free RAM but more killed apps. It is not recommended to set this to low! For best performance, keep this set to default or higher!" name="OOM Level Screen OFF" action="oom_config_screen_off">
 			<spinnerItem name="low" value="low"/> 
 			<spinnerItem name="medium" value="medium"/> 
 			<spinnerItem name="default" value="default"/> 
@@ -413,8 +413,7 @@
 			<spinnerItem name="exterminate" value="exterminate"/> 
 		</spinner>
 
-		<spinner description="Here you can set the low memory reserve ratio, higher ratio give you more free RAM if you see that your free RAM is always loaded and device LAG, but it's also uses more battery to gain more free RAM with loaded system. use relaxed ONLY if your free RAM is above 650MB always! if less than 280MB use recommended or high pressure. (Default: Default)" name="Low Memory Reserve" action="lowmem_reserve">
-			<spinnerItem name="relaxed" value="relaxed"/> 
+		<spinner description="Here you can set the low memory reserve ratio, higher ratio give you more free RAM if you see that your free RAM is always loaded and device LAG, but it's also uses more battery to gain more free RAM with loaded system. (Default: Default)" name="Low Memory Reserve" action="lowmem_reserve">
 			<spinnerItem name="default" value="default"/> 
 			<spinnerItem name="boosted" value="boosted"/> 
 			<spinnerItem name="high pressure" value="high_pressure"/> 
@@ -472,7 +471,7 @@
 			<spinnerItem name="108 MHz" value="108"/> 
 		</spinner>
 
-		<spinner description="Changes the fourth GPU frequency step. WARNING! 400, 440, 520 MHz needs 1300 mV - 1450 mV. (520Mhz stable on 1400mV+ if your chip can handle that) Above 1300 mV you risk to burn your chip!" name="GPU Frequency Step 4" action="gpu-freq 4">
+		<spinner description="Changes the fourth GPU frequency step. WARNING! 400, 440, 520 MHz needs 1300 mV - 1450 mV (520Mhz stable on 1400mV+ if your chip can handle that). Above 1300 mV you risk to burn your chip!" name="GPU Frequency Step 4" action="gpu-freq 4">
 			<spinnerItem name="520 MHz" value="520"/> 
 			<spinnerItem name="440 MHz" value="440"/> 
 			<spinnerItem name="400 MHz" value="400"/> 
@@ -482,7 +481,7 @@
 			<spinnerItem name="160 MHz" value="160"/> 
 		</spinner>
 
-		<spinner description="Changes the fifth GPU frequency step. WARNING! 400, 440, 520 MHz needs 1300 mV - 1450 mV. (520Mhz stable on 1400mV+ if your chip can handle that) Above 1300 mV you risk to burn your chip!" name="GPU Frequency Step 5" action="gpu-freq 5">
+		<spinner description="Changes the fifth GPU frequency step. WARNING! 400, 440, 520 MHz needs 1300 mV - 1450 mV (520Mhz stable on 1400mV+ if your chip can handle that). Above 1300 mV you risk to burn your chip!" name="GPU Frequency Step 5" action="gpu-freq 5">
 			<spinnerItem name="520 MHz" value="520"/> 
 			<spinnerItem name="440 MHz" value="440"/> 
 			<spinnerItem name="400 MHz" value="400"/> 
@@ -543,7 +542,7 @@
 
 	</settingsPane>
 
-	<settingsPane description="MDNIE stands for Mobile Digital Natural Image Engine and is basically a layer of the display driver. It takes care about brightness, sharpness, contrast etc. - so basically all aspects of the display." name="Brightness Curve">
+	<settingsPane description="MDNIE stands for Mobile Digital Natural Image Engine and is basically a layer of the display driver. It takes care about brightness, sharpness, contrast etc. - so basically all aspects of the display." name="MDNIE tweaks">
 
 		<checkbox description="Enable or Disable stweaks to override ROMs MDNIE settings. If enabled, the MDNIE settings below will be applied to the ROM. If your settings don't apply, re-enable this toggle and change the settings again!" name="MDNIE Override" action="generic_cortex /tmp/mdnie_override" label="MDNIE Override"/>
 
@@ -656,13 +655,13 @@
 
 		<checkbox description="Ticking this will enabled Backlight Notifications(BLN). Your hardware buttons will light up whenever you receive a notification. For better battery life, please also tick BLNWW" name="BLN" action="generic /sys/class/misc/notification/notification_enabled" label="BLN"/>
 
-		<spinner description="This setting will set LED behavior for BLN, !README! if BLNWW is ON(see below)! then effect is ONLY Steady! and will be reset to !Steady!" name="BLN Effect" action="bln_switch">
+		<spinner description="This setting will set LED behavior for BLN. If BLNWW is ON(see below)! then effect is ONLY Steady! and will be reset to !Steady!" name="BLN Effect" action="bln_switch">
 			<spinnerItem name="Steady" value="0"/> 
 			<spinnerItem name="Breathing" value="1"/> 
 			<spinnerItem name="Blinking" value="2"/> 
 		</spinner>
 
-		<spinner description="Notification timeout, !README! if BLNWW is ON(see below)! this setting it ignored and reset to !Never timeout!" name="notification_timeout" action="generic /sys/class/misc/notification/notification_timeout">
+		<spinner description="Notification timeout. If BLNWW is ON(see below)! this setting it ignored and reset to !Never timeout!" name="notification_timeout" action="generic /sys/class/misc/notification/notification_timeout">
 			<spinnerItem name="Never timeout" value="0"/> 
 			<spinnerItem name="1 minute" value="60000"/> 
 			<spinnerItem name="3 minutes" value="180000"/> 
@@ -711,7 +710,7 @@
 
 <settingsTab name="CRON">
 		
-		<settingsPane description="Here you can activate some scripts which will automatically run in the background at a specified time. Some scripts require the functions (located in OTHER tab) to be enabled or they will not function correctly!" name="cron">
+		<settingsPane description="Here you can activate some scripts which will automatically run in the background at a specified time. These scripts will help optimize your phone for better speed, stability or keep certain functions updated (e.g. Adblocker). Some scripts require the functions (located in OTHER tab) to be enabled or they will not function correctly!" name="cron">
 
 		<spinner description="Main switch for Cron Tasker. If you set this to OFF, then all tasks below have no effect!" name="CRON TASK MAIN SWITCH" action="crontab">
 			<spinnerItem name="Cron ON" value="on"/> 
@@ -720,7 +719,7 @@
 
 		<button description="Use this button to test if this Cron Task service is ONLINE and supported! If main switch is ON, and service is OFFLINE, then ROM Busybox is not supporting Cron. Update Busybox or ROM for this to work." name="Test Cron Task Service" action="push-actions/crontab_test" label="Test Cron Task Service"/>
 
-		<button description="Use this button to RESET the scripts and jobs from kernel, to refresh the configuration. This will clear all your custom changes!" name="CRON RESET" action="push-actions/crontab_reset" label="RESET CRON"/>
+		<button description="Use this button to RESET the scripts and jobs from kernel to refresh the configuration. This will clear all your custom changes!" name="CRON RESET" action="push-actions/crontab_reset" label="RESET CRON"/>
 
 		<checkbox description="Cron to clear file-cache every hour, but only if CPU is resting (IDLE) and more than 50% of your memory is used! This will free RAM from unused buffers and cache." name="Clean file-cache" action="generic_cortex /tmp/cron_drop_cache" label="RAM cache clean every Hour"/>
 
@@ -792,13 +791,13 @@
 			<spinnerItem name="Force MTP Mode" value="mtp-adb"/> 
 		</spinner>
 
-		<checkbox description="If checked, Mass-Storage-SDCARDS will be auto-mounted when USB connected. then you can transfer files on high speed from PC to device. (Default: On) !!! Depends on CortexBrain-Background-Process !!!" name="Auto Mount USB Drives" action="generic_cortex /tmp/auto_mount_sd" label="Auto Mount USB Drives"/>
+		<checkbox description="If checked, Mass Storage SDCARDS will be auto-mounted when USB connected. Then you can transfer files from your PC to device. This is only used when Mass Storage mode has been selected above! This doesn't apply to MTP mode! (Default: On) !!! Depends on CortexBrain-Background-Process !!!" name="Auto Mount USB Drives" action="generic_cortex /tmp/auto_mount_sd" label="Auto Mount USB Drives"/>
 
 		<button description="Dual Mount-SDCARD and MMC via USB. After USB is disconnected, Dual Mount is disabled! This tweak is working automatically. Plug USB, turn off the screen and then turn ON, and you get working mounts. To scan your new MEDIA files, use some app to force Media Scan." name="DUAL MOUNT" action="push-actions/dualmount" label="Dual Mount"/>
 
 	</settingsPane>
 
-	<settingsPane description="Charger, Battery settings and options. allowed mA is in range from 450mA to 650mA, by hardware limits! we cant set less or more" name="Battery Charge">
+	<settingsPane description="Charger, Battery settings and options. Allowed mA is in range from 450mA to 650mA, by hardware limits! we cant set less or more" name="Battery Charge">
 
 		<seekBar description="Battery AC Charge Current Setting" name="Battery AC Charge Current" action="chargecurrent 1" unit="mA" min="450" reversed="false" step="50" max="650"/>
 
@@ -834,7 +833,7 @@
 
 	<settingsPane description="Fixes file system only if needed!" name="FS">
 
-		<button description="DATA, SYSTEM and CACHE file system check and repair on boot. !WARNING! This is a VERY DANGEROUS option! Before activating it DO A FULL BACKUP with Titanium Backup or any kind of backup application! If you have lots of damage in your DATA partition, after fix and repair, ROM may NOT BOOT anymore! In that case reinstall ROM, and if you still cannot boot, you will have to format DATA file system via recovery! USE IT AT YOUR OWN RISK! THIS FUNCTION IS NOT A TOY! YOU HAVE BEEN WARNED! This function works only for main ROM and Preload partition !also can be the second ROM system!, second ROM data gets no effect, and by default function is OFF. It is also one time action, push the button to Activate, push again to Abort!" name="FIX File System on BOOT" action="push-actions/fix_fs_on_boot" label="FIX DATA ON or OFF"/>
+		<button description="DATA, SYSTEM and CACHE file system check and repair on boot. !WARNING! This is a VERY DANGEROUS option! Before activating it DO A FULL BACKUP with Titanium Backup or any kind of backup application! If you have lots of damage in your DATA partition, after fix and repair, ROM may NOT BOOT anymore! In that case reinstall ROM, and if you still cannot boot, you will have to format DATA file system via recovery! USE IT AT YOUR OWN RISK! THIS FUNCTION IS NOT A TOY! YOU HAVE BEEN WARNED! This function works only for main ROM and Preload partition! Also can be used for the second ROM system partition. Second ROM data gets no effect, and by default function is OFF. It is also one time action, push the button to Activate, push again to Abort!" name="FIX File System on BOOT" action="push-actions/fix_fs_on_boot" label="FIX DATA ON or OFF"/>
 
 		<checkbox description="Check and repair file system on every boot by auto. See the WARNING ABOVE! DO FULL BACKUP! this is the same thing! just every boot! if all clean then should be OK, Doesn't clean dalvik-cache" name="Check and repair file system on every boot" action="fix_fs_on_boot_auto" label="Check and repair file system on every boot"/>
 
