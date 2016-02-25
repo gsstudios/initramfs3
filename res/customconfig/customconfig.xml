@@ -1,11 +1,11 @@
 <settingsRoot>
 <settingsTab name="CPU">
 
-	<settingsPane description="Booster Control. Here you can set boost CPU frequency, after boot done, boot boost frequency will be restored to active profile settings." name="Boost CPU Frequency">
+	<settingsPane description="CPU Frequency Booster Control. Here you can set boost CPU frequency, after boot done, boot boost frequency will be restored to active profile settings." name="Boost CPU Frequency">
 
 		<seekBar description="Boot booster frequency. CPU will hold single frequency when ROM booting. All limits have been made for your own safety!!! (default 1200000 kHz)" name="Boot CPU Frequency" action="generic_cortex /tmp/boot_boost" unit="kHz" min="1000000" reversed="false" step="100000" max="1400000"/>
 
-		<seekBar description="CPU Boost frequency tuning. Each time there is a spike load, CPU Govs Hyper, Ondemand, Pegasusq, Neox, will be boosted with instant frequency boost to finish the jobs. this setting depends on max CPU frequency! you can't set 1500Mhz here and set 1200Mhz MAX below! govs will obey max frequency" name="Boost CPU Frequency" action="generic_cortex /tmp/boostfreq" unit="kHz" min="500000" reversed="false" step="100000" max="1600000"/>
+		<seekBar description="CPU Boost frequency tuning. Each time there is a spike load, CPU Governors: Hyper, Ondemand, Pegasusq, Neox, will be boosted with instant frequency boost to finish the jobs. this setting depends on max CPU frequency! you can't set 1500Mhz here and set 1200Mhz MAX below! govs will obey max frequency" name="Boost CPU Frequency" action="generic_cortex /tmp/boostfreq" unit="kHz" min="500000" reversed="false" step="100000" max="1600000"/>
 
 		<seekBar description="Here you can change Cortex Wakeup Boost. It will give you full CPU power but only for the set time. After that time, all is set back to normal. !!! Depends on CortexBrain-Background-Process !!!. When the value is -1, frequency changing is completely deactivated !." name="Cortex Wakeup Boost" action="generic_cortex /tmp/wakeup_boost" unit="Sec" min="-1" reversed="false" step="1" max="15"/>
 
@@ -13,7 +13,7 @@
 
 	<settingsPane description="The following settings are for all global CPU configuration, use it only if you know what you are doing." name="CPU Global Settings">
 
-		<seekBar description="Maximum Normal CPU-Speed. This is the maximum frequency before the governor ramps to the absolute maximum frequency. If you want to use OC speeds set here 1.0Ghz and tune the OC bar! If the set speed here is lower than MAX 1.0Ghz, OC bar is ignored! (Default: 1000000 kHz)" name="Max Normal Frequency" action="genericfreq_normal /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq" unit="kHz" min="100000" reversed="false" step="100000" max="1000000"/>
+		<seekBar description="Maximum Normal CPU-Speed. This is the maximum frequency before the governor ramps to the real maximum frequency. If you want to use OC speeds set here 1.0Ghz and tune the OC bar! If the set speed here is lower than MAX 1.0Ghz, OC bar is ignored! (Default: 1000000 kHz)" name="Max Normal Frequency" action="genericfreq_normal /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq" unit="kHz" min="100000" reversed="false" step="100000" max="1000000"/>
 
 		<seekBar description="Overclock CPU Speed. To use OC you must set the Normal CPU speed to MAX 1.0Ghz or this setting ignored! ALERT! 1.5 GHz and 1.6 GHz can be unstable for your personal device! Try it and if the phone stuck (SOD), then your CPU will not work on such high frequency and you have to use a lower value! 1.6 Ghz is unstable on 85% of devices, try at your own risk. If device is stuck at boot, reset profile via recovery! (Default: 1200000 kHz)" name="Max OC Frequency" action="genericfreq_oc /tmp/scaling_max_freq_oc" unit="kHz" min="1000000" reversed="false" step="100000" max="1600000"/>
 
@@ -32,14 +32,14 @@
 
 	<settingsPane description="Here you can set all the settings for power save!" name="CPU Idle and Power Settings">
 
-		<spinner description="Sets the CPU Idle Mode. For best stability use Idle + LPA. (Default: AFTR + LPA)" name="CPU Idle Mode" action="generic /sys/module/cpuidle_exynos4/parameters/enable_mask">
+		<spinner description="Sets the CPU Idle Mode. It is best to leave this set to AFTR + LPA for optimal battery life. (Default: AFTR + LPA)" name="CPU Idle Mode" action="generic /sys/module/cpuidle_exynos4/parameters/enable_mask">
 			<spinnerItem name="AFTR + LPA" value="3"/> 
 			<spinnerItem name="Idle + LPA" value="2"/> 
 			<spinnerItem name="AFTR only" value="1"/> 
 			<spinnerItem name="Idle only" value="0"/> 
 		</spinner>
 
-		<spinner description="Sets the CPU Idle Mode (Sleep Mode). For best stability use Idle + LPA. (Default: AFTR + LPA) !!! Depends on CortexBrain-Background-Process !!!" name="CPU Idle Mode (Sleep Mode)" action="generic_cortex /tmp/enable_mask_sleep">
+		<spinner description="Sets the CPU Idle Mode (Sleep Mode). It is best to leave this set to AFTR + LPA for optimal battery life. (Default: AFTR + LPA) !!! Depends on CortexBrain-Background-Process !!!" name="CPU Idle Mode (Sleep Mode)" action="generic_cortex /tmp/enable_mask_sleep">
 			<spinnerItem name="AFTR + LPA" value="3"/> 
 			<spinnerItem name="Idle + LPA" value="2"/> 
 			<spinnerItem name="AFTR only" value="1"/> 
@@ -64,11 +64,11 @@
 
 <settingsTab name="CPU-VOLTAGE">
 
-	<settingsPane description="CPU Voltage Controls. Voltage Range is 800~1500mV. Lower or higher are NOT SUPPORTED. All is done to prevent BUGS and SODS. USE this interface AT YOUR OWN RISK! If you get SOD before you can load this interface and cannot fix your error, reset profiles from recovery. And think harder before you SOD your CPU with too much UV or OV!" name="CPU Voltage Controls">
+	<settingsPane description="CPU Voltage Controls. Voltage Range is 800~1500mV, lower or higher voltages are NOT SUPPORTED! All is done to prevent BUGS and SODS. USE this interface AT YOUR OWN RISK! If you get SOD before you can load this interface and cannot fix your error, reset profiles from recovery. And think harder before you SOD your CPU with too much UV or OV!" name="CPU Voltage Controls">
 
 		<checkbox description="Main switch for Voltage Control! If disabled, all below settings have no effect! If you are using an external application or script to configure CPU voltage, do not tick this checkbox. Do not start to mod voltage before you enable this switch! It will not make any effect and you will have to set all to default, and tune again!" name="CPU Voltage Main Switch" action="generic_cortex /tmp/cpu_voltage_switch" label="CPU Voltage Main Switch"/>
 
-		<button description="Use this button to see what CPU Voltage Group your CPU is using now, SG2 device has 5 different CPU types around the world, most common is number !3! most stable is number !4! and !5!, number !2! and !1! are old CPU types, they need more voltage to be stable! so if you see that your CPU TYPE !2! or !1!, then dont UV! it is just bad idea, you will get SODS! and cry about it." name="Check CPU Voltage Group" action="push-actions/cpu-voltage_group" label="Check CPU Voltage Group"/>
+		<button description="Use this button to see what CPU Voltage Group your CPU is using now. The SG2 has 5 different CPU types around the world, most common is number !3!, most stable are numbers !4! and !5!. Number !2! and !1! are old CPU types, they need more voltage to be stable! So if you see that your CPU TYPE !2! or !1!, then dont UV! It is just bad idea, you will get SODS! and cry about it." name="Check CPU Voltage Group" action="push-actions/cpu-voltage_group" label="Check CPU Voltage Group"/>
 
 		<button description="Use this button to see what CPU Voltage is used right now!" name="Check Active CPU Voltage" action="push-actions/check_cpu_voltage" label="Check CPU Voltage"/>
 
@@ -110,9 +110,9 @@
 
 <settingsTab name="CPU-TUNING (AWAKE)">
 
-	<settingsPane description="Here you can manage advanced governor settings. These settings are active only if the screen is on. !!! Depends on CortexBrain-Background-Process and CortexBrain-CPU-Tweaks!!!" name="Governor Parameters tuning">
+	<settingsPane description="Here you can manage advanced CPU governor settings. These settings are active only if the screen is on. !!! Depends on CortexBrain-Background-Process and CortexBrain-CPU-Tweaks!!!" name="Governor Parameters tuning">
 
-		<spinner description="This will set the AWAKE (screen ON) CPU governor. Default CPU governor will only be set during early stages of booting (before init.d execution), and can be overridden by any other scripts or applications. Use Ondemand for the best stability" name="Default CPU Governor" action="generic /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor">
+		<spinner description="This will set the AWAKE (screen ON) CPU governor. CPU governors affect the frequency scaling of your CPU, where each CPU governor behaves differently. Default CPU governor will only be set during early stages of booting (before init.d execution), and can be overridden by any other scripts or applications. Use Ondemand for the best stability. If you are not sure what to set here, leave this to the defaults." name="Default CPU Governor" action="generic /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor">
 			<spinnerItem name="conservative" value="conservative"/> 
 			<spinnerItem name="darkness" value="darkness"/> 
 			<spinnerItem name="HYPER" value="HYPER"/> 
@@ -127,11 +127,11 @@
 			<spinnerItem name="powersave" value="powersave"/>
 		</spinner>
 
-		<button description="Use this button to push all new changes to GOV core in real time! The sleep tuning will be auto added on screen off, to screen off governor. You must press this button otherwise all changes the CPU governors will be ignored." name="GOV Policy Install" action="push-actions/cpu_tuning_update" label="Push CPU Tuning To GOV Core"/>
+		<button description="Use this button to apply all CPU governor changes. The sleep tuning will be automatically added on screen off, to screen off governor. You must press this button otherwise all changes the CPU governors will be ignored." name="Apply CPU governor changes" action="push-actions/cpu_tuning_update" label="Push CPU Governor tuning"/>
 
 	</settingsPane>
 
-	<settingsPane description="Global Govs Configuration, see descriptions" name="GLOBAL GOV CONFIGURATON">
+	<settingsPane description="Global Governor Configuration" name="GLOBAL GOV CONFIGURATON">
 
 		<seekBar description="Measured as percentage, when load on CPU is equal to above up threshold, CPU is scaled Up. Lower value - early scale up, and vice-verse. (Only for HYPER, Ondemand, intellidemand, PegasusQ, Conservative, Sleepy, zzmoove) (Default: 70%)" name="up_threshold" action="generic_cortex /tmp/up_threshold" unit="%" min="1" reversed="false" step="1" max="100"/>
 
@@ -151,7 +151,7 @@
 
 	</settingsPane>
 
-	<settingsPane description="Nightmare and Darkness Gov Configuration, see descriptions" name="NIGHTMARE | DARKNESS GOV CONFIGURATON">
+	<settingsPane description="Nightmare and Darkness Gov Configuration" name="NIGHTMARE | DARKNESS GOV CONFIGURATON">
 
 		<seekBar description="This threshold is used as up threshold while sampling at frequencies less than freq_for_responsiveness. Above that, normal inc_cpu_load is used. This gives us an option to make scaling aggressive/relaxed until a frequency and normal for higher frequencies. (Only for Nightmare). (Default: 10%)" name="inc_cpu_load_at_min_freq" action="generic_cortex /tmp/inc_cpu_load_at_min_freq" unit="%" min="1" reversed="false" step="1" max="100"/>
 
@@ -184,7 +184,7 @@
 
 	</settingsPane>
 
-	<settingsPane description="ZZMOOVE Gov Configuration, see descriptions" name="ZZMOOVE GOV CONFIGURATON">
+	<settingsPane description="ZZMOOVE Gov Configuration. The variables below only work if profile has been set to Tunable mode! Otherwise the in-built zzmoove profiles will override all values!" name="ZZMOOVE GOV CONFIGURATON">
 
 		<spinner description="Switch zzmoove profiles (Default: Tunable mode)" name="profile_number" action="generic_cortex /tmp/profile_number">
 			<spinnerItem name="Tunable mode" value="0"/> 
@@ -234,7 +234,7 @@
 
 <settingsTab name="CPU-TUNING (SLEEP)">
 
-	<settingsPane description="Here you can manage advanced governor settings. These settings are only active when the screen is off. !!! Depends on CortexBrain-Background-Process and CortexBrain-CPU-Tweaks!!!" name="Governor Parameters tuning">
+	<settingsPane description="Here you can manage advanced CPU governor settings. These settings are only active when the screen is off. !!! Depends on CortexBrain-Background-Process and CortexBrain-CPU-Tweaks!!!" name="Governor Parameters tuning">
 
 		<spinner description="This will set the DEEP SLEEP (screen off) CPU governor." name="Deep-Sleep! CPU Governor" action="generic_cortex /tmp/scaling_governor_sleep">
 			<spinnerItem name="conservative" value="conservative"/> 
@@ -303,7 +303,7 @@
 
 	<settingsPane description="Here you can manage hotplugging settings. !!! Depends on CortexBrain-Background-Process and CortexBrain-CPU-Tweaks!!!" name="Hotplug tuning">
 
-		<spinner description="CPU Governor Hot plugging Configuration. if this options is set to Disabled, Second core will always be OFF or ON. if set to Enabled Auto, cortex will choose the best hotplug code for active GOV, or you can force using Alucard HotPlug code, or Intelli HotPlug code, best leave it AUTO (Default: Enabled Auto)" name="hotplug_enable" action="generic_cortex /tmp/hotplug_enable">
+		<spinner description="CPU Governor Hot plugging Configuration. If this options is set to Disabled, Second core will always be OFF or ON. If set to Enabled Auto, cortex will choose the best hotplug code for active GOV, or you can force using Alucard HotPlug code, or Intelli HotPlug code, best leave it AUTO (Default: Enabled Auto)" name="hotplug_enable" action="generic_cortex /tmp/hotplug_enable">
 			<spinnerItem name="Disabled" value="0"/> 
 			<spinnerItem name="Enabled Auto" value="1"/> 
 			<spinnerItem name="Alucard HotPlug" value="2"/> 
@@ -353,7 +353,7 @@
 
 	<settingsPane description="Here you can tune IO settings managed by Kernel" name="IO Tuning">
 
-		<spinner description="Maximum number of kilobytes to read-ahead for SDCARD! It's best to leave it at 1024 KB. Works only if IO-Tweaks tweak is enabled! (Default: 128 kB) !!! Depends on CortexBrain-Background-Process !!!" name="kilobytes to read-ahead" action="generic_cortex /tmp/cortexbrain_read_ahead_kb">
+		<spinner description="Maximum number of kilobytes to read-ahead for external SDCARD! Works only if IO-Tweaks tweak is enabled! (Default: 128 kB) !!! Depends on CortexBrain-Background-Process !!!" name="kilobytes to read-ahead" action="generic_cortex /tmp/cortexbrain_read_ahead_kb">
 			<spinnerItem name="AUTO" value="0"/> 
 			<spinnerItem name="128 kB" value="128"/> 
 			<spinnerItem name="256 kB" value="256"/> 
@@ -414,10 +414,10 @@
 		</spinner>
 
 		<spinner description="Here you can set the low memory reserve ratio, higher ratio give you more free RAM if you see that your free RAM is always loaded and device LAG, but it's also uses more battery to gain more free RAM with loaded system. use relaxed ONLY if your free RAM is above 650MB always! if less than 280MB use recommended or high pressure. (Default: Default)" name="Low Memory Reserve" action="lowmem_reserve">
-			<spinnerItem name="Relaxed" value="relaxed"/> 
-			<spinnerItem name="Default" value="default"/> 
-			<spinnerItem name="Boosted" value="boosted"/> 
-			<spinnerItem name="High Pressure" value="high_pressure"/> 
+			<spinnerItem name="relaxed" value="relaxed"/> 
+			<spinnerItem name="default" value="default"/> 
+			<spinnerItem name="boosted" value="boosted"/> 
+			<spinnerItem name="high pressure" value="high_pressure"/> 
 		</spinner>
 
 		<seekBar description="Dirty background memory buffer, more you set, more memory will be used for write buffer for background operations. Buffer is released on need to free RAM (Default: 5%)" name="Dirty Background ratio" action="generic /proc/sys/vm/dirty_background_ratio" unit="%" min="5" reversed="false" step="5" max="80"/>
@@ -444,7 +444,7 @@
 <settingsTab name="GPU">
 	<settingsPane description="GPU Frequency, voltage, and steps utilization settings. Defaults frequencies are 108, 160, 200, 267 and 267. Voltage defaults are 950mV, 950mV, 1000mV, 1050mV and 1050mV." name="GPU Control">
 
-		<checkbox description="Enabling VPLL mode may be unstable on some devices so do not complain if your device lags or crashes (SOD). If you do not use VPLL Mode, the following frequency steps will be unavailable: 330, 440, 520. VPLL is a new frqeuency range to give some users more GPU performance. USE AT YOUR OWN RISK!" name="VPLL Mode" action="generic01 /sys/module/mali/parameters/mali_use_vpll" label="VPLL Mode"/>
+		<checkbox description="Enabling VPLL mode may be unstable on some devices so do not complain if your device lags or crashes (SOD). If you do not use VPLL Mode, the following frequency steps will be unavailable: 330, 440, 520. VPLL is a new freqeuency range to give some users more GPU performance. USE AT YOUR OWN RISK!" name="VPLL Mode" action="generic01 /sys/module/mali/parameters/mali_use_vpll" label="VPLL Mode"/>
 
 		<seekBar description="Here you can change GPU utilization timeout calculation. Closer to 100 (0.1sec) and you will get faster GPU response in steps jump on load, but more battery is drained. CM10 default: 1000 (1sec)" name="GPU Utilization Timeout" action="generic /sys/module/mali/parameters/mali_gpu_utilization_timeout" unit="MSec" min="100" reversed="false" step="50" max="1000"/>
 
@@ -493,7 +493,7 @@
 
 	</settingsPane>
 
-	<settingsPane description="GPU Voltage Levels: The defaults are 950, 950, 950, 1000 and 1050. WARNING! Voltage above 1300 mV can put your device to risk! Do not blame me if GPU chip burned." name="GPU Voltage Levels">
+	<settingsPane description="GPU Voltage Levels: The defaults are 950mV, 950mV, 1000mV, 1050mV and 1050mV. WARNING! Voltage above 1300 mV can put your device to risk! Do not blame me if GPU chip burned." name="GPU Voltage Levels">
 
 		<seekBar description="GPU Voltage for the first step" name="GPU Voltage Level 1" action="gpu-voltage 1" unit="mV" min="800" reversed="false" step="50" max="1300"/>
 
@@ -543,7 +543,7 @@
 
 	</settingsPane>
 
-	<settingsPane description="Other Settings" name="Other Settings">
+	<settingsPane description="MDNIE stands for Mobile Digital Natural Image Engine and is basically a layer of the display driver. It takes care about brightness, sharpness, contrast etc. - so basically all aspects of the display." name="Brightness Curve">
 
 		<checkbox description="Enable or Disable stweaks to override ROMs MDNIE settings. If enabled, the MDNIE settings below will be applied to the ROM. If your settings don't apply, re-enable this toggle and change the settings again!" name="MDNIE Override" action="generic_cortex /tmp/mdnie_override" label="MDNIE Override"/>
 
@@ -555,13 +555,17 @@
 		</spinner>
 
 		<spinner description="MDNIE scenario. Setting this option allows you to select from a few predefined MDNIE scenarios via their values between 0 and 7. Depending on kernel, rom and platform, different values are being supported and also their meaning is different. Affects colours and contrast. (Default: UI_MODE)" name="MDNIE scenario" action="mdnie_scenario">
-			<spinnerItem name="UI_MODE" value="ui"/> 
-			<spinnerItem name="VIDEO_MODE" value="video"/> 
-			<spinnerItem name="CAMERA_MODE" value="camera"/> 
-			<spinnerItem name="NAVI_MODE" value="navi"/> 
-			<spinnerItem name="GALLARY_MODE" value="gallary"/> 
-			<spinnerItem name="VT_MODE" value="vt"/> 
+			<spinnerItem name="UI" value="ui"/> 
+			<spinnerItem name="VIDEO" value="video"/> 
+			<spinnerItem name="CAMERA" value="camera"/> 
+			<spinnerItem name="NAVI" value="navi"/> 
+			<spinnerItem name="GALLARY" value="gallary"/> 
+			<spinnerItem name="VT" value="vt"/> 
 		</spinner>
+
+	</settingsPane>
+
+	<settingsPane description="Other Settings" name="Other Settings">
 
 		<seekBar description="User adjustable gamma shift. (Default: 0)" name="Gamma shift" action="generic /sys/class/lcd/panel/user_gamma_adjust" unit="" min="-50" reversed="false" step="5" max="50"/>
 
@@ -592,28 +596,28 @@
 
 		<button description="Click to see your touch screen type and active touch configuration, it is can be TSP MX224 or MX224E, so if you want to configure, do it for your type." name="Check Touch Screen info" action="push-actions/screen_type_check" label="Check Touch Screen"/>
 
-		<seekBar description="MX224 Touchscreen on BATTERY (Touch Threshold) (Default: 50)" name="BATT Touch Treshold" action="touch_screen_tweak 1" unit="" min="30" reversed="false" step="1" max="70"/>
+		<seekBar description="MX224 Touchscreen on BATTERY (Touch Threshold) (Default: 40)" name="BATT Touch Treshold" action="touch_screen_tweak 1" unit="" min="30" reversed="false" step="1" max="70"/>
 
 		<seekBar description="MX224 Touchscreen on BATTERY (Noise Threshold) (Default: 40)" name="BATT Noise Treshold" action="touch_screen_tweak 2" unit="" min="20" reversed="false" step="1" max="70"/>
 
 		<seekBar description="MX224 Touchscreen on BATTERY (Move Filter) (Default: 12)" name="BATT Move Filter" action="touch_screen_tweak 3" unit="" min="2" reversed="false" step="1" max="30"/>
 
-		<seekBar description="MX224 Touchscreen on CHARGER or USB (Touch Threshold) (Default: 53)" name="CHRG Touch Treshold" action="touch_screen_tweak 4" unit="" min="30" reversed="false" step="1" max="70"/>
+		<seekBar description="MX224 Touchscreen on CHARGER or USB (Touch Threshold) (Default: 48)" name="CHRG Touch Treshold" action="touch_screen_tweak 4" unit="" min="30" reversed="false" step="1" max="70"/>
 
-		<seekBar description="MX224 Touchscreen on CHARGER or USB (Noise Threshold) (Default: 38)" name="CHRG Noise Treshold" action="touch_screen_tweak 5" unit="" min="20" reversed="false" step="1" max="60"/>
+		<seekBar description="MX224 Touchscreen on CHARGER or USB (Noise Threshold) (Default: 40)" name="CHRG Noise Treshold" action="touch_screen_tweak 5" unit="" min="20" reversed="false" step="1" max="60"/>
 
-		<seekBar description="MX224 Touchscreen on CHARGER or USB (Move Filter) (Default: 47)" name="CHRG Move Filter" action="touch_screen_tweak 6" unit="" min="20" reversed="false" step="1" max="60"/>
+		<seekBar description="MX224 Touchscreen on CHARGER or USB (Move Filter) (Default: 44)" name="CHRG Move Filter" action="touch_screen_tweak 6" unit="" min="20" reversed="false" step="1" max="60"/>
 	</settingsPane>
 
 	<settingsPane description="Touch Screen configuration for TSP MX224E only! all the warnings and info above, effect here the same" name="Touch screen MX224E sensitivity">
 
-		<seekBar description="MX224E Touchscreen on BATTERY (Touch Threshold_e) (Default: 50)" name="BATT Touch Treshold E" action="touch_screen_tweak 7" unit="" min="30" reversed="false" step="1" max="70"/>
+		<seekBar description="MX224E Touchscreen on BATTERY (Touch Threshold_e) (Default: 40)" name="BATT Touch Treshold E" action="touch_screen_tweak 7" unit="" min="30" reversed="false" step="1" max="70"/>
 
 		<seekBar description="MX224E Touchscreen on BATTERY (Move Filter_e) (Default: 12)" name="BATT Move Filter E" action="touch_screen_tweak 8" unit="" min="5" reversed="false" step="1" max="25"/>
 
-		<seekBar description="MX224E Touchscreen on CHARGER or USB (Touch Threshold_e) (Default: 42)" name="CHRG Touch Treshold E" action="touch_screen_tweak 9" unit="" min="27" reversed="false" step="1" max="60"/>
+		<seekBar description="MX224E Touchscreen on CHARGER or USB (Touch Threshold_e) (Default: 48)" name="CHRG Touch Treshold E" action="touch_screen_tweak 9" unit="" min="27" reversed="false" step="1" max="60"/>
 
-		<seekBar description="MX224E Touchscreen on CHARGER or USB (Move Filter_e) (Default: 47)" name="CHRG Move Filter E" action="touch_screen_tweak 10" unit="" min="20" reversed="false" step="1" max="60"/>
+		<seekBar description="MX224E Touchscreen on CHARGER or USB (Move Filter_e) (Default: 44)" name="CHRG Move Filter E" action="touch_screen_tweak 10" unit="" min="20" reversed="false" step="1" max="60"/>
 
 	</settingsPane>
 
@@ -821,7 +825,8 @@
 		<button description="Click here to start applications Database Optimization. Compacting, cleaning and indexing will take max 2min." name="DB OPTIMIZATION" action="push-actions/database_optimizing" label="DATABASE OPTIMIZATON"/>
 
 	</settingsPane>
-<settingsPane description="Show Storage status, you can see if you have errors in system, data, cache, efs or preloaded partitions, this will only SHOW if all OK, or there are errors! will not fix them. (clean=no errors)" name="Partitions Scan">
+
+	<settingsPane description="Show Storage status, you can see if you have errors in system, data, cache, efs or preloaded partitions, this will only SHOW if all OK, or there are errors! will not fix them. (clean = no errors)" name="Partitions Scan">
 
 		<button description="Use this to check your data, system, cache, efs, and preloaded partitions for errors. This will not FIX any errors, just check! To fix, backup your files with some backups app, then push the data and cache fix button. USE IT AT YOUR OWN RISK! Some data may be lost! You will need to restore broken apps + data, in case of boot loop, then reinstall ROM. If you are still stuck on boot, wipe and install the ROM again! It is BETTER to have a clean partition then broken and unstable system." name="Partition Status" action="push-actions/partitions_scan" label="Partition Status"/>
 
@@ -837,9 +842,9 @@
 
 	</settingsPane>
 
-	<settingsPane description="Root tools. Check if you have root and enable or disable auto root on reboot" name="Root">
+	<settingsPane description="Root tools. Check if you have root and enable or disable auto root on reboot." name="Root">
 
-		<button description="Root check. Click to see if you have ROOT or not" name="ROOT Check" action="push-actions/root_check" label="ROOT CHECK"/>		
+		<button description="Root check. Press button to see if you have ROOT or not." name="ROOT Check" action="push-actions/root_check" label="ROOT CHECK"/>		
 
 		<checkbox description="If box is checked, root will be installed on the next restart." name="Auto-Install Root" action="generic_cortex /tmp/install_root" label="Auto-Install Root"/>
 
