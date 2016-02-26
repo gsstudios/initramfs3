@@ -301,16 +301,16 @@
 
 <settingsTab name="HOTPLUG">
 
-	<settingsPane description="Here you can manage hotplugging settings. !!! Depends on CortexBrain-Background-Process and CortexBrain-CPU-Tweaks!!!" name="Hotplug tuning">
+	<settingsPane description="Here you can manage hotplug settings. !!! Depends on CortexBrain-Background-Process and CortexBrain-CPU-Tweaks!!!" name="Hotplug tuning">
 
-		<spinner description="CPU Governor Hot plugging Configuration. If this options is set to Disabled, Second core will always be OFF or ON. If set to Enabled Auto, cortex will choose the best hotplug code for active GOV, or you can force using Alucard HotPlug code, or Intelli HotPlug code, best leave it AUTO (Default: Enabled Auto)" name="hotplug_enable" action="generic_cortex /tmp/hotplug_enable">
+		<spinner description="CPU Governor Hotplug Configuration. If this options is set to Disabled, second core will always be ON. If set to Enabled Auto, cortex will choose the best hotplug code for active governor, or you can force using Alucard HotPlug code, or Intelli HotPlug code, best leave it AUTO (Default: Enabled Auto)" name="hotplug_enable" action="generic_cortex /tmp/hotplug_enable">
 			<spinnerItem name="Disabled" value="0"/> 
 			<spinnerItem name="Enabled Auto" value="1"/> 
 			<spinnerItem name="Alucard HotPlug" value="2"/> 
 			<spinnerItem name="Intelli HotPlug" value="3"/> 
 		</spinner>
 
-		<button description="Use this button to push all new changes to GOV core in real time! The sleep tuning will be auto added on screen off. You must press this button otherwise all changes to hotplugging will be ignored." name="Hotplug Policy Install" action="push-actions/cpu_tuning_update" label="Push Hotplugging Tuning"/>
+		<button description="Use this button to apply hotplug changes. Sleep tuning will be automatically added on screen off. You must press this button otherwise all changes to hotplug variables will be ignored." name="Apply hotplug changes" action="push-actions/cpu_tuning_update" label="Push Hotplug Tuning"/>
 
 	</settingsPane>
 
@@ -353,7 +353,7 @@
 
 	<settingsPane description="Here you can tune IO settings managed by Kernel" name="IO Tuning">
 
-		<spinner description="Maximum number of kilobytes to read-ahead for external SDCARD! Works only if IO-Tweaks tweak is enabled! (Default: 128 kB) !!! Depends on CortexBrain-Background-Process !!!" name="kilobytes to read-ahead" action="generic_cortex /tmp/cortexbrain_read_ahead_kb">
+		<spinner description="Kilobytes to read-ahead for external SDCARD! Works only if IO-Tweaks is enabled! (Default: AUTO) It is best to leave it on AUTO, otherwise 128 kB is generally for most devices.  !!! Depends on CortexBrain-Background-Process !!!" name="kilobytes to read-ahead" action="generic_cortex /tmp/cortexbrain_read_ahead_kb">
 			<spinnerItem name="AUTO" value="0"/> 
 			<spinnerItem name="128 kB" value="128"/> 
 			<spinnerItem name="256 kB" value="256"/> 
@@ -413,7 +413,7 @@
 			<spinnerItem name="exterminate" value="exterminate"/> 
 		</spinner>
 
-		<spinner description="Here you can set the low memory reserve ratio, higher ratio give you more free RAM if you see that your free RAM is always loaded and device LAG, but it's also uses more battery to gain more free RAM with loaded system. (Default: Default)" name="Low Memory Reserve" action="lowmem_reserve">
+		<spinner description="Here you can set the low memory reserve ratio, higher ratio give you more free RAM if you see that your free RAM is always loaded and device LAG, but it's also uses more battery to gain more free RAM with loaded system. (Default: default)" name="Low Memory Reserve" action="lowmem_reserve">
 			<spinnerItem name="default" value="default"/> 
 			<spinnerItem name="boosted" value="boosted"/> 
 			<spinnerItem name="high pressure" value="high_pressure"/> 
