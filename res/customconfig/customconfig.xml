@@ -3,9 +3,9 @@
 
 	<settingsPane description="CPU Frequency Booster Control. Here you can set boost CPU frequency, after boot done, boot boost frequency will be restored to active profile settings." name="Boost CPU Frequency">
 
-		<seekBar description="Boot booster frequency. CPU will hold single frequency when ROM booting. All limits have been made for your own safety!!! (default 1200000 kHz)" name="Boot CPU Frequency" action="generic_cortex /tmp/boot_boost" unit="kHz" min="1000000" reversed="false" step="100000" max="1400000"/>
+		<seekBar description="Boot booster frequency. CPU will hold a single frequency when booting ROM, which can be increased to speed up the boot process. If you find that you are stuck on boot, you will need to reset your stweaks profile in the recovery. All limits have been made to prevent SODs!!! (default 1200000 kHz)" name="Boot CPU Frequency" action="generic_cortex /tmp/boot_boost" unit="kHz" min="1000000" reversed="false" step="100000" max="1400000"/>
 
-		<seekBar description="CPU Boost frequency tuning. Each time there is a spike load, CPU Governors: Hyper, Ondemand, Pegasusq, Neox, will be boosted with instant frequency boost to finish the jobs. this setting depends on max CPU frequency! you can't set 1500Mhz here and set 1200Mhz MAX below! govs will obey max frequency" name="Boost CPU Frequency" action="generic_cortex /tmp/boostfreq" unit="kHz" min="500000" reversed="false" step="100000" max="1600000"/>
+		<seekBar description="CPU Boost frequency tuning. Each time there is a spike load, CPU Governors: Hyper, Ondemand, Pegasusq, Neox, will be boosted with instant frequency boost to finish the jobs. This setting depends on max CPU frequency! You can't set 1500Mhz here and set 1200Mhz MAX below! Governors will obey max frequency" name="Boost CPU Frequency" action="generic_cortex /tmp/boostfreq" unit="kHz" min="500000" reversed="false" step="100000" max="1600000"/>
 
 		<seekBar description="Here you can change Cortex Wakeup Boost. It will give you full CPU power but only for the set time. After that time, all is set back to normal. !!! Depends on CortexBrain-Background-Process !!!. When the value is -1, frequency changing is completely deactivated !." name="Cortex Wakeup Boost" action="generic_cortex /tmp/wakeup_boost" unit="Sec" min="-1" reversed="false" step="1" max="15"/>
 
@@ -52,7 +52,7 @@
 
 		<seekBar description="This is for CPU BUS-FREQ UP-FREQ-Scaling on sleep, based on CPU load. It sets the the load threshold on which BUS frequency will rise. (Default sleep: 30%)" name="busfreq_up_threshold_sleep" action="generic_cortex /tmp/busfreq_up_threshold_sleep" unit="%" min="23" reversed="false" step="1" max="90"/>
 
-		<seekBar description="Maximum DEEP SLEEP CPU speed. Samsung default value is 800000kHz. Setting this too low will stuck your device!" name="scaling_max_suspend_freq" action="genericfreq /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_suspend_freq" unit="kHz" min="100000" reversed="false" step="100000" max="1000000"/>
+		<seekBar description="Maximum DEEP SLEEP CPU speed. Samsung default value is 800000kHz. Setting the maximum deep sleep frequency too low will make your device very slow to wake up and will cause freezing!" name="scaling_max_suspend_freq" action="genericfreq /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_suspend_freq" unit="kHz" min="100000" reversed="false" step="100000" max="1000000"/>
 
 		<seekBar description="Minimum DEEP SLEEP CPU speed. (Default: 200000 kHz)" name="scaling_min_suspend_freq" action="genericfreq /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_suspend_freq" unit="kHz" min="100000" reversed="false" step="100000" max="1000000"/>
 
@@ -112,7 +112,7 @@
 
 	<settingsPane description="Here you can manage advanced CPU governor settings. These settings are active only if the screen is on. !!! Depends on CortexBrain-Background-Process and CortexBrain-CPU-Tweaks!!!" name="Governor Parameters tuning">
 
-		<spinner description="This will set the AWAKE (screen ON) CPU governor. CPU governors affect the frequency scaling of your CPU, where each CPU governor behaves differently. Default CPU governor will only be set during early stages of booting (before init.d execution), and can be overridden by any other scripts or applications. Use Ondemand for the best stability. If you are not sure what to set here, leave this to the defaults." name="Default CPU Governor" action="generic /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor">
+		<spinner description="This will set the AWAKE (screen ON) CPU governor. If you are not sure what to set here, leave this to the defaults." name="Default CPU Governor" action="generic /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor">
 			<spinnerItem name="conservative" value="conservative"/> 
 			<spinnerItem name="darkness" value="darkness"/> 
 			<spinnerItem name="HYPER" value="HYPER"/> 
@@ -151,7 +151,7 @@
 
 	</settingsPane>
 
-	<settingsPane description="Nightmare and Darkness Gov Configuration" name="NIGHTMARE | DARKNESS GOV CONFIGURATON">
+	<settingsPane description="Nightmare and Darkness Governor Configuration" name="NIGHTMARE | DARKNESS GOV CONFIGURATON">
 
 		<seekBar description="This threshold is used as up threshold while sampling at frequencies less than freq_for_responsiveness. Above that, normal inc_cpu_load is used. This gives us an option to make scaling aggressive/relaxed until a frequency and normal for higher frequencies. (Only for Nightmare). (Default: 10%)" name="inc_cpu_load_at_min_freq" action="generic_cortex /tmp/inc_cpu_load_at_min_freq" unit="%" min="1" reversed="false" step="1" max="100"/>
 
@@ -184,7 +184,7 @@
 
 	</settingsPane>
 
-	<settingsPane description="ZZMOOVE Gov Configuration. The variables below only work if profile has been set to Tunable mode! Otherwise the in-built zzmoove profiles will override all values!" name="ZZMOOVE GOV CONFIGURATON">
+	<settingsPane description="ZZMOOVE Governor Configuration. The variables below only work if profile has been set to Tunable mode! Otherwise the in-built zzmoove profiles will override all values!" name="ZZMOOVE GOV CONFIGURATON">
 
 		<spinner description="Switch zzmoove profiles (Default: Tunable mode)" name="profile_number" action="generic_cortex /tmp/profile_number">
 			<spinnerItem name="Tunable mode" value="0"/> 
@@ -236,7 +236,7 @@
 
 	<settingsPane description="Here you can manage advanced CPU governor settings. These settings are only active when the screen is off. !!! Depends on CortexBrain-Background-Process and CortexBrain-CPU-Tweaks!!!" name="Governor Parameters tuning">
 
-		<spinner description="This will set the DEEP SLEEP (screen off) CPU governor." name="Deep-Sleep! CPU Governor" action="generic_cortex /tmp/scaling_governor_sleep">
+		<spinner description="This will set the DEEP SLEEP (screen off) CPU governor. If you are not sure what to set here, leave this to the defaults." name="Deep-Sleep! CPU Governor" action="generic_cortex /tmp/scaling_governor_sleep">
 			<spinnerItem name="conservative" value="conservative"/> 
 			<spinnerItem name="darkness" value="darkness"/> 
 			<spinnerItem name="HYPER" value="HYPER"/> 
@@ -251,7 +251,7 @@
 
 	</settingsPane>
 
-	<settingsPane description="Global Govs Configuration, see descriptions" name="GLOBAL GOV CONFIGURATON">
+	<settingsPane description="Global Governor Configuration" name="GLOBAL GOV CONFIGURATON">
 
 		<seekBar description="Measured as percentage, when load on CPU is equal to above up threshold, CPU is scaled Up. Lower value - early scale up, and vice-verse. (Only for HYPER, Ondemand, intellidemand, PegasusQ, Conservative, Sleepy, zzmoove) (Default: 75%)" name="up_threshold_sleep" action="generic_cortex /tmp/up_threshold_sleep" unit="%" min="1" reversed="false" step="1" max="100"/>
 
@@ -271,7 +271,7 @@
 
 	</settingsPane>
 
-	<settingsPane description="Nightmare and Darkness Gov Configuration, see descriptions" name="NIGHTMARE | DARKNESS GOV CONFIGURATON">
+	<settingsPane description="Nightmare and Darkness Governor Configuration" name="NIGHTMARE | DARKNESS GOV CONFIGURATON">
 
 		<seekBar description="This threshold is used as up threshold while sampling at frequencies less than freq_for_responsiveness. Above that, normal inc_cpu_load is used. This gives us an option to make scaling aggressive/relaxed until a frequency and normal for higher frequencies. (Only for Nightmare). (Default: 60%)" name="inc_cpu_load_at_min_freq_sleep" action="generic_cortex /tmp/inc_cpu_load_at_min_freq_sleep" unit="%" min="1" reversed="false" step="1" max="100"/>
 
@@ -303,7 +303,7 @@
 
 	<settingsPane description="Here you can manage hotplug settings. !!! Depends on CortexBrain-Background-Process and CortexBrain-CPU-Tweaks!!!" name="Hotplug tuning">
 
-		<spinner description="CPU Governor Hotplug Configuration. If this options is set to Disabled, second core will always be ON. If set to Enabled Auto, cortex will choose the best hotplug code for active governor, or you can force using Alucard HotPlug code, or Intelli HotPlug code, best leave it AUTO (Default: Enabled Auto)" name="hotplug_enable" action="generic_cortex /tmp/hotplug_enable">
+		<spinner description="CPU Governor Hotplug Configuration. If this options is set to Disabled, second core will always be ON. If set to Enabled Auto, cortex will choose the best hotplug code for active governor, or you can force using Alucard HotPlug code, or Intelli HotPlug code. Best leave it AUTO (Default: Enabled Auto)" name="hotplug_enable" action="generic_cortex /tmp/hotplug_enable">
 			<spinnerItem name="Disabled" value="0"/> 
 			<spinnerItem name="Enabled Auto" value="1"/> 
 			<spinnerItem name="Alucard HotPlug" value="2"/> 
@@ -353,7 +353,7 @@
 
 	<settingsPane description="Here you can tune IO settings managed by Kernel" name="IO Tuning">
 
-		<spinner description="Kilobytes to read-ahead for external SDCARD! Works only if IO-Tweaks is enabled! (Default: AUTO) It is best to leave it on AUTO, otherwise 128 kB is generally for most devices.  !!! Depends on CortexBrain-Background-Process !!!" name="kilobytes to read-ahead" action="generic_cortex /tmp/cortexbrain_read_ahead_kb">
+		<spinner description="Kilobytes to read-ahead for external SDCARD! Works only if IO-Tweaks is enabled! (Default: AUTO) It is best to leave it on AUTO as the kernel will automatically select best read-ahead value for your external SDCARD. !!! Depends on CortexBrain-Background-Process !!!" name="kilobytes to read-ahead" action="generic_cortex /tmp/cortexbrain_read_ahead_kb">
 			<spinnerItem name="AUTO" value="0"/> 
 			<spinnerItem name="128 kB" value="128"/> 
 			<spinnerItem name="256 kB" value="256"/> 
@@ -445,7 +445,7 @@
 
 		<checkbox description="Enabling VPLL mode may be unstable on some devices so do not complain if your device lags or crashes (SOD). If you do not use VPLL Mode, the following frequency steps will be unavailable: 330, 440, 520. VPLL is a new freqeuency range to give some users more GPU performance. USE AT YOUR OWN RISK!" name="VPLL Mode" action="generic01 /sys/module/mali/parameters/mali_use_vpll" label="VPLL Mode"/>
 
-		<seekBar description="Here you can change GPU utilization timeout calculation. Closer to 100 (0.1sec) and you will get faster GPU response in steps jump on load, but more battery is drained. CM10 default: 1000 (1sec)" name="GPU Utilization Timeout" action="generic /sys/module/mali/parameters/mali_gpu_utilization_timeout" unit="MSec" min="100" reversed="false" step="50" max="1000"/>
+		<seekBar description="Here you can change GPU utilization timeout calculation. Closer to 100ms (0.1sec) and you will get faster GPU response in steps jump on load, but more battery is drained. (Default: 400ms)" name="GPU Utilization Timeout" action="generic /sys/module/mali/parameters/mali_gpu_utilization_timeout" unit="MSec" min="100" reversed="false" step="50" max="1000"/>
 
 		<spinner description="Changes the first (lowest) GPU frequency step" name="GPU Frequency Step 1" action="gpu-freq 1">
 			<spinnerItem name="267 MHz" value="267"/> 
@@ -827,13 +827,13 @@
 
 	<settingsPane description="Show Storage status, you can see if you have errors in system, data, cache, efs or preloaded partitions, this will only SHOW if all OK, or there are errors! will not fix them. (clean = no errors)" name="Partitions Scan">
 
-		<button description="Use this to check your data, system, cache, efs, and preloaded partitions for errors. This will not FIX any errors, just check! To fix, backup your files with some backups app, then push the data and cache fix button. USE IT AT YOUR OWN RISK! Some data may be lost! You will need to restore broken apps + data, in case of boot loop, then reinstall ROM. If you are still stuck on boot, wipe and install the ROM again! It is BETTER to have a clean partition then broken and unstable system." name="Partition Status" action="push-actions/partitions_scan" label="Partition Status"/>
+		<button description="Use this to check your data, system, cache, efs, and preloaded partitions for errors. This will not FIX any errors, just check! To fix, backup your files with some backups app, then push the data and cache fix button. It is BETTER to have a clean partition then broken and unstable system." name="Partition Status" action="push-actions/partitions_scan" label="Partition Status"/>
 
 	</settingsPane>
 
 	<settingsPane description="Fixes file system only if needed!" name="FS">
 
-		<button description="DATA, SYSTEM and CACHE file system check and repair on boot. !WARNING! This is a VERY DANGEROUS option! Before activating it DO A FULL BACKUP with Titanium Backup or any kind of backup application! If you have lots of damage in your DATA partition, after fix and repair, ROM may NOT BOOT anymore! In that case reinstall ROM, and if you still cannot boot, you will have to format DATA file system via recovery! USE IT AT YOUR OWN RISK! THIS FUNCTION IS NOT A TOY! YOU HAVE BEEN WARNED! This function works only for main ROM and Preload partition! Also can be used for the second ROM system partition. Second ROM data gets no effect, and by default function is OFF. It is also one time action, push the button to Activate, push again to Abort!" name="FIX File System on BOOT" action="push-actions/fix_fs_on_boot" label="FIX DATA ON or OFF"/>
+		<button description="DATA, SYSTEM and CACHE file system check and repair on boot. !WARNING! This is a VERY DANGEROUS option! Before activating it DO A FULL BACKUP with Titanium Backup or any kind of backup application! If you have lots of damage in your DATA partition, after fix and repair, ROM may NOT BOOT anymore! In that case reinstall ROM, and if you still cannot boot, you will have to format DATA file system via recovery! USE IT AT YOUR OWN RISK! THIS FUNCTION IS NOT A TOY! YOU HAVE BEEN WARNED! This function works only for main ROM and Preload partition! Also can be used for the second ROM system partition. Second ROM data gets no effect, and by default function is OFF. It is also one a time action, push the button to activate, push again to Abort!" name="FIX File System on BOOT" action="push-actions/fix_fs_on_boot" label="FIX DATA ON or OFF"/>
 
 		<checkbox description="Check and repair file system on every boot by auto. See the WARNING ABOVE! DO FULL BACKUP! this is the same thing! just every boot! if all clean then should be OK, Doesn't clean dalvik-cache" name="Check and repair file system on every boot" action="fix_fs_on_boot_auto" label="Check and repair file system on every boot"/>
 
@@ -902,7 +902,7 @@
 
 		<checkbox description="Enable or Disable Eco-Tweaks. !!! Depends on CortexBrain-Background-Process !!!" name="Eco-Tweaks" action="generic_cortex /tmp/cortexbrain_eco" label="Eco-Tweaks"/>
 
-		<spinner description="From what percentage battery life, the eco-mode is activated? !!! Depends on CortexBrain-Eco-Tweaks !!!" name="Eco-Level" action="generic_cortex /tmp/cortexbrain_eco_level">
+		<spinner description="Set the threshold percentage battery life when you want eco-mode is activated. Only for Intelliplug. !!! Depends on CortexBrain-Eco-Tweaks !!!" name="Eco-Level" action="generic_cortex /tmp/cortexbrain_eco_level">
 			<spinnerItem name="2%" value="2"/> 
 			<spinnerItem name="5%" value="5"/> 
 			<spinnerItem name="10%" value="10"/> 
