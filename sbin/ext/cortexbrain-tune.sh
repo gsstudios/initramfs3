@@ -672,11 +672,6 @@ CPU_GOV_TWEAKS()
 			echo "$sampling_down_factor" > "$sampling_down_factor_tmp";
 			echo "$down_differential" > "$down_differential_tmp";
 			echo "$freq_step_at_min_freq" > "$freq_step_at_min_freq_tmp";
-			if [ "$SYSTEM_GOVERNOR" == "zzmoove" ]; then
-				echo "5" > "$freq_step_tmp";
-			else
-				echo "$freq_step" > "$freq_step_tmp";
-			fi;
 			echo "$freq_step_dec" > "$freq_step_dec_tmp";
 			echo "$freq_step_dec_at_max_freq" > "$freq_step_dec_at_max_freq_tmp";
 			echo "$freq_for_responsiveness" > "$freq_for_responsiveness_tmp";
