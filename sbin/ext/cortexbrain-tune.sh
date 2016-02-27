@@ -671,6 +671,7 @@ CPU_GOV_TWEAKS()
 			echo "$sampling_up_factor" > "$sampling_up_factor_tmp";
 			echo "$sampling_down_factor" > "$sampling_down_factor_tmp";
 			echo "$down_differential" > "$down_differential_tmp";
+			echo "$freq_step" > "$freq_step_tmp";
 			echo "$freq_step_at_min_freq" > "$freq_step_at_min_freq_tmp";
 			echo "$freq_step_dec" > "$freq_step_dec_tmp";
 			echo "$freq_step_dec_at_max_freq" > "$freq_step_dec_at_max_freq_tmp";
