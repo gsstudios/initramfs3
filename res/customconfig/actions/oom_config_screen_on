@@ -20,11 +20,11 @@ if [ "$AUTO_OOM" -eq "1" ]; then
 			echo "48" > /sys/module/lowmemorykiller/parameters/cost;
 		;;
 		medium)
-			echo "12288,15360,18432,21504,31744,34816" > /sys/module/lowmemorykiller/parameters/minfree;
+			echo "12288,15360,18432,21504,24576,30720" > /sys/module/lowmemorykiller/parameters/minfree;
 			echo "32" > /sys/module/lowmemorykiller/parameters/cost;
 		;;
 		default)
-			echo "15360,19200,23040,26880,34415,43737" > /sys/module/lowmemorykiller/parameters/minfree;
+			echo "12288,15360,18432,21504,24576,30720" > /sys/module/lowmemorykiller/parameters/minfree;
 			echo "32" > /sys/module/lowmemorykiller/parameters/cost;
 		;;
 		aggressive)
