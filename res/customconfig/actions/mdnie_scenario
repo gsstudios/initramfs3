@@ -1,0 +1,40 @@
+#!/sbin/busybox sh
+
+# $1 - "mdnie_scenario"
+# $2 - value=
+
+if [ "a$2" == "a" ]; then
+	echo $mdnie_scenario;
+else
+	mdnie_scenario=$2;
+	echo "$mdnie_scenario";
+fi;
+
+PROFILE=`cat /data/.siyah/.active.profile`;
+MDNIE_OVERRIDE=`cat /data/.siyah/${PROFILE}.profile | grep mdnie_override=on | wc -l`
+
+if [ "$MDNIE_OVERRIDE" -eq "1" ]; then
+	case "${mdnie_scenario}" in
+		ui)
+			echo "0" > /sys/devices/platform/samsung-pd.2/mdnie/mdnie/mdnie/scenario;
+		;;
+		video)
+			echo "1" > /sys/devices/platform/samsung-pd.2/mdnie/mdnie/mdnie/scenario;
+		;;
+		camera)
+			echo "4" > /sys/devices/platform/samsung-pd.2/mdnie/mdnie/mdnie/scenario;
+		;;
+		navi)
+			echo "5" > /sys/devices/platform/samsung-pd.2/mdnie/mdnie/mdnie/scenario;
+		;;
+		gallary)
+			echo "6" > /sys/devices/platform/samsung-pd.2/mdnie/mdnie/mdnie/scenario;
+		;;
+		vt)
+			echo "7" > /sys/devices/platform/samsung-pd.2/mdnie/mdnie/mdnie/scenario;
+		;;
+		*)
+			mdnie_scenario=ui;
+		;;
+	esac;
+fi;

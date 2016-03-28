@@ -205,8 +205,8 @@
 
 	<settingsPane description="ZZMOOVE Gov Configuration, see descriptions" name="ZZMOOVE GOV CONFIGURATON">
 
-		<spinner description="Switch zzmoove profiles (Default: Default)" name="profile_number" action="generic_cortex /tmp/profile_number">
-			<spinnerItem name="No profile (tunable mode)" value="0"/> 
+		<spinner description="Switch zzmoove profiles (Default: Tunable mode)" name="profile_number" action="generic_cortex /tmp/profile_number">
+			<spinnerItem name="Tunable mode" value="0"/> 
 			<spinnerItem name="Default" value="1"/> 
 			<spinnerItem name="Yank Battery" value="2"/> 
 			<spinnerItem name="Yank Battery Extreme" value="3"/> 
@@ -350,7 +350,7 @@
 			<spinnerItem name="DEADLINE" value="deadline"/> 
 			<spinnerItem name="NOOP" value="noop"/> 
 			<spinnerItem name="ROW" value="row"/> 
-			<spinnerItem name="SIO" value="sio"/> 
+			<spinnerItem name="SIOPLUS" value="sioplus"/> 
 			<spinnerItem name="ZEN" value="zen"/>  
 			<spinnerItem name="FIOPS" value="fiops"/> 
 			<spinnerItem name="TRIPNDROID" value="tripndroid"/> 
@@ -362,7 +362,7 @@
 			<spinnerItem name="DEADLINE" value="deadline"/> 
 			<spinnerItem name="NOOP" value="noop"/> 
 			<spinnerItem name="ROW" value="row"/> 
-			<spinnerItem name="SIO" value="sio"/> 
+			<spinnerItem name="SIOPLUS" value="sioplus"/> 
 			<spinnerItem name="ZEN" value="zen"/>  
 			<spinnerItem name="FIOPS" value="fiops"/> 
 			<spinnerItem name="TRIPNDROID" value="tripndroid"/> 
@@ -525,6 +525,24 @@
 	</settingsPane>
 
 	<settingsPane description="Other Settings" name="Other Settings">
+
+		<checkbox description="Enable or Disable stweaks to override ROMs MDNIE settings. If enabled, the MDNIE settings below will be applied to the ROM." name="MDNIE Override" action="generic_cortex /tmp/mdnie_override" label="MDNIE Override"/>
+
+		<spinner description="MDNIE mode. Setting this option allows you to select from a few predefined MDNIE modes via their values between 0 and 3. Depending on kernel, rom and platform, different values are being supported and also their meaning is different. Affects colours and contrast. (Default: Dynamic)" name="MDNIE mode" action="mdnie_mode">
+			<spinnerItem name="Dynamic" value="dynamic"/> 
+			<spinnerItem name="Standard" value="standard"/> 
+			<spinnerItem name="Natural" value="natural"/> 
+			<spinnerItem name="Movie" value="movie"/> 
+		</spinner>
+
+		<spinner description="MDNIE scenario. Setting this option allows you to select from a few predefined MDNIE scenarios via their values between 0 and 7. Depending on kernel, rom and platform, different values are being supported and also their meaning is different. Affects colours and contrast. (Default: UI_MODE)" name="MDNIE scenario" action="mdnie_scenario">
+			<spinnerItem name="UI_MODE" value="ui"/> 
+			<spinnerItem name="VIDEO_MODE" value="video"/> 
+			<spinnerItem name="CAMERA_MODE" value="camera"/> 
+			<spinnerItem name="NAVI_MODE" value="navi"/> 
+			<spinnerItem name="GALLARY_MODE" value="gallary"/> 
+			<spinnerItem name="VT_MODE" value="vt"/> 
+		</spinner>
 
 		<checkbox description="mDNIe sharpness tweaks from hardcore. Requires reboot to be effective." name="mDNIe sharpness tweaks by GM!" action="generic01 /tmp/mdniemod" label="mDNIe Sharpness Tweaks"/>
 

@@ -1,0 +1,34 @@
+#!/sbin/busybox sh
+
+# $1 - "mdnie_mode"
+# $2 - value=
+
+if [ "a$2" == "a" ]; then
+	echo $mdnie_mode;
+else
+	mdnie_mode=$2;
+	echo "$mdnie_mode";
+fi;
+
+PROFILE=`cat /data/.siyah/.active.profile`;
+MDNIE_OVERRIDE=`cat /data/.siyah/${PROFILE}.profile | grep mdnie_override=on | wc -l`
+
+if [ "$MDNIE_OVERRIDE" -eq "1" ]; then
+	case "${mdnie_mode}" in
+		dynamic)
+			echo "0" > /sys/devices/platform/samsung-pd.2/mdnie/mdnie/mdnie/mode;
+		;;
+		standard)
+			echo "1" > /sys/devices/platform/samsung-pd.2/mdnie/mdnie/mdnie/mode;
+		;;
+		natural)
+			echo "2" > /sys/devices/platform/samsung-pd.2/mdnie/mdnie/mdnie/mode;
+		;;
+		movie)
+			echo "3" > /sys/devices/platform/samsung-pd.2/mdnie/mdnie/mdnie/mode;
+		;;
+		*)
+			mdnie_mode=dynamic;
+		;;
+	esac;
+fi;
