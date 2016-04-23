@@ -432,7 +432,7 @@
 			<spinnerItem name="Set ZRAM OFF!" value="4"/> 
 		</spinner>
 
-		<seekBar description="Control for ZRAM Swap allocation, when you set higher here, ZRAM will be used more instead of real RAM and give you more RAM! With light cost of performance (default: 50%)" name="Swappiness" action="generic /proc/sys/vm/swappiness" unit="%" min="0" reversed="false" step="1" max="100"/>
+		<seekBar description="Control for ZRAM Swap allocation, when you set higher here, ZRAM will be used more instead of real RAM and give you more RAM! With light cost of performance (default: 20%)" name="Swappiness" action="generic /proc/sys/vm/swappiness" unit="%" min="0" reversed="false" step="1" max="100"/>
 
 		<button description="ZRAM state check" name="ZRAM STATS" action="push-actions/zramstats" label="ZRAM STATS"/>
 
