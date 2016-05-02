@@ -18,7 +18,7 @@ case "${lowmem_reserve}" in
 		echo "16 16" > /proc/sys/vm/lowmem_reserve_ratio;
 	;;
 	*)
-		lowmem_reserve=default;
+		lowmem_reserve=boosted;
 	;;
 	esac;
 fi;
