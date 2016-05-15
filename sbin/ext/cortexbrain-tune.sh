@@ -301,7 +301,7 @@ CPU_HOTPLUG_TWEAKS()
 	fi;
 
 	if [ "$hotplug_enable" -eq "1" ]; then
-		if [ "$SYSTEM_GOVERNOR" == "nightmare" ] || [ "$SYSTEM_GOVERNOR" == "darkness" ] || [ "$SYSTEM_GOVERNOR" == "zzmoove" ]; then
+		if [ "$SYSTEM_GOVERNOR" == "nightmare" ] || [ "$SYSTEM_GOVERNOR" == "darkness" ]; then
 			#disable intelli_plug
 			if [ "$intelli_value_tmp" -eq "1" ]; then
 				echo "0" > $intelli_plug_active_tmp;
@@ -672,11 +672,7 @@ CPU_GOV_TWEAKS()
 			echo "$sampling_down_factor" > "$sampling_down_factor_tmp";
 			echo "$down_differential" > "$down_differential_tmp";
 			echo "$freq_step_at_min_freq" > "$freq_step_at_min_freq_tmp";
-			if [ "$SYSTEM_GOVERNOR" == "zzmoove" ]; then
-				echo "5" > "$freq_step_tmp";
-			else
-				echo "$freq_step" > "$freq_step_tmp";
-			fi;
+			echo "$freq_step" > "$freq_step_tmp";
 			echo "$freq_step_dec" > "$freq_step_dec_tmp";
 			echo "$freq_step_dec_at_max_freq" > "$freq_step_dec_at_max_freq_tmp";
 			echo "$freq_for_responsiveness" > "$freq_for_responsiveness_tmp";
@@ -724,13 +720,13 @@ fi;
 MEMORY_TWEAKS()
 {
 	if [ "$cortexbrain_memory" == "on" ]; then
-		echo "$dirty_background_ratio" > /proc/sys/vm/dirty_background_ratio; # default: 5
+		echo "$dirty_background_ratio" > /proc/sys/vm/dirty_background_ratio; # default: 15
 		echo "$dirty_ratio" > /proc/sys/vm/dirty_ratio; # default: 20
 		echo "4" > /proc/sys/vm/min_free_order_shift; # default: 4
 		echo "1" > /proc/sys/vm/overcommit_memory; # default: 1
 		echo "50" > /proc/sys/vm/overcommit_ratio; # default: 50
 		echo "3" > /proc/sys/vm/page-cluster; # default: 3
-		#echo "8192" > /proc/sys/vm/min_free_kbytes;
+		echo "8192" > /proc/sys/vm/min_free_kbytes;
 
 		log -p i -t "$FILE_NAME" "*** MEMORY_TWEAKS ***: enabled";
 
@@ -1578,6 +1574,11 @@ AWAKE_MODE()
 			log -p i -t "$FILE_NAME" "*** USB_POWER_WAKE: done ***";
 		fi;
 	fi;
+
+	if [ "$auto_oom" == "on" ]; then
+		sleep 1;
+		$BB sh /res/uci.sh oom_config_screen_on $oom_config_screen_on;
+	fi;
 }
 
 # ==============================================================
@@ -1653,6 +1654,11 @@ SLEEP_MODE()
 			log -p i -t "$FILE_NAME" "*** early wake up: SLEEP aborted! ***";
 		fi;
 	fi;
+
+	if [ "$auto_oom" == "on" ]; then
+		sleep 1;
+		$BB sh /res/uci.sh oom_config_screen_off $oom_config_screen_off;
+	fi;
 }
 
 # ==============================================================
@@ -1664,13 +1670,13 @@ cortexbrain_background_process=1;
 
 if [ "$cortexbrain_background_process" -eq "1" ] && [ "$(pgrep -f "/sbin/ext/cortexbrain-tune.sh" | wc -l)" -eq "2" ]; then
 	(while true; do
-		while [ "$(cat /proc/sys/vm/vfs_cache_pressure)" != "100" ]; do
+		while [ "$(cat /proc/sys/vm/vfs_cache_pressure)" != "60" ]; do
 			sleep "2";
 		done;
 		# AWAKE State. all system ON
 		AWAKE_MODE;
 
-		while [ "$(cat /proc/sys/vm/vfs_cache_pressure)" != "60" ]; do
+		while [ "$(cat /proc/sys/vm/vfs_cache_pressure)" != "20" ]; do
 			sleep "2";
 		done;
 		# SLEEP state. All system to power save

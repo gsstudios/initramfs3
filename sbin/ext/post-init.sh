@@ -428,9 +428,6 @@ ROOT_RW;
 	# correct touch keys light, if rom mess user configuration
 	$BB sh /res/uci.sh generic /sys/class/misc/notification/led_timeout_ms "$led_timeout_ms";
 
-	# correct oom tuning, if changed by apps/rom
-	$BB sh /res/uci.sh oom_config_screen_on "$oom_config_screen_on";
-	$BB sh /res/uci.sh oom_config_screen_off "$oom_config_screen_off";
 )&
 
 (
