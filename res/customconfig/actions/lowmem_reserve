@@ -8,9 +8,6 @@ if [ "a$2" != "a" ]; then
 	lowmem_reserve=$2;
 
 case "${lowmem_reserve}" in
-	relaxed)
-		echo "48 48" > /proc/sys/vm/lowmem_reserve_ratio;
-	;;
 	default)
 		echo "32 32" > /proc/sys/vm/lowmem_reserve_ratio;
 	;;
@@ -21,7 +18,7 @@ case "${lowmem_reserve}" in
 		echo "16 16" > /proc/sys/vm/lowmem_reserve_ratio;
 	;;
 	*)
-		lowmem_reserve=boosted;
+		lowmem_reserve=default;
 	;;
 	esac;
 fi;

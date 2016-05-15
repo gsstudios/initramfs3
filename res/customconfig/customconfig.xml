@@ -427,9 +427,9 @@
 
 		<spinner description="ZRAM Module settings. Here you can shut down ZRAM or add more compressed RAM for your system. Make sure to also set a value higher than zero for swappiness if you want to use zram." name="ZRAM Settings" action="zramtweaks">
 			<spinnerItem name="Set ZRAM to 150MB" value="1"/> 
-			<spinnerItem name="Set ZRAM to 300MB (default)" value="2"/> 
+			<spinnerItem name="Set ZRAM to 300MB" value="2"/> 
 			<spinnerItem name="Set ZRAM to 600MB" value="3"/> 
-			<spinnerItem name="Set ZRAM OFF!" value="4"/> 
+			<spinnerItem name="Set ZRAM OFF! (default)" value="4"/> 
 		</spinner>
 
 		<seekBar description="Control for ZRAM Swap allocation, when you set higher here, ZRAM will be used more instead of real RAM and give you more RAM! With light cost of performance (default: 0%)" name="Swappiness" action="generic /proc/sys/vm/swappiness" unit="%" min="0" reversed="false" step="1" max="100"/>
