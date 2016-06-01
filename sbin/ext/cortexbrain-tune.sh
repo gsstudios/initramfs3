@@ -1544,6 +1544,7 @@ AWAKE_MODE()
 			MOBILE_DATA "awake";
 			WIFI "awake";
 			IO_SCHEDULER "awake";
+			WORKQUEUE_CONTROL "awake";
 			GESTURES "awake";
 			MOUNT_SD_CARD;
 
@@ -1624,6 +1625,7 @@ SLEEP_MODE()
 			CENTRAL_CPU_FREQ "sleep_freq";
 			CPU_GOV_TWEAKS "sleep";
 			IO_SCHEDULER "sleep";
+			WORKQUEUE_CONTROL "sleep";
 			BUS_THRESHOLD "sleep";
 #			KERNEL_SCHED "sleep";
 			NET "sleep";
