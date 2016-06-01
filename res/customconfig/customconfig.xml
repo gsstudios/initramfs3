@@ -758,6 +758,13 @@
 
 	</settingsPane>	
 
+	<settingsPane description="Software CRCs help protect the integrity of data, preventing data loss after a sudden power cut. Enabling software CRCs on the data blocks can be a significant (30%) performance overhead, and for other reasons may not always be desired." name="Software CRC control">
+
+		<checkbox description="Enable or disable software CRCs. I do not recommend disabling this as you will be at risk of data loss! However for whatever you want to disable this, you can do so by unchecking this. This should only be changed if you know what you are doing! (Default: Enabled)" name="Toggle Software CRCs"  action="generic01 /sys/module/mmc_core/parameters/use_spi_crc" label="Software CRCs"/>
+
+	</settingsPane>
+
+
 	<settingsPane description="WIFI Settings" name="WIFI">
 
 		<button description="Clean WIFI DHCP IP Lease. Push the button to activate!" name="Clean WIFI Lease" action="push-actions/fix_wifi" label="Clean WIFI Lease"/>
