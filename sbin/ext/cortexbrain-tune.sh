@@ -1656,11 +1656,6 @@ SLEEP_MODE()
 			log -p i -t "$FILE_NAME" "*** early wake up: SLEEP aborted! ***";
 		fi;
 	fi;
-
-	if [ "$auto_oom" == "on" ]; then
-		sleep 1;
-		$BB sh /res/uci.sh oom_config_screen_off $oom_config_screen_off;
-	fi;
 }
 
 # ==============================================================
