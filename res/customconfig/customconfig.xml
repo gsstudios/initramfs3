@@ -729,6 +729,8 @@
 
 		<checkbox description="Cron to clear app-cache every day at 4:00AM, only if CPU is resting (IDLE)!" name="Clean app-cache" action="generic_cortex /tmp/cron_clear_app_cache" label="Disk Clean task every day at 4:00AM"/>
 
+                <checkbox description="Cron to TRIM partitions every day at 3:30AM, only if CPU is resting (IDLE)!" name="TRIM PARTITIONS" action="generic_cortex /tmp/cron_trim_partitions" label="TRIM Partitions system every day at 3:30AM"/>
+
 		<button description="Use this button to check if Cron Task Jobs are done as requested. This will show the log for all finished jobs." name="Test Cron Task jobs" action="push-actions/crontab_log" label="Test Cron Task Jobs"/>
 
 	</settingsPane>
@@ -757,6 +759,15 @@
 		</spinner>
 
 	</settingsPane>	
+
+
+	<settingsPane description="Trims your system, cache, data and preload partitions to keep your phone running smooth." name="PARTITIONS TRIMMER">
+
+                <button description="Use this to trim your DATA, SYSTEM, CACHE and PRELOAD partitions. Trimming will take max 2 to 5 mins based on your partitions sizes." name="TRIM-PARTITIONS" action="push-actions/trim_partitions" label="TRIM PARTITIONS"/>
+
+
+	</settingsPane>
+
 
 	<settingsPane description="Software CRCs help protect the integrity of data, preventing data loss after a sudden power cut. Enabling software CRCs on the data blocks can be a significant (30%) performance overhead, and for other reasons may not always be desired." name="Software CRC control">
 

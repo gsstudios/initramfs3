@@ -1,16 +1,19 @@
 #!/sbin/busybox sh
 
 if [ ! -e /data/crontab/cron-clear-file-cache ]; then
-	echo "no data" > /data/crontab/cron-clear-file-cache;
+	echo "no file cache data" > /data/crontab/cron-clear-file-cache;
 fi;
 if [ ! -e /data/crontab/cron-clear-ram-cache ]; then
-	echo "no data" > /data/crontab/cron-clear-ram-cache;
+	echo "no clear ram data" > /data/crontab/cron-clear-ram-cache;
 fi;
 if [ ! -e /data/crontab/cron-ad_block_update ]; then
-	echo "no data" > /data/crontab/cron-ad_block_update;
+	echo "no adblock data" > /data/crontab/cron-ad_block_update;
 fi;
 if [ ! -e /data/crontab/cron-db-optimizing ]; then
-	echo "no data" > /data/crontab/cron-db-optimizing;
+	echo "no db opt data" > /data/crontab/cron-db-optimizing;
+fi;
+if [ ! -e /data/crontab/cron_trim_partitions ]; then
+	echo "no trim data" > /data/crontab/cron_trim_partitions;
 fi;
 chmod 777 /data/crontab/*
 cat /data/crontab/cron-clear-file-cache > /data/crontab/cron_log;
@@ -20,6 +23,8 @@ echo "-------" >> /data/crontab/cron_log;
 cat /data/crontab/cron-clear-ram-cache >> /data/crontab/cron_log;
 echo "-------" >> /data/crontab/cron_log;
 cat /data/crontab/cron-db-optimizing >> /data/crontab/cron_log;
+echo "-------" >> /data/crontab/cron_log;
+cat /data/crontab/cron_trim_partitions >> /data/crontab/cron_log;
 
 # push all to one log.
 CRON_LOG=`cat /data/crontab/cron_log`;
