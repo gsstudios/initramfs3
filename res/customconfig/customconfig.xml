@@ -729,8 +729,6 @@
 
 		<checkbox description="Cron to clear app-cache every day at 4:00AM, only if CPU is resting (IDLE)!" name="Clean app-cache" action="generic_cortex /tmp/cron_clear_app_cache" label="Disk Clean task every day at 4:00AM"/>
 
-                <checkbox description="Cron to TRIM partitions every day at 3:30AM, only if CPU is resting (IDLE)!" name="TRIM PARTITIONS" action="generic_cortex /tmp/cron_trim_partitions" label="TRIM Partitions system every day at 3:30AM"/>
-
 		<button description="Use this button to check if Cron Task Jobs are done as requested. This will show the log for all finished jobs." name="Test Cron Task jobs" action="push-actions/crontab_log" label="Test Cron Task Jobs"/>
 
 	</settingsPane>
