@@ -112,10 +112,10 @@ if [ "$mdniemod" == "on" ]; then
 fi;
 
 # Apps and ROOT Install
-$BB sh /sbin/ext/install.sh;
+#$BB sh /sbin/ext/install.sh;
 
 # Clean /res/ from no longer needed files to free modules kernel allocated mem
-$BB rm -rf /res/misc/sql /res/images /res/misc/JellyB-* /res/misc/KitKat-CM-AOKP-* /res/misc/Lollipop-CM-AOSP-12.1 /res/misc/vendor;
+$BB rm -rf /res/misc/sql /res/images /res/misc/JellyB-* /res/misc/KitKat-CM-AOKP-* /res/misc/Lollipop-CM-AOSP-12.1 /res/misc/Marshmallow-CM-AOSP-13 /res/misc/vendor;
 
 (
 	# check cpu voltage group and report to tmp file, and set defaults for STweaks
