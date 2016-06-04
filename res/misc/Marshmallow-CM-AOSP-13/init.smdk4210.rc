@@ -383,7 +383,6 @@ service iprenew_bt-pan /system/bin/dhcpcd -n
 
 service macloader /system/bin/macloader
     class main
-    oneshot
      
 # bugreport is triggered by holding down volume down, volume up and power
 service bugreport /system/bin/dumpstate -d -p -B \
