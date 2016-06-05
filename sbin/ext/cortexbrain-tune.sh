@@ -51,7 +51,7 @@ fi;
 
 # set initial vm.dirty vales
 echo "500" > /proc/sys/vm/dirty_writeback_centisecs;
-echo "200" > /proc/sys/vm/dirty_expire_centisecs;
+echo "3000" > /proc/sys/vm/dirty_expire_centisecs;
 
 # ==============================================================
 # FILES FOR VARIABLES || we need this for write variables from child-processes to parent
