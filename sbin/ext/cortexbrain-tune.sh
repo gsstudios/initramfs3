@@ -50,8 +50,8 @@ else
 fi;
 
 # set initial vm.dirty vales
-echo "600" > /proc/sys/vm/dirty_writeback_centisecs;
-echo "3000" > /proc/sys/vm/dirty_expire_centisecs;
+echo "500" > /proc/sys/vm/dirty_writeback_centisecs;
+echo "200" > /proc/sys/vm/dirty_expire_centisecs;
 
 # ==============================================================
 # FILES FOR VARIABLES || we need this for write variables from child-processes to parent
@@ -720,7 +720,7 @@ fi;
 MEMORY_TWEAKS()
 {
 	if [ "$cortexbrain_memory" == "on" ]; then
-		echo "$dirty_background_ratio" > /proc/sys/vm/dirty_background_ratio; # default: 10
+		echo "$dirty_background_ratio" > /proc/sys/vm/dirty_background_ratio; # default: 5
 		echo "$dirty_ratio" > /proc/sys/vm/dirty_ratio; # default: 20
 		echo "4" > /proc/sys/vm/min_free_order_shift; # default: 4
 		echo "1" > /proc/sys/vm/overcommit_memory; # default: 1
@@ -1667,13 +1667,13 @@ cortexbrain_background_process=1;
 
 if [ "$cortexbrain_background_process" -eq "1" ] && [ "$(pgrep -f "/sbin/ext/cortexbrain-tune.sh" | wc -l)" -eq "2" ]; then
 	(while true; do
-		while [ "$(cat /proc/sys/vm/vfs_cache_pressure)" != "60" ]; do
+		while [ "$(cat /proc/sys/vm/vfs_cache_pressure)" != "100" ]; do
 			sleep "2";
 		done;
 		# AWAKE State. all system ON
 		AWAKE_MODE;
 
-		while [ "$(cat /proc/sys/vm/vfs_cache_pressure)" != "20" ]; do
+		while [ "$(cat /proc/sys/vm/vfs_cache_pressure)" != "60" ]; do
 			sleep "2";
 		done;
 		# SLEEP state. All system to power save
