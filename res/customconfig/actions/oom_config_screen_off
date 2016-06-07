@@ -16,19 +16,23 @@ AUTO_OOM=`cat /data/.siyah/${PROFILE}.profile | grep auto_oom=on | wc -l`
 if [ "$AUTO_OOM" -eq "1" ]; then
 	case "${oom_config_screen_off}" in
 		medium)
-			echo "12288,15360,18432,21504,31744,34816" > /sys/module/lowmemorykiller/parameters/minfree_screen_off;
-			echo "32" > /sys/module/lowmemorykiller/parameters/cost;
+			echo "18432,23040,24576,28672,31744,34816" > /sys/module/lowmemorykiller/parameters/minfree;
+			echo "48" > /sys/module/lowmemorykiller/parameters/cost;
 		;;
 		default)
-			echo "15360,19200,23040,26880,34415,43737" > /sys/module/lowmemorykiller/parameters/minfree_screen_off;
+			echo "18432,23040,27648,32356,46080,51200" > /sys/module/lowmemorykiller/parameters/minfree;
+			echo "32" > /sys/module/lowmemorykiller/parameters/cost;
+		;;
+		optimized)
+			echo "18432,23040,27648,32356,49152,61440" > /sys/module/lowmemorykiller/parameters/minfree;
 			echo "32" > /sys/module/lowmemorykiller/parameters/cost;
 		;;
 		aggressive)
-			echo "18432,23040,27648,34816,51200,65536" > /sys/module/lowmemorykiller/parameters/minfree_screen_off;
+			echo "18432,23040,27648,34816,51200,65536" > /sys/module/lowmemorykiller/parameters/minfree;
 			echo "16" > /sys/module/lowmemorykiller/parameters/cost;
 		;;
 		exterminate)
-			echo "18432,23040,27648,53760,58880,65536" > /sys/module/lowmemorykiller/parameters/minfree_screen_off;
+			echo "18432,23040,27648,53760,58880,65536" > /sys/module/lowmemorykiller/parameters/minfree;
 			echo "16" > /sys/module/lowmemorykiller/parameters/cost;
 		;;
 		*)
