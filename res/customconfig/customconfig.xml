@@ -399,19 +399,18 @@
 			<spinnerItem name="low" value="low"/> 
 			<spinnerItem name="medium" value="medium"/> 
 			<spinnerItem name="default" value="default"/> 
+			<spinnerItem name="optimized" value="optimized"/> 
 			<spinnerItem name="aggressive" value="aggressive"/> 
 			<spinnerItem name="exterminate" value="exterminate"/> 
 		</spinner>
 
-		<spinner description="Here you can set the level of low mem management by kernel lowmemkiller function. More aggressive equals more free RAM but more killed apps." name="OOM Level Screen OFF" action="oom_config_screen_off">
-			<spinnerItem name="low" value="low"/> 
-			<spinnerItem name="medium" value="medium"/> 
+		<spinner description="Here you can set the low memory reserve ratio, higher ratio give you more free RAM if you see that your free RAM is always loaded and device LAG, but it's also uses more battery to gain more free RAM with loaded system. (Default: default)" name="Low Memory Reserve" action="lowmem_reserve">
 			<spinnerItem name="default" value="default"/> 
-			<spinnerItem name="aggressive" value="aggressive"/> 
-			<spinnerItem name="exterminate" value="exterminate"/> 
+			<spinnerItem name="boosted" value="boosted"/> 
+			<spinnerItem name="high pressure" value="high_pressure"/> 
 		</spinner>
 
-		<seekBar description="Dirty background memory buffer, more you set, more memory will be used for write buffer for background operations. Buffer is released on need to free RAM (Default: 15%)" name="Dirty Background ratio" action="generic /proc/sys/vm/dirty_background_ratio" unit="%" min="5" reversed="false" step="5" max="80"/>
+		<seekBar description="Dirty background memory buffer, more you set, more memory will be used for write buffer for background operations. Buffer is released on need to free RAM (Default: 5%)" name="Dirty Background ratio" action="generic /proc/sys/vm/dirty_background_ratio" unit="%" min="5" reversed="false" step="5" max="80"/>
 
 		<seekBar description="Dirty real time memory buffer, more you set, more memory will be used for write buffer for real time operations. Buffer is released on need to free RAM (Default: 20%)" name="Dirty ratio" action="generic /proc/sys/vm/dirty_ratio" unit="%" min="5" reversed="false" step="5" max="90"/>
 
@@ -436,6 +435,8 @@
 			<spinnerItem name="80" value="80"/> 
 			<spinnerItem name="90" value="90"/> 
 		</spinner>
+
+		<seekBar description="Control for ZRAM Swap allocation, when you set higher here, ZRAM will be used more instead of real RAM and give you more RAM! With light cost of performance (default: 40%)" name="Swappiness" action="generic /proc/sys/vm/swappiness" unit="%" min="0" reversed="false" step="1" max="100"/>
 
 		<button description="ZRAM state check" name="ZRAM STATS" action="push-actions/zramstats" label="ZRAM STATS"/>
 
@@ -925,6 +926,16 @@
 		<button description="performance.profile" name="performance.profile" action="push-actions/config_backup_restore 5" label="PERFORMANCE"/>
 
 		<button description="extreme_performance.profile" name="extreme_performance.profile" action="push-actions/config_backup_restore 7" label="EXTREME PERFORMANCE"/>
+
+                <button description="Under-clocked CPU to 1.0GHz, CPU governor changed to Ondemand, CPU frequency will scale up slower, GPU will scale up slower, IO scheduler set to BFQ. Not recommended for intensive applications." name="Extreme battery profile" action="push-actions/config_backup_restore 6" label="EXTREME BATTERY"/>
+
+		<button description="Under-clocked CPU to 1.0GHz, CPU governor changed to Ondemand, CPU frequency will scale up slower, GPU will scale up slower, IO scheduler set to BFQ. Not recommended for intensive applications." name="Battery profile" action="push-actions/config_backup_restore 3" label="BATTERY"/>
+
+		<button description="CPU frequency set to 1.2GHz, CPU governor set to HYPER, CPU thresholds are balanced, IO scheduler set to BFQ. Good performance and battery life." name="Default profile" action="push-actions/config_backup_restore 4" label="DEFAULT"/>
+
+		<button description="CPU frequency set to 1.2GHz, CPU governor set to HYPER, CPU frequency will scale up faster, IO scheduler set to BFQ. Good performance at the cost of battery life." name="Performance profile" action="push-actions/config_backup_restore 5" label="PERFORMANCE"/>
+
+<button description="CPU frequency set to 1.3GHz, CPU governor set to HYPER, CPU frequency will scale up faster, IO scheduler set to BFQ. Best for performance/gaming, make sure to keep charger nearby :)" name="Extreme performance profile" action="push-actions/config_backup_restore 7" label="EXTREME PERFORMANCE"/>
 
 	</settingsPane>
 
