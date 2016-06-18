@@ -117,10 +117,10 @@ if [ "$mdniemod" == "on" ]; then
 fi;
 
 # Apps and ROOT Install
-#$BB sh /sbin/ext/install.sh;
+$BB sh /sbin/ext/install.sh;
 
 # Clean /res/ from no longer needed files to free modules kernel allocated mem
-$BB rm -rf /res/misc/sql /res/images /res/misc/JellyB-* /res/misc/KitKat-CM-AOKP-* /res/misc/Lollipop-CM-AOSP-12.1 /res/misc/Marshmallow-CM-AOSP-13 /res/misc/vendor;
+$BB rm -rf /res/misc/sql /res/images /res/misc/vendor;
 
 (
 	# check cpu voltage group and report to tmp file, and set defaults for STweaks
@@ -298,7 +298,7 @@ $BB sh /sbin/ext/properties.sh;
 ROOT_RW;
 
 (
-	# mount apps2sd partition point for CM11 and above versions CM
+	# mount apps2sd partition point for CyanogenMod
 	if [ -e /tmp/cm-installed ]; then
 		if [ "$(cat /tmp/sec_rom_boot)" -eq "1" ]; then
 			$BB mount --bind /mnt/.secondrom/.android_secure /mnt/secure/asec;
@@ -318,28 +318,6 @@ ROOT_RW;
 
 	if [ -e /sys/block/mmcblk1/queue/scheduler ]; then
 		echo "deadline" > /sys/block/mmcblk1/queue/scheduler;
-	fi;
-
-	# Mount Sec/Pri ROM DATA on Boot, we need to wait till sdcard is mounted.
-	if [ "$(cat /tmp/pri_rom_boot)" -eq "1" ] && [ ! -e /tmp/cm-installed ]; then
-		if [ -e /sdcard/.secondrom/data.img ] || [ -e /storage/sdcard0/.secondrom/data.img ]; then
-			$BB mkdir /data_sec_rom;
-			FREE_LOOP=$(losetup -f);
-			if [ -e /sdcard/.secondrom/data.img ]; then
-				DATA_IMG=/sdcard/.secondrom/data.img;
-			elif [ -e /storage/sdcard0/.secondrom/data.img ]; then
-				DATA_IMG=/storage/sdcard0/.secondrom/data.img;
-			fi;
-			if [ "a$FREE_LOOP" == "a" ]; then
-				mknod /dev/block/loop99 b 7 99
-				FREE_LOOP=/dev/block/loop99;
-			fi;
-			losetup $FREE_LOOP $DATA_IMG;
-			$BB mount -t ext4 $FREE_LOOP /data_sec_rom;
-			$BB chmod 700 /data_sec_rom;
-		else
-			echo "no sec data image found! abort."
-		fi;
 	fi;
 )&
 
@@ -435,13 +413,6 @@ ROOT_RW;
 )&
 
 (
-	# ROOT activation if supersu used
-	if [ -e /system/app/SuperSU.apk ] && [ -e /system/xbin/daemonsu ]; then
-		if [ "$(pgrep -f "daemonsu" | wc -l)" -eq "0" ]; then
-			/system/xbin/daemonsu --auto-daemon &
-		fi;
-	fi;
-
 	# kill radio logcat to sdcard
 	$BB pkill -f "logcat -b radio -v time";
 

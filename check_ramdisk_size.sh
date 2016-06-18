@@ -3,9 +3,8 @@
 cp ../dorimanx-SG2-I9100-Kernel/READY-JB/system/bin/e2fsck /tmp/initramfs_source/sbin/
 cp ../dorimanx-SG2-I9100-Kernel/READY-JB/system/bin/mount.exfat-fuse /tmp/initramfs_source/sbin/
 
-rm -rf /tmp/initramfs_source/res/JellyB-*
-rm -rf /tmp/initramfs_source/res/KitKat-*
-rm -rf /tmp/initramfs_source/res/sql/
+rm -rf /tmp/initramfs_source/res/misc/Marshmallow-*;
+rm -rf /tmp/initramfs_source/res/misc/Lollipop-*;
 rm -rf /tmp/initramfs_source/res/vendor
 
 du -sh /tmp/initramfs_source/
