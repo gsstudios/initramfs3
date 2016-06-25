@@ -24,8 +24,8 @@ if $BB grep -q bootmode=2 /proc/cmdline; then
 
 	# make the /dev/block/platform/dw_mmc/by-name/RECOVERY
 	# (/dev/block/mmcblk0p6) partition accessible
-	$BB mkdir /isorec-tmp
-	$BB mknod /isorec-tmp/mmcblk0p6 b 179 6
+	$BB mkdir /isorec-tmp;
+	$BB mknod /isorec-tmp/mmcblk0p6 b 179 6;
 
 	# if the raw partition contains valid lzop-compressed data
 	if $BB lzop -dc /isorec-tmp/mmcblk0p6 > /isorec-tmp/isorec.cpio; then
@@ -35,31 +35,31 @@ if $BB grep -q bootmode=2 /proc/cmdline; then
 			# isorec boot
 
 			# unmount everything
-			$BB umount -l /proc
-			$BB umount -l /sys
+			$BB umount -l /proc;
+			$BB umount -l /sys;
 
 			# copy busybox to /isorec-tmp
 			# WARNING: this assumes static linking
-			$BB cp $(readlink -f $BB) /isorec-tmp/busybox
-			BB=/isorec-tmp/busybox
+			$BB cp $(readlink -f $BB) /isorec-tmp/busybox;
+			BB=/isorec-tmp/busybox;
 
 			# remove everything not in /isorec-tmp
-			$BB mkdir /isorec-tmp/junk
-			$BB mv /* /.* /isorec-tmp/junk
-			$BB rm -rf /isorec-tmp/junk
+			$BB mkdir /isorec-tmp/junk;
+			$BB mv /* /.* /isorec-tmp/junk;
+			$BB rm -rf /isorec-tmp/junk;
 
 			# extract the isorec ramdisk
-			$BB cpio -i < /isorec-tmp/isorec.cpio
+			$BB cpio -i < /isorec-tmp/isorec.cpio;
 
 			# clean up and pass control to ramdisk
-			$BB rm -rf /isorec-tmp
-			exec /init
+			$BB rm -rf /isorec-tmp;
+			exec /init;
 
 		fi
 	fi
 
 	# clean up for non-isorec boot
-	$BB rm -rf /isorec-tmp
+	$BB rm -rf /isorec-tmp;
 
 
 	$BB cp /res/images/recovery-icon.png /res/images/icon_clockwork.png;
