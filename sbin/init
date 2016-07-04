@@ -334,6 +334,18 @@ NEED_CHECK()
 	echo "1" > /tmp/need_check_part;
 }
 
+# dalvik cache clean if asked
+DALVIK_CLEAN()
+{
+	local DEVICE_DATA="/res/dev/data";
+	local DIR_DATA="/data";
+
+	$BB mount -t ext4 $DEVICE_DATA $DIR_DATA;
+	$BB rm -f $DIR_DATA/dalvik-cache/*;
+	sync;
+	$BB umount -l $DIR_DATA;
+}
+
 TUNE_PARTITION()
 {
 	local DEVICE=$1;
@@ -480,6 +492,7 @@ PARTITION_TUNING()
 	if [ -e /mnt/tmp/.run_fs_check ]; then
 		# reset the lock-file
 		$BB rm -f /mnt/tmp/.run_fs_check;
+		DALVIK_CLEAN;
 
 		# run partition fix by forcing full scan and repair
 		PARTITION_FIX $DEVICE_DATA $LOG_DATA;
@@ -679,6 +692,12 @@ BOOTROM()
 	$BB chmod -R 777 /tmp;
 	exec /sbin/init.samsung;
 }
+
+# system dalvik.vm tuning.
+$BB sed -i "s/dalvik.vm.heapsize=[0-9a-zA-Z]*/dalvik.vm.heapsize=128m/g" /system/build.prop;
+$BB sed -i "s/dalvik.vm.heapstartsize=[0-9a-zA-Z]*/dalvik.vm.heapstartsize=5m/g" /system/build.prop;
+$BB sed -i "s/dalvik.vm.heapgrowthlimit=[0-9a-zA-Z]*/dalvik.vm.heapgrowthlimit=48m/g" /system/build.prop;
+$BB sed -i "s/dalvik.vm.heapminfree=[0-9a-zA-Z]*/dalvik.vm.heapminfree=512k/g" /system/build.prop;
 
 # we can OC to 1.5Ghz.
 $BB sed -i "s/ro.device.cpu=Dual-core 1.2GHz ARM Cortex-A9/ro.device.cpu=Dual-core 1.5GHz ARM Cortex-A9/g" /system/build.prop;
