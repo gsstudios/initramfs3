@@ -32,7 +32,6 @@ TELE_DATA=init;
 # read sd-card size, set via boot
 SDCARD_SIZE=$(cat /tmp/sdcard_size);
 EXTERNAL_SDCARD_CM=$(mount | grep "/storage/sdcard1" | wc -l);
-EXTERNAL_SDCARD_STOCK=$(mount | grep "/storage/extSdCard" | wc -l);
 
 # ==============================================================
 # INITIATE
@@ -1490,12 +1489,6 @@ MOUNT_FIX()
 		local EXT_SDCARD_CHECK=$(mount | grep "/storage/sdcard1" | grep rw | wc -l);
 		if [ "$EXT_SDCARD_CHECK" -eq "0" ]; then
 			mount -o remount,rw /storage/sdcard1;
-			log -p i -t "$FILE_NAME" "*** EXT_SDCARD_RO_FIX ***";
-		fi;
-	elif [ "$EXTERNAL_SDCARD_STOCK" -eq "1" ]; then
-		local EXT_SDCARD_CHECK=$(mount | grep "/storage/extSdCard" | grep rw | wc -l);
-		if [ "$EXT_SDCARD_CHECK" -eq "0" ]; then
-			mount -o remount,rw /storage/extSdCard;
 			log -p i -t "$FILE_NAME" "*** EXT_SDCARD_RO_FIX ***";
 		fi;
 	fi;

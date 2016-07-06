@@ -1,5 +1,5 @@
 on init
-    setprop ro.build.selinux 0
+    setprop ro.build.selinux.enforce 0
     write /proc/sys/vm/mmap_min_addr 32768
 
 on post-fs-data
