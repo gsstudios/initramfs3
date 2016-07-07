@@ -857,12 +857,6 @@
 
 	</settingsPane>
 
-	<settingsPane description="Root tools. Check if you have root and enable or disable auto root on reboot." name="Root">
-
-		<button description="Root check. Press button to see if you have ROOT or not." name="ROOT Check" action="push-actions/root_check" label="ROOT CHECK"/>		
-
-		<checkbox description="If box is checked, root will be installed on the next restart." name="Auto-Install Root" action="generic_cortex /tmp/install_root" label="Auto-Install Root"/>
-
 	</settingsPane>
 
 	<settingsPane description="INIT.D" name="INIT.D">
