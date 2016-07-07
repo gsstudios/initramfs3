@@ -32,6 +32,8 @@ case "${zramtweaks}" in
 				# for on the fly changes we need to shutdown ZRAM first
 				swapoff /dev/block/zram0 >/dev/null 2>&1;
 				echo "1" > /sys/block/zram0/reset;
+				echo "lz4" > /sys/block/zram0/comp_algorithm;
+				echo "1" > /sys/block/zram0/max_comp_streams;
 				# setting size of ZRAM swap drive
 				echo "153604000" > /sys/block/zram0/disksize;
 				# creating SWAP from ZRAM drive
@@ -48,6 +50,8 @@ case "${zramtweaks}" in
 				# for on the fly changes we need to shutdown ZRAM first
 				swapoff /dev/block/zram0 >/dev/null 2>&1;
 				echo "1" > /sys/block/zram0/reset;
+				echo "lz4" > /sys/block/zram0/comp_algorithm;
+				echo "2" > /sys/block/zram0/max_comp_streams;
 				# setting size of ZRAM swap drive
 				echo "307202000" > /sys/block/zram0/disksize;
 				# creating SWAP from ZRAM drive
@@ -64,6 +68,8 @@ case "${zramtweaks}" in
 				# for on the fly changes we need to shutdown ZRAM first
 				swapoff /dev/block/zram0 >/dev/null 2>&1;
 				echo "1" > /sys/block/zram0/reset;
+				echo "lz4" > /sys/block/zram0/comp_algorithm;
+				echo "2" > /sys/block/zram0/max_comp_streams;
 				# setting size of RAM swap drive
 				echo "614404000" > /sys/block/zram0/disksize;
 				# creating SWAP from ZRAM drive
@@ -78,6 +84,7 @@ case "${zramtweaks}" in
 		if [ -e /dev/block/zram0 ]; then
 			swapoff /dev/block/zram0 >/dev/null 2>&1;
 			echo "1" > /sys/block/zram0/reset;
+			echo "1" > /sys/block/zram0/max_comp_streams;
 		fi;
 	;;
 	*)
