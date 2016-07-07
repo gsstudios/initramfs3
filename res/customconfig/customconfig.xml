@@ -1015,12 +1015,4 @@
 
 </settingsTab>
 
-<settingsTab name="KERNEL-UPDATE">
-
-	<settingsPane description="Get the latest kernel update from my XDA thread! The Update feature has not been fixed yet." name="Kernel-Update">
-
-	</settingsPane>
-
-</settingsTab>
-
 </settingsRoot>
