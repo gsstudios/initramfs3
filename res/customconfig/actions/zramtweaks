@@ -33,7 +33,7 @@ case "${zramtweaks}" in
 				swapoff /dev/block/zram0 >/dev/null 2>&1;
 				echo "1" > /sys/block/zram0/reset;
 				echo "lz4" > /sys/block/zram0/comp_algorithm;
-				echo "1" > /sys/block/zram0/max_comp_streams;
+				echo "2" > /sys/block/zram0/max_comp_streams;
 				# setting size of ZRAM swap drive
 				echo "153604000" > /sys/block/zram0/disksize;
 				# creating SWAP from ZRAM drive
