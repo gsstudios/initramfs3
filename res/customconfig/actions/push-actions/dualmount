@@ -2,11 +2,19 @@
 export PATH="/res/customconfig/actions/push-actions:${PATH}";
 
 (
+if [ -e /tmp/cm12.1-installed ]; then
+	echo "/dev/block/vold/179:11" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun0/file;
+
+	if [ -e /dev/block/vold/179:13 ]; then
+		echo "/dev/block/vold/179:13" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun1/file;
+	fi;
+else
 	echo "/dev/block/vold/public:179_11" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun0/file;
 
 	if [ -e /dev/block/vold/public:179_13 ]; then
 		echo "/dev/block/vold/public:179_13" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun1/file;
 	fi;
+fi;
 )&
 
 echo "Try now to open usb drive/s.";
