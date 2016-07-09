@@ -715,7 +715,7 @@ if [ "$CM_AOSP_13_MM" -eq "1" ]; then
 	$BB cp -a /res/misc/Marshmallow-CM-AOSP-13/* /;
 	$BB rm -rf /res/misc/Marshmallow-*;
 	$BB rm -rf /res/misc/Lollipop-*;
-	# for sbin/ext/install.sh and sbin/ext/post_init.sh
+	# for sbin/ext/install.sh and sbin/ext/post-init.sh
 	echo "1" > /tmp/cm-installed;
 
 	SECROM_FUNCTION_AOSP;
@@ -725,8 +725,10 @@ elif [ "$CM_AOSP_12_1_LP" -eq "1" ]; then
 	$BB cp -a /res/misc/Lollipop-CM-AOSP-12.1/* /;
 	$BB rm -rf /res/misc/Marshmallow-*;
 	$BB rm -rf /res/misc/Lollipop-*;
-	# for sbin/ext/install.sh and sbin/ext/post_init.sh
+	# for sbin/ext/install.sh and sbin/ext/post-init.sh
 	echo "1" > /tmp/cm-installed;
+	# for support cm12.1
+	echo "1" > /tmp/cm12.1-installed;
 
 	SECROM_FUNCTION_AOSP;
 else

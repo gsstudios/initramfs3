@@ -998,11 +998,17 @@ GESTURES()
 MOUNT_SD_CARD()
 {
 	if [ "$auto_mount_sd" == "on" ]; then
-		echo "/dev/block/vold/public:179_11" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun0/file;
-		if [ -e /dev/block/vold/public:179_13 ]; then
-			echo "/dev/block/vold/public:179_13" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun1/file;
+		if [ -e /tmp/cm12.1-installed ]; then
+			echo "/dev/block/vold/179:11" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun0/file;
+			if [ -e /dev/block/vold/179:13 ]; then
+				echo "/dev/block/vold/179:13" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun1/file;
+			fi;
+		else
+			echo "/dev/block/vold/public:179_11" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun0/file;
+			if [ -e /dev/block/vold/public:179_13 ]; then
+				echo "/dev/block/vold/public:179_13" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun1/file;
+			fi;
 		fi;
-
 		log -p i -t "$FILE_NAME" "*** MOUNT_SD_CARD ***";
 	fi;
 }
