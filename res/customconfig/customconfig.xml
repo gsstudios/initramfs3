@@ -799,20 +799,6 @@
 
 	</settingsPane>
 
-	<settingsPane description="USB and SDCARD settings and options." name="USB - SDCARD">
-
-		<spinner description="Change USB connection mode. Either leave it as default or force it to mass storage mode (you will see your sdcards as disks) or MTP." name="USB mass storage mode" action="usb-mode">
-			<spinnerItem name="Default" value="default"/> 
-			<spinnerItem name="Force Mass Storage Mode" value="mass_storage-adb"/> 
-			<spinnerItem name="Force MTP Mode" value="mtp-adb"/> 
-		</spinner>
-
-		<checkbox description="If checked, Mass Storage SDCARDS will be auto-mounted when USB connected. Then you can transfer files from your PC to device. This is only used when Mass Storage mode has been selected above! This doesn't apply to MTP mode! (Default: On) !!! Depends on CortexBrain-Background-Process !!!" name="Auto Mount USB Drives" action="generic_cortex /tmp/auto_mount_sd" label="Auto Mount USB Drives"/>
-
-		<button description="Dual Mount-SDCARD and MMC via USB. After USB is disconnected, Dual Mount is disabled! This tweak is working automatically. Plug USB, turn off the screen and then turn ON, and you get working mounts. To scan your new MEDIA files, use some app to force Media Scan." name="DUAL MOUNT" action="push-actions/dualmount" label="Dual Mount"/>
-
-	</settingsPane>
-
 	<settingsPane description="Charger, Battery settings and options. Allowed mA is in range from 450mA to 650mA, by hardware limits! we cant set less or more" name="Battery Charge">
 
 		<seekBar description="Battery AC Charge Current Setting" name="Battery AC Charge Current" action="chargecurrent 1" unit="mA" min="450" reversed="false" step="50" max="650"/>
