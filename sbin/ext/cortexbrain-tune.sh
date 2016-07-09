@@ -994,6 +994,24 @@ GESTURES()
 	log -p i -t "$FILE_NAME" "*** GESTURE ***: $state";
 }
 
+# mount sdcard and emmc, if usb mass storage is used
+MOUNT_SD_CARD()
+{
+	if [ "$auto_mount_sd" == "on" ]; then
+		echo "/dev/block/vold/259:3" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun0/file;
+		if [ -e /dev/block/vold/179:9 ]; then
+			echo "/dev/block/vold/179:9" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun1/file;
+		fi;
+
+		log -p i -t "$FILE_NAME" "*** MOUNT_SD_CARD ***";
+	fi;
+}
+# run dual mount on boot
+apply_cpu="$2";
+if [ "$apply_cpu" != "update" ]; then
+	MOUNT_SD_CARD;
+fi;
+
 MALI_TIMEOUT()
 {
 	local state="$1";
@@ -1522,6 +1540,7 @@ AWAKE_MODE()
 			IO_SCHEDULER "awake";
 			WORKQUEUE_CONTROL "awake";
 			GESTURES "awake";
+			MOUNT_SD_CARD;
 
 			BOOST_DELAY;
 
