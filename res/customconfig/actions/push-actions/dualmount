@@ -2,10 +2,10 @@
 export PATH="/res/customconfig/actions/push-actions:${PATH}";
 
 (
-	echo "/dev/block/vold/259:3" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun0/file;
+	echo "/dev/block/vold/public:179_11" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun0/file;
 
-	if [ -e /dev/block/vold/179:9 ]; then
-		echo "/dev/block/vold/179:9" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun1/file;
+	if [ -e /dev/block/vold/public:179_13 ]; then
+		echo "/dev/block/vold/public:179_13" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun1/file;
 	fi;
 )&
 
