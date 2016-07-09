@@ -7,7 +7,7 @@ $BB chmod 6755 /sbin/recovery;
 $BB mount -t proc proc /proc;
 $BB mount -t sysfs sysfs /sys;
 if [ -e /sys/devices/virtual/sec/sec_key/set_homekey ]; then
-	echo 102 > /sys/devices/virtual/sec/sec_key/set_homekey;
+	$BB echo 102 > /sys/devices/virtual/sec/sec_key/set_homekey;
 fi;
 
 # mount root as rw
@@ -17,7 +17,7 @@ $BB mkdir -p /dev/block;
 
 if $BB grep -q bootmode=2 /proc/cmdline; then
 	# recovery mode
-	echo "0" > /proc/sys/kernel/rom_feature_set;
+	$BB echo "0" > /proc/sys/kernel/rom_feature_set;
 
 
 	# attempt isorec (isolated recovery) boot
@@ -69,7 +69,7 @@ fi;
 
 if $BB grep -q 1 /sys/class/power_supply/battery/batt_lp_charging; then
 	# low power mode
-	echo "0" > /proc/sys/kernel/rom_feature_set;
+	$BB echo "0" > /proc/sys/kernel/rom_feature_set;
 	$BB cp /res/images/recovery-icon.png /res/images/icon_clockwork.png;
 	$BB cp -a lpm.rc init.rc;
 	$BB rm -f init.smdk4210.rc;
@@ -121,6 +121,10 @@ $BB mknod /dev/block/mmcblk0p12 b 259 0;
 $BB mknod /dev/fuse c 10 229;
 $BB chmod 666 /dev/fuse;
 
+# check what type of fs on "data" partition
+FS_DATA=$(eval $($BB blkid /dev/block/mmcblk0p10 | $BB cut -c 24-); $BB echo $TYPE);
+$BB echo "$FS_DATA" > /tmp/data_fs_check;
+
 # mounting preloaded partition
 $BB mount -t ext4 -o rw,noauto_da_alloc,journal_async_commit /dev/block/mmcblk0p12 /preload;
 
@@ -136,11 +140,11 @@ if [ -e /system/bin/mount.exfat-fuse ]; then
 fi;
 
 # check what type of fs sdcards have
-FS_SDCARD0=$(eval $(/sbin/blkid /dev/block/mmcblk0p11 | /sbin/busybox cut -c 24-); /sbin/busybox echo $TYPE);
-echo "$FS_SDCARD0" > /tmp/sdcard_fs_check;
+FS_SDCARD0=$(eval $($BB blkid /dev/block/mmcblk0p11 | $BB cut -c 24-); $BB echo $TYPE);
+$BB echo "$FS_SDCARD0" > /tmp/sdcard_fs_check;
 if [ -e /dev/block/mmcblk1p1 ]; then
-	FS_SDCARD1=$(eval $(/sbin/blkid /dev/block/mmcblk1p1 | /sbin/busybox cut -c 23-); /sbin/busybox echo $TYPE);
-	echo "$FS_SDCARD1" >> /tmp/sdcard_fs_check;
+	FS_SDCARD1=$(eval $($BB blkid /dev/block/mmcblk1p1 | $BB cut -c 23-); $BB echo $TYPE);
+	$BB echo "$FS_SDCARD1" >> /tmp/sdcard_fs_check;
 fi;
 
 # prevent from media storage to dig in clockworkmod backup dir
@@ -174,24 +178,24 @@ EXSDCARD()
 
 		SDCARD_SIZE=$($BB df | $BB grep /dev/block/mmcblk1p1 | $BB cut -c 23-30)
 		if [ "$SDCARD_SIZE" -lt "1000000" ]; then
-			echo "1" > /tmp/sdcard_size;
+			$BB echo "1" > /tmp/sdcard_size;
 		elif [ "$SDCARD_SIZE" -lt "4000000" ]; then
-			echo "4" > /tmp/sdcard_size;
+			$BB echo "4" > /tmp/sdcard_size;
 		elif [ "$SDCARD_SIZE" -lt "8000000" ]; then
-			echo "8" > /tmp/sdcard_size;
+			$BB echo "8" > /tmp/sdcard_size;
 		elif [ "$SDCARD_SIZE" -lt "16000000" ]; then
-			echo "16" > /tmp/sdcard_size;
+			$BB echo "16" > /tmp/sdcard_size;
 		elif [ "$SDCARD_SIZE" -lt "32000000" ]; then
-			echo "32" > /tmp/sdcard_size;
+			$BB echo "32" > /tmp/sdcard_size;
 		elif [ "$SDCARD_SIZE" -lt "64000000" ]; then
-			echo "64" > /tmp/sdcard_size;
+			$BB echo "64" > /tmp/sdcard_size;
 		fi;
 
 		#umount only the external sd
 		sync;
 		$BB umount -l /mnt/tmp2;
 	else
-		echo "no external sdcard";
+		$BB echo "no external sdcard";
 	fi;
 }
 
@@ -254,16 +258,16 @@ if [ "$SECONDROM" -eq "1" ]; then
 	$BB ln -s /mnt/.secondrom/.secondrom/data.img /res/dev/data;
 	$BB ln -s /dev/block/mmcblk0p12 /res/dev/system;
 	$BB ln -s /mnt/.secondrom/.secondrom/cache.img /res/dev/cache;
-	echo "1" > /tmp/sec_rom_boot;
-	echo "0" > /tmp/pri_rom_boot;
+	$BB echo "1" > /tmp/sec_rom_boot;
+	$BB echo "0" > /tmp/pri_rom_boot;
 else
 	$BB rm -rf /res/dev;
 	$BB mkdir -p /res/dev;
 	$BB ln -s /dev/block/mmcblk0p10 /res/dev/data;
 	$BB ln -s /dev/block/mmcblk0p9 /res/dev/system;
 	$BB ln -s /dev/block/mmcblk0p7 /res/dev/cache;
-	echo "0" > /tmp/sec_rom_boot;
-	echo "1" > /tmp/pri_rom_boot;
+	$BB echo "0" > /tmp/sec_rom_boot;
+	$BB echo "1" > /tmp/pri_rom_boot;
 fi;
 
 #############################
@@ -276,13 +280,13 @@ PARTITION_FIX()
 	local DEVICE=$1;
 	local LOG=$2;
 
-	echo "Fixing partitions..."  >> $LOG;
-	echo ""  >> $LOG;
+	$BB echo "Fixing partitions..."  >> $LOG;
+	$BB echo ""  >> $LOG;
 	$BB sh -c "/sbin/e2fsck -p $DEVICE" >> $LOG;
 	$BB sh -c "/sbin/e2fsck -fyv $DEVICE" >> $LOG;
-	echo ""  >> $LOG;
-	echo "Fixing partitions ends."  >> $LOG;
-	echo "0" > /tmp/need_check_part;
+	$BB echo ""  >> $LOG;
+	$BB echo "Fixing partitions ends."  >> $LOG;
+	$BB echo "0" > /tmp/need_check_part;
 }
 
 # sdcards fix
@@ -292,6 +296,7 @@ SDCARD_FIX()
         local LOG_SDCARD1="/log-sdcard1";
         local FIX_VFAT_BINARY="/sbin/fsck_msdos";
         local FIX_EXFAT_BINARY="/sbin/fsck.exfat";
+	local FIX_F2FS_BINARY="/sbin/fsck.f2fs"
         local DEVICE_SDCARD0="/dev/block/mmcblk0p11";
         local DEVICE_SDCARD1="/dev/block/mmcblk1p1";
 
@@ -301,37 +306,41 @@ SDCARD_FIX()
 
         cp -a /sbin/libexfat_utils.so /system/lib/;
         if [ -e /dev/block/mmcblk1p1 ]; then
-                echo "EXTERNAL SDCARD CHECK" >> $LOG_SDCARD1;
+                $BB echo "EXTERNAL SDCARD CHECK" >> $LOG_SDCARD1;
                 if [ "$FS_SDCARD1" == "exfat" ]; then
                         $BB sh -c "$FIX_EXFAT_BINARY -R $DEVICE_SDCARD1" >> $LOG_SDCARD1;
                 elif [ "$FS_SDCARD1" == "vfat" ]; then
                         $BB sh -c "$FIX_VFAT_BINARY -p -f $DEVICE_SDCARD1" >> $LOG_SDCARD1;
+                elif [ "$FS_SDCARD1" == "f2fs" ]; then
+                        $BB sh -c "$FIX_F2FS_BINARY -p -f $DEVICE_SDCARD1" >> $LOG_SDCARD1;
                 elif [ "$FS_SDCARD1" == "ext4" ]; then
                         PARTITION_FIX $DEVICE_SDCARD1 $LOG_SDCARD1;
                 else
-                        echo "UNKOWN OR UNSUPPORTED PARTITION TYPE \"$FS_SDCARD1\"" >> $LOG_SDCARD1;
+                        $BB echo "UNKOWN OR UNSUPPORTED PARTITION TYPE \"$FS_SDCARD1\"" >> $LOG_SDCARD1;
                 fi;
-                echo "DONE" >> $LOG_SDCARD1;
+                $BB echo "DONE" >> $LOG_SDCARD1;
         else
-                echo "NO EXTERNAL SDCARD FOUND" >> $LOG_SDCARD1;
+                $BB echo "NO EXTERNAL SDCARD FOUND" >> $LOG_SDCARD1;
         fi;
 
-        echo "INTERNAL SDCARD CHECK" >> $LOG_SDCARD0;
+        $BB echo "INTERNAL SDCARD CHECK" >> $LOG_SDCARD0;
         if [ "$FS_SDCARD0" == "exfat" ]; then
                 $BB sh -c "$FIX_EXFAT_BINARY -R $DEVICE_SDCARD0"  >> $LOG_SDCARD0;
         elif [ "$FS_SDCARD0" == "vfat" ]; then
                 $BB sh -c "$FIX_VFAT_BINARY -p -f $DEVICE_SDCARD0"  >> $LOG_SDCARD0;
+        elif [ "$FS_SDCARD0" == "f2fs" ]; then
+                $BB sh -c "$FIX_F2FS_BINARY -p -f $DEVICE_SDCARD0"  >> $LOG_SDCARD0;
         elif [ "$FS_SDCARD0" == "ext4" ]; then
                 PARTITION_FIX $DEVICE_SDCARD0 $LOG_SDCARD0;
         else
-                echo "UNKOWN OR UNSUPPORTED PARTITION TYPE \"$FS_SDCARD0\"" >> $LOG_SDCARD0;
+                $BB echo "UNKOWN OR UNSUPPORTED PARTITION TYPE \"$FS_SDCARD0\"" >> $LOG_SDCARD0;
         fi;
-        echo "DONE"  >> $LOG_SDCARD0;
+        $BB echo "DONE"  >> $LOG_SDCARD0;
 }
 
 NEED_CHECK()
 {
-	echo "1" > /tmp/need_check_part;
+	$BB echo "1" > /tmp/need_check_part;
 }
 
 # dalvik cache clean if asked
@@ -340,7 +349,7 @@ DALVIK_CLEAN()
 	local DEVICE_DATA="/res/dev/data";
 	local DIR_DATA="/data";
 
-	$BB mount -t ext4 $DEVICE_DATA $DIR_DATA;
+	$BB mount -t $FS_DATA $DEVICE_DATA $DIR_DATA;
 	$BB rm -f $DIR_DATA/dalvik-cache/*;
 	sync;
 	$BB umount -l $DIR_DATA;
@@ -352,70 +361,69 @@ TUNE_PARTITION()
 	local LOG=$2;
 	local LOG_TMP=$2"-tmp";
 
-	echo "" >> $LOG;
-	echo "Version of binaries used:" >> $LOG;
+	$BB echo "" >> $LOG;
+	$BB echo "Version of binaries used:" >> $LOG;
 	$BB mknod /dev/null c 1 3;
 	$BB chmod 666 /dev/null;
 	$BB sh -c "/sbin/e2fsck -V" >> $LOG 2>&1;
 	$BB rm -rf /dev/null;
 	$BB sh -c "/sbin/tune2fs.static" >> $LOG;
-	echo "" >> $LOG;
+	$BB echo "" >> $LOG;
 	# don't tune efs partition
 	if [ "$DEVICE" != "/dev/block/mmcblk0p1" ] && [ "$DEVICE" != "/mnt/tmp/.secondrom/cache.img" ] && [ "$DEVICE" != "/mnt/tmp/.secondrom/cache.img" ] && [ "$DEVICE" != "/res/dev/cache" ] ; then
-		echo "Tunning partitions begins..."  >> $LOG;
+		$BB echo "Tunning partitions begins..."  >> $LOG;
 		$BB sh -c "/sbin/tune2fs.static -l $DEVICE" > $LOG_TMP;
-		echo "" >> $LOG;
+		$BB echo "" >> $LOG;
 		# set fs-feature -> [^]has_journal
 		if [ "$(cat $LOG_TMP | $BB grep 'features' | $BB grep 'has_journal' | wc -l)" -eq "0" ]; then
 			$BB sh -c "/sbin/tune2fs.static -O has_journal $DEVICE" >> $LOG 2>&1;
-			echo "Added has_journal feature to $DEVICE" >> $LOG;
+			$BB echo "Added has_journal feature to $DEVICE" >> $LOG;
 		else
-			echo "Device $DEVICE already have has_journal in features." >> $LOG;
+			$BB echo "Device $DEVICE already have has_journal in features." >> $LOG;
 		fi;
 
 		# set fs-feature -> [^]dir_index
 		if [ "$(cat $LOG_TMP | $BB grep 'features' | $BB grep 'dir_index' | wc -l)" -eq "0" ]; then
 			$BB sh -c "/sbin/tune2fs.static -O dir_index $DEVICE" >> $LOG 2>&1;
-			echo "Added dir_index feature to $DEVICE" >> $LOG;
+			$BB echo "Added dir_index feature to $DEVICE" >> $LOG;
 		else
-			echo "Device $DEVICE already have dir_index in features." >> $LOG;
+			$BB echo "Device $DEVICE already have dir_index in features." >> $LOG;
 		fi;
 
 		# set mount option -> [^]journal_data_writeback
 		if [ "$(cat $LOG_TMP | $BB grep 'Default mount options' | $BB grep 'journal_data_writeback' | wc -l)" -eq "0" ]; then
 			$BB sh -c "/sbin/tune2fs.static -o journal_data_writeback $DEVICE" >> $LOG 2>&1;
-			echo "Added journal_data_writeback default mount option to $DEVICE" >> $LOG;
+			$BB echo "Added journal_data_writeback default mount option to $DEVICE" >> $LOG;
 		else
-			echo "Device $DEVICE already have journal_data_writeback in default mount options" >> $LOG;
+			$BB echo "Device $DEVICE already have journal_data_writeback in default mount options" >> $LOG;
 		fi;
 
 		# set inode to 256
 		if [ "$(cat $LOG_TMP | $BB grep 'Inode size' | $BB grep '256' | wc -l)" -eq "0" ]; then
 			$BB sh -c "/sbin/tune2fs.static -I 256 $DEVICE" >> $LOG 2>&1;
-			echo "Added 256 Inode size to $DEVICE" >> $LOG;
+			$BB echo "Added 256 Inode size to $DEVICE" >> $LOG;
 		else
-			echo "Device $DEVICE already have 256 Inode size" >> $LOG;
+			$BB echo "Device $DEVICE already have 256 Inode size" >> $LOG;
 		fi;
-			echo "" >> $LOG;
-			echo "Tunning partitions ends."  >> $LOG;
-			echo "" >> $LOG;
+			$BB echo "" >> $LOG;
+			$BB echo "Tunning partitions ends."  >> $LOG;
+			$BB echo "" >> $LOG;
 	fi;
 
-	echo "Checking if device has errors..." >> $LOG;
-	echo "" >> $LOG;
+	$BB echo "Checking if device has errors..." >> $LOG;
+	$BB echo "" >> $LOG;
 	$BB sh -c "/sbin/e2fsck -nv $DEVICE" > $LOG_TMP;
 	cat $LOG_TMP >> $LOG;
-	echo "" >> $LOG;
+	$BB echo "" >> $LOG;
 	if [ "$(cat $LOG_TMP | $BB grep 'clean' | wc -l)" -eq "0" ]; then
 		NEED_CHECK;
-		echo "DEVICE $DEVICE NEEDS DO BE FIX" >> $LOG;
-		echo "0" > $LOG_TMP;
+		$BB echo "DEVICE $DEVICE NEEDS DO BE FIX" >> $LOG;
+		$BB echo "0" > $LOG_TMP;
 	else
-		echo "DEVICE $DEVICE IS CLEAN" >> $LOG;
-		echo "1" > $LOG_TMP;
+		$BB echo "DEVICE $DEVICE IS CLEAN" >> $LOG;
+		$BB echo "1" > $LOG_TMP;
 	fi;
-	echo "" >> $LOG;
-
+	$BB echo "" >> $LOG;
 }
 
 FORMAT_ERRORS_LOG()
@@ -423,9 +431,9 @@ FORMAT_ERRORS_LOG()
 	local LOG=$1;
 	local LOG_ERRORS=$2;
 
-	echo "<p>" >> $LOG_ERRORS;
+	$BB echo "<p>" >> $LOG_ERRORS;
 	$BB sed ":a;N;$!ba;s/\n/\<br\>/g" $LOG >> $LOG_ERRORS;
-	echo "</p><hr>" >> $LOG_ERRORS;
+	$BB echo "</p><hr>" >> $LOG_ERRORS;
 }
 
 PARTITION_TUNING()
@@ -478,7 +486,11 @@ PARTITION_TUNING()
 
 	TUNE_PARTITION $DEVICE_CACHE $LOG_CACHE;
 
-	TUNE_PARTITION $DEVICE_DATA $LOG_DATA;
+	if [ "$FS_DATA" = "ext4" ]; then
+		TUNE_PARTITION $DEVICE_DATA $LOG_DATA;
+	else
+		$BB echo "Tunning partitions ends."  >> $LOG_DATA;
+	fi;
 
 	TUNE_PARTITION $DEVICE_SYSTEM $LOG_SYSTEM;
 
@@ -510,7 +522,9 @@ PARTITION_TUNING()
 		# run partition fix by forcing full scan and repair
 		if [ "$(cat $LOG_DATA_TMP)" -eq "0" ]; then
 			AUTOCHECK=1;
-			PARTITION_FIX $DEVICE_DATA $LOG_DATA;
+			if [ "$FS_DATA" = "ext4" ]; then
+				PARTITION_FIX $DEVICE_DATA $LOG_DATA;
+			fi;
 		fi;
 		if [ "$(cat $LOG_CACHE_TMP)" -eq "0" ]; then
 			AUTOCHECK=1;
@@ -536,9 +550,9 @@ PARTITION_TUNING()
 	# create report to show to user after booting ;)
 	if [ "$(cat /tmp/need_check_part)" -eq "1" ] || [ "$AUTOCHECK" -gt 0 ]; then
 		if [ "$AUTOCHECK" -gt 0 ]; then
-			echo "<html><body><br><p><font size=5 color=GREEN><center>ERRORS IN PARTITIONS DETECTED AND FIXED</center></font></p>" > $LOG_ERRORS;
+			$BB echo "<html><body><br><p><font size=5 color=GREEN><center>ERRORS IN PARTITIONS DETECTED AND FIXED</center></font></p>" > $LOG_ERRORS;
 		else
-			echo "<html><body><br><p><font size=5 color=RED><center>ERRORS IN PARTITIONS DETECTED</center></font></p>" > $LOG_ERRORS;
+			$BB echo "<html><body><br><p><font size=5 color=RED><center>ERRORS IN PARTITIONS DETECTED</center></font></p>" > $LOG_ERRORS;
 		fi;
 		if [ "$(cat $LOG_DATA_TMP)" -eq "0" ]; then
 			FORMAT_ERRORS_LOG $LOG_DATA $LOG_ERRORS;
@@ -555,9 +569,9 @@ PARTITION_TUNING()
 		if [ "$(cat $LOG_EFS_TMP)" -eq "0" ]; then
 			FORMAT_ERRORS_LOG $LOG_EFS $LOG_ERRORS;
 		fi;
-		echo '<p><font size=5><center>Please use Stweaks "FIX DATA ON or OFF" option in the other tab to avoid annoying issues or use "Check and repair file system on every boot" to always check and repair partitions.</center></font></p>' >> $LOG_ERRORS;
-		echo '<p><font size=5><center>It is advised to perform a nandroid or Titanium Backup similar app before fixing corrupt partitions.<br>Data of app and/or app may be delected if damaged too much!!!</center></font></p>' >> $LOG_ERRORS;
-		echo "</body></html>" >> $LOG_ERRORS;
+		$BB echo '<p><font size=5><center>Please use Stweaks "FIX DATA ON or OFF" option in the other tab to avoid annoying issues or use "Check and repair file system on every boot" to always check and repair partitions.</center></font></p>' >> $LOG_ERRORS;
+		$BB echo '<p><font size=5><center>It is advised to perform a nandroid or Titanium Backup similar app before fixing corrupt partitions.<br>Data of app and/or app may be delected if damaged too much!!!</center></font></p>' >> $LOG_ERRORS;
+		$BB echo "</body></html>" >> $LOG_ERRORS;
 	fi;
 
 }
@@ -578,8 +592,8 @@ SDCARD_FIX;
 
 # now that system is mounted create a init.d script to open browser and show partition error log
 if [ "$(cat /tmp/need_check_part)" -eq "1" ]; then
-	echo "#!/system/bin/sh" > "/system/etc/init.d/99Dalert";
-	echo "(sleep 120; am start -a android.intent.action.VIEW -n com.android.browser/.BrowserActivity -d file:///log-errors.html)&" >> "/system/etc/init.d/99Dalert";
+	$BB echo "#!/system/bin/sh" > "/system/etc/init.d/99Dalert";
+	$BB echo "(sleep 120; am start -a android.intent.action.VIEW -n com.android.browser/.BrowserActivity -d file:///log-errors.html)&" >> "/system/etc/init.d/99Dalert";
 	$BB chmod 755 /system/etc/init.d/99Dalert;
 	$BB chown root.shell /system/etc/init.d/99Dalert;
 else
@@ -624,14 +638,10 @@ cd /;
 
 # move new Kernel modules to /system/lib/modules if possible
 SYSTEM_FREE=$($BB df -h | $BB grep system | $BB cut -d " " -f14 | $BB cut -c 1-3);
-# if [ "$SYSTEM_FREE" -le "492" ]; then
 	$BB mv /lib/modules/*.ko /system/lib/modules/;
 	$BB chmod 755 /system/lib/modules/*.ko;
 	$BB ln -s /system/lib/modules/* /lib/modules/;
 	$BB insmod /system/lib/modules/exfat.ko;
-# else
-#	$BB insmod /lib/modules/exfat.ko;
-# fi;
 
 # mount external sdcard
 EXSDCARD;
@@ -652,7 +662,7 @@ USER_ACTIONS()
 	# only if asked by user via stweaks
 	if [ -e /system/run_fix_media ]; then
 		# data mount
-		$BB mount -t ext4 /res/dev/data /data;
+		$BB mount -t $FS_DATA /res/dev/data /data;
 
 		$BB mkdir -p /sdcardtmp;
 		$BB chmod 777 /sdcardtmp;
@@ -711,28 +721,28 @@ $BB chmod -R 777 /tmp;
 
 # check CLASSPATH files.
 if [ "$CM_AOSP_13_MM" -eq "1" ]; then
-	echo "3" > /proc/sys/kernel/rom_feature_set;
+	$BB echo "3" > /proc/sys/kernel/rom_feature_set;
 	$BB cp -a /res/misc/Marshmallow-CM-AOSP-13/* /;
 	$BB rm -rf /res/misc/Marshmallow-*;
 	$BB rm -rf /res/misc/Lollipop-*;
 	# for sbin/ext/install.sh and sbin/ext/post-init.sh
-	echo "1" > /tmp/cm-installed;
+	$BB echo "1" > /tmp/cm-installed;
 
 	SECROM_FUNCTION_AOSP;
 
 elif [ "$CM_AOSP_12_1_LP" -eq "1" ]; then
-	echo "3" > /proc/sys/kernel/rom_feature_set;
+	$BB echo "3" > /proc/sys/kernel/rom_feature_set;
 	$BB cp -a /res/misc/Lollipop-CM-AOSP-12.1/* /;
 	$BB rm -rf /res/misc/Marshmallow-*;
 	$BB rm -rf /res/misc/Lollipop-*;
 	# for sbin/ext/install.sh and sbin/ext/post-init.sh
-	echo "1" > /tmp/cm-installed;
+	$BB echo "1" > /tmp/cm-installed;
 	# for support cm12.1
-	echo "1" > /tmp/cm12.1-installed;
+	$BB echo "1" > /tmp/cm12.1-installed;
 
 	SECROM_FUNCTION_AOSP;
 else
-	echo "wrong kernel" > /tmp/wrong_kernel;
+	$BB echo "wrong kernel" > /tmp/wrong_kernel;
 fi;
 
 # if found by ROM detector and function finished, boot the detected ROM.
