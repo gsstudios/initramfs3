@@ -658,7 +658,6 @@ CPU_GOV_TWEAKS()
 			echo "$fast_scaling_sleep" > "$fast_scaling_tmp";
 			echo "$early_demand_sleep" > "$early_demand_tmp";
 			echo "$grad_up_threshold_sleep" > "$grad_up_threshold_tmp";
-			echo "$disable_hotplug_sleep" > "$disable_hotplug_tmp";
 			CPU_HOTPLUG_TWEAKS "sleep";
 		# awake-settings
 		elif [ "$state" == "awake" ]; then
@@ -696,7 +695,7 @@ CPU_GOV_TWEAKS()
 			echo "$fast_scaling_down" > "$fast_scaling_down_tmp";
 			echo "$early_demand" > "$early_demand_tmp";
 			echo "$grad_up_threshold" > "$grad_up_threshold_tmp";
-			echo "$disable_hotplug" > "$disable_hotplug_tmp";
+			echo "1" > "$disable_hotplug_tmp";
 			echo "$profile_number" > "$profile_number_tmp";
 			echo "$boostfreq" > "$boostfreq_tmp";
 		fi;
