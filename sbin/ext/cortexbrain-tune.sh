@@ -313,6 +313,11 @@ CPU_HOTPLUG_TWEAKS()
 				log -p i -t "$FILE_NAME" "*** CPU_ALUCARD_PLUG ***: enabled";
 			fi;
 		elif [ "$SYSTEM_GOVERNOR" == "zzmoove" ]; then
+			#enable zzmoove native hotplug
+			if [ "$disable_hotplug_tmp" -eq "1" ]; then
+				echo "0" > $disable_hotplug_tmp;
+				log -p i -t "$FILE_NAME" "*** CPU_ZZMOOVE_HOTPLUG ***: enabled";
+			fi;
 			#disable intelli_plug
 			if [ "$intelli_value_tmp" -eq "1" ]; then
 				echo "0" > $intelli_plug_active_tmp;
@@ -367,6 +372,11 @@ CPU_HOTPLUG_TWEAKS()
 		if [ "$alucard_value_tmp" -eq "1" ]; then
 			echo "0" > $hotplug_enable_tmp;
 			log -p i -t "$FILE_NAME" "*** CPU_ALUCARD_PLUG ***: disabled";
+		fi;
+		#disable zzmoove native hotplug
+		if [ "$disable_hotplug_tmp" -eq "0" ]; then
+			echo "1" > $disable_hotplug_tmp;
+			log -p i -t "$FILE_NAME" "*** CPU_ZZMOOVE_HOTPLUG ***: disabled";
 		fi;
 	fi;
 
