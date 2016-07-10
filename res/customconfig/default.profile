@@ -72,7 +72,6 @@ fast_scaling_up=0
 fast_scaling_down=0
 early_demand=0
 grad_up_threshold=50
-disable_hotplug=0
 scaling_governor_sleep=ondemand
 up_threshold_sleep=75
 up_threshold_at_min_freq_sleep=50
