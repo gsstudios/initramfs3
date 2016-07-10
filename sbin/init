@@ -117,7 +117,7 @@ $BB mknod /dev/block/mmcblk0p11 b 179 11;
 $BB mknod /dev/block/mmcblk1p1 b 179 13;
 $BB mknod /dev/block/mmcblk0p12 b 259 0;
 
-# needed for mount exfat binary /system/bin/mount.exfat-fuse
+# needed for mount exfat binary /sbin/mount.exfat
 $BB mknod /dev/fuse c 10 229;
 $BB chmod 666 /dev/fuse;
 
@@ -136,7 +136,7 @@ if [ -e /system/bin/e2fsck ]; then
 	cp /system/bin/e2fsck /sbin/e2fsck;
 fi;
 if [ -e /system/bin/mount.exfat-fuse ]; then
-	cp /system/bin/mount.exfat-fuse /sbin/mount.exfat-fuse;
+	cp /system/bin/mount.exfat-fuse /sbin/mount.exfat;
 fi;
 
 # check what type of fs sdcards have
@@ -150,7 +150,7 @@ fi;
 # prevent from media storage to dig in clockworkmod backup dir
 # added /mnt/tmp/android/.nomedia because my gallery is showing pic from there and media scanner has nothing to sniff around there
 if [ "$FS_SDCARD0" == "exfat" ]; then
-	$BB sh -c "/system/bin/mount.exfat-fuse /dev/block/mmcblk0p11 /mnt/tmp";
+	$BB sh -c "/sbin/mount.exfat /dev/block/mmcblk0p11 /mnt/tmp";
 else
 	$BB mount -t $FS_SDCARD0 /dev/block/mmcblk0p11 /mnt/tmp;
 fi;
@@ -167,7 +167,7 @@ EXSDCARD()
 	if [ -e /dev/block/mmcblk1p1 ]; then
 		# added /mnt/tmp2/android/.nomedia because my gallery is showing pic from there and media scanner has nothing to sniff around there
 		if [ "$FS_SDCARD1" == "exfat" ]; then
-			$BB sh -c "/system/bin/mount.exfat-fuse /dev/block/mmcblk1p1 /mnt/tmp2";
+			$BB sh -c "/sbin/mount.exfat /dev/block/mmcblk1p1 /mnt/tmp2";
 		else
 			$BB mount -t $FS_SDCARD1 /dev/block/mmcblk1p1 /mnt/tmp2;
 		fi;
@@ -667,7 +667,7 @@ USER_ACTIONS()
 		$BB mkdir -p /sdcardtmp;
 		$BB chmod 777 /sdcardtmp;
 		if [ "$FS_SDCARD0" == "exfat" ]; then
-			/system/bin/mount.exfat-fuse /dev/block/mmcblk0p11 /sdcardtmp;
+			/sbin/mount.exfat /dev/block/mmcblk0p11 /sdcardtmp;
 		else
 			$BB mount -t $FS_SDCARD0 /dev/block/mmcblk0p11 /sdcardtmp;
 		fi;
