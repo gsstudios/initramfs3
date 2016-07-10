@@ -228,11 +228,6 @@
 
 		<seekBar description="Scale up frequency if the load goes up in one step of grad up value. (Default: 50%)" name="grad_up_threshold" action="generic_cortex /tmp/grad_up_threshold" unit="%" min="11" reversed="false" step="1" max="100"/>
 
-		<spinner description="Switch to enable/disable hotplugging (possible values are any value above 0 to disable hotplugging and 0 to enable it. (Default: Disabled)" name="disable_hotplug" action="generic_cortex /tmp/disable_hotplug">
-			<spinnerItem name="Enabled" value="0"/> 
-			<spinnerItem name="Disabled" value="1"/> 
-</spinner>
-
 	</settingsPane>
 
 </settingsTab>
@@ -320,6 +315,11 @@
 	</settingsPane>
 
 	<settingsPane description="Here you can tune hotplugging variables for the selected hotplug method when screen is on" name="Hotplug variables (AWAKE)">
+
+		<spinner description="Enable/Disable zzmoove native hotplug. You should use only one hotplug method otherwise you may face problems. If you want to use Alucard HotPlug, keep this disabled. Otherwise, you can enable this if you like to. (Only for zzmoove) (Default: Disabled)" name="zzmoove native hotplug" action="generic_cortex /tmp/disable_hotplug">
+			<spinnerItem name="Enabled" value="0"/> 
+			<spinnerItem name="Disabled" value="1"/> 
+		</spinner>
 
 		<seekBar description="No of samples to evaluate load to scale CPU Up. After cpu_up_rate samples are finished for a frequency, CPU scale-Up logic is executed. In other words - before scaling Up, cpu_up_rate X up_sample_time micro seconds are spend at a frequency. (Only for Nightmare when hotplugging is Enabled) (Default: 5)" name="cpu_up_rate" action="generic_cortex /tmp/cpu_up_rate" unit="int" min="1" reversed="false" step="1" max="40"/>
 
