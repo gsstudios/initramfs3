@@ -671,11 +671,10 @@ done;
 cd /;
 
 # move new Kernel modules to /system/lib/modules if possible
-SYSTEM_FREE=$($BB df -h | $BB grep system | $BB cut -d " " -f14 | $BB cut -c 1-3);
-	$BB mv /lib/modules/*.ko /system/lib/modules/;
-	$BB chmod 755 /system/lib/modules/*.ko;
-	$BB ln -s /system/lib/modules/* /lib/modules/;
-	$BB insmod /system/lib/modules/exfat.ko;
+$BB mv /lib/modules/*.ko /system/lib/modules/;
+$BB chmod 755 /system/lib/modules/*.ko;
+$BB ln -s /system/lib/modules/* /lib/modules/;
+$BB insmod /system/lib/modules/exfat.ko;
 
 # mount external sdcard
 EXSDCARD;
