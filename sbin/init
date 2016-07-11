@@ -55,8 +55,8 @@ if $BB grep -q bootmode=2 /proc/cmdline; then
 			$BB rm -rf /isorec-tmp;
 			exec /init;
 
-		fi
-	fi
+		fi;
+	fi;
 
 	# clean up for non-isorec boot
 	$BB rm -rf /isorec-tmp;
@@ -304,7 +304,7 @@ SDCARD_FIX()
 	local LOG_SDCARD1="/log-sdcard1";
 	local FIX_VFAT_BINARY="/sbin/fsck_msdos";
 	local FIX_EXFAT_BINARY="/sbin/fsck.exfat";
-	local FIX_F2FS_BINARY="/sbin/fsck.f2fs"
+	local FIX_F2FS_BINARY="/sbin/fsck.f2fs";
 	local DEVICE_SDCARD0="/dev/block/mmcblk0p11";
 	local DEVICE_SDCARD1="/dev/block/mmcblk1p1";
 
@@ -641,11 +641,11 @@ SECROM_FUNCTION_AOSP()
 		$BB mv /init.smdk4210.rc.2 /init.smdk4210.rc;
 		$BB sed -i "s/%TYPE%/$FS_SDCARD0/g" /init.smdk4210.rc;
 		if [ -e /fstab.smdk4210.sec ]; then
-			$BB mv /fstab.smdk4210.sec /fstab.smdk4210
+			$BB mv /fstab.smdk4210.sec /fstab.smdk4210;
 		fi;
 	else
 		$BB rm -f /init.smdk4210.rc.2;
-		$BB rm -f /fstab.smdk4210.sec
+		$BB rm -f /fstab.smdk4210.sec;
 	fi;
 }
 
