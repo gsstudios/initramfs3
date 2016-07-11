@@ -492,13 +492,13 @@ PARTITION_TUNING()
 	$BB umount -l $DIR_SYSTEM;
 	$BB umount -l $DIR_PRELOAD;
 
-	if [ "$FS_CACHE" = "ext4" ]; then
+	if [ "$FS_CACHE" == "ext4" ]; then
 	TUNE_PARTITION $DEVICE_CACHE $LOG_CACHE;
 	else
 		$BB echo "Tunning partitions ends."  >> $LOG_CACHE;
 	fi;
 
-	if [ "$FS_DATA" = "ext4" ]; then
+	if [ "$FS_DATA" == "ext4" ]; then
 		TUNE_PARTITION $DEVICE_DATA $LOG_DATA;
 	else
 		$BB echo "Tunning partitions ends."  >> $LOG_DATA;
@@ -519,14 +519,14 @@ PARTITION_TUNING()
 		DALVIK_CLEAN;
 
 		# run partition fix by forcing full scan and repair
-		if [ "$FS_DATA" = "ext4" ]; then
+		if [ "$FS_DATA" == "ext4" ]; then
 			PARTITION_FIX $DEVICE_DATA $LOG_DATA;
 		elif [ "$FS_DATA" == "f2fs" ]; then
 			$BB sh -c "$FIX_F2FS_BINARY -p -f $DEVICE_DATA" >> $LOG_DATA;
 		else
 			$BB echo "UNKOWN OR UNSUPPORTED PARTITION TYPE \"$FS_DATA\"" >> $LOG_DATA;
 		fi;
-		if [ "$FS_CACHE" = "ext4" ]; then
+		if [ "$FS_CACHE" == "ext4" ]; then
 			PARTITION_FIX $DEVICE_CACHE $LOG_CACHE;
 		elif [ "$FS_CACHE" == "f2fs" ]; then
 			$BB sh -c "$FIX_F2FS_BINARY -p -f $DEVICE_CACHE" >> $LOG_CACHE;
@@ -546,7 +546,7 @@ PARTITION_TUNING()
 		# run partition fix by forcing full scan and repair
 		if [ "$(cat $LOG_DATA_TMP)" -eq "0" ]; then
 			AUTOCHECK=1;
-			if [ "$FS_DATA" = "ext4" ]; then
+			if [ "$FS_DATA" == "ext4" ]; then
 				PARTITION_FIX $DEVICE_DATA $LOG_DATA;
 			elif [ "$FS_DATA" == "f2fs" ]; then
 				$BB sh -c "$FIX_F2FS_BINARY -p -f $DEVICE_DATA" >> $LOG_DATA;
@@ -556,7 +556,7 @@ PARTITION_TUNING()
 		fi;
 		if [ "$(cat $LOG_CACHE_TMP)" -eq "0" ]; then
 			AUTOCHECK=1;
-			if [ "$FS_CACHE" = "ext4" ]; then
+			if [ "$FS_CACHE" == "ext4" ]; then
 				PARTITION_FIX $DEVICE_CACHE $LOG_CACHE;
 			elif [ "$FS_CACHE" == "f2fs" ]; then
 				$BB sh -c "$FIX_F2FS_BINARY -p -f $DEVICE_CACHE" >> $LOG_CACHE;
@@ -572,7 +572,7 @@ PARTITION_TUNING()
 			AUTOCHECK=1;
 			PARTITION_FIX $DEVICE_EFS $LOG_EFS;
 		fi;
-		if [ "$SECONDROM" = "0" ]; then
+		if [ "$SECONDROM" == "0" ]; then
 			if [ "$(cat $LOG_SYSTEM_TMP)" -eq "0" ]; then
 				AUTOCHECK=1;
 				PARTITION_FIX $DEVICE_PRELOAD $LOG_PRELOAD;
