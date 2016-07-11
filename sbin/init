@@ -121,9 +121,12 @@ $BB mknod /dev/block/mmcblk0p12 b 259 0;
 $BB mknod /dev/fuse c 10 229;
 $BB chmod 666 /dev/fuse;
 
-# check what type of fs on "data" partition
+# check what type of fs on "data" and "cache" partitions
 FS_DATA=$(eval $($BB blkid /dev/block/mmcblk0p10 | $BB cut -c 24-); $BB echo $TYPE);
+FS_CACHE=$(eval $($BB blkid /dev/block/mmcblk0p7 | $BB cut -c 24-); $BB echo $TYPE);
+# needed for debug
 $BB echo "$FS_DATA" > /tmp/data_fs_check;
+$BB echo "$FS_CACHE" > /tmp/cache_fs_check;
 
 # mounting preloaded partition
 $BB mount -t ext4 -o rw,noauto_da_alloc,journal_async_commit /dev/block/mmcblk0p12 /preload;
@@ -297,50 +300,50 @@ PARTITION_FIX()
 # sdcards fix
 SDCARD_FIX()
 {
-        local LOG_SDCARD0="/log-sdcard0";
-        local LOG_SDCARD1="/log-sdcard1";
-        local FIX_VFAT_BINARY="/sbin/fsck_msdos";
-        local FIX_EXFAT_BINARY="/sbin/fsck.exfat";
+	local LOG_SDCARD0="/log-sdcard0";
+	local LOG_SDCARD1="/log-sdcard1";
+	local FIX_VFAT_BINARY="/sbin/fsck_msdos";
+	local FIX_EXFAT_BINARY="/sbin/fsck.exfat";
 	local FIX_F2FS_BINARY="/sbin/fsck.f2fs"
-        local DEVICE_SDCARD0="/dev/block/mmcblk0p11";
-        local DEVICE_SDCARD1="/dev/block/mmcblk1p1";
+	local DEVICE_SDCARD0="/dev/block/mmcblk0p11";
+	local DEVICE_SDCARD1="/dev/block/mmcblk1p1";
 
-        # new empty log
-        $BB sh -c "/sbin/date" > $LOG_SDCARD0;
-        $BB sh -c "/sbin/date" > $LOG_SDCARD1;
+	# new empty log
+	$BB sh -c "/sbin/date" > $LOG_SDCARD0;
+	$BB sh -c "/sbin/date" > $LOG_SDCARD1;
 
-        cp -a /sbin/libexfat_utils.so /system/lib/;
-        if [ -e /dev/block/mmcblk1p1 ]; then
-                $BB echo "EXTERNAL SDCARD CHECK" >> $LOG_SDCARD1;
-                if [ "$FS_SDCARD1" == "exfat" ]; then
-                        $BB sh -c "$FIX_EXFAT_BINARY -R $DEVICE_SDCARD1" >> $LOG_SDCARD1;
-                elif [ "$FS_SDCARD1" == "vfat" ]; then
-                        $BB sh -c "$FIX_VFAT_BINARY -p -f $DEVICE_SDCARD1" >> $LOG_SDCARD1;
-                elif [ "$FS_SDCARD1" == "f2fs" ]; then
-                        $BB sh -c "$FIX_F2FS_BINARY -p -f $DEVICE_SDCARD1" >> $LOG_SDCARD1;
-                elif [ "$FS_SDCARD1" == "ext4" ]; then
-                        PARTITION_FIX $DEVICE_SDCARD1 $LOG_SDCARD1;
-                else
-                        $BB echo "UNKOWN OR UNSUPPORTED PARTITION TYPE \"$FS_SDCARD1\"" >> $LOG_SDCARD1;
-                fi;
-                $BB echo "DONE" >> $LOG_SDCARD1;
-        else
-                $BB echo "NO EXTERNAL SDCARD FOUND" >> $LOG_SDCARD1;
-        fi;
+	cp -a /sbin/libexfat_utils.so /system/lib/;
+	if [ -e /dev/block/mmcblk1p1 ]; then
+		$BB echo "EXTERNAL SDCARD CHECK" >> $LOG_SDCARD1;
+		if [ "$FS_SDCARD1" == "exfat" ]; then
+			$BB sh -c "$FIX_EXFAT_BINARY -R $DEVICE_SDCARD1" >> $LOG_SDCARD1;
+		elif [ "$FS_SDCARD1" == "vfat" ]; then
+			$BB sh -c "$FIX_VFAT_BINARY -p -f $DEVICE_SDCARD1" >> $LOG_SDCARD1;
+		elif [ "$FS_SDCARD1" == "f2fs" ]; then
+			$BB sh -c "$FIX_F2FS_BINARY -p -f $DEVICE_SDCARD1" >> $LOG_SDCARD1;
+		elif [ "$FS_SDCARD1" == "ext4" ]; then
+			PARTITION_FIX $DEVICE_SDCARD1 $LOG_SDCARD1;
+		else
+			$BB echo "UNKOWN OR UNSUPPORTED PARTITION TYPE \"$FS_SDCARD1\"" >> $LOG_SDCARD1;
+		fi;
+		$BB echo "DONE" >> $LOG_SDCARD1;
+	else
+		$BB echo "NO EXTERNAL SDCARD FOUND" >> $LOG_SDCARD1;
+	fi;
 
-        $BB echo "INTERNAL SDCARD CHECK" >> $LOG_SDCARD0;
-        if [ "$FS_SDCARD0" == "exfat" ]; then
-                $BB sh -c "$FIX_EXFAT_BINARY -R $DEVICE_SDCARD0"  >> $LOG_SDCARD0;
-        elif [ "$FS_SDCARD0" == "vfat" ]; then
-                $BB sh -c "$FIX_VFAT_BINARY -p -f $DEVICE_SDCARD0"  >> $LOG_SDCARD0;
-        elif [ "$FS_SDCARD0" == "f2fs" ]; then
-                $BB sh -c "$FIX_F2FS_BINARY -p -f $DEVICE_SDCARD0"  >> $LOG_SDCARD0;
-        elif [ "$FS_SDCARD0" == "ext4" ]; then
-                PARTITION_FIX $DEVICE_SDCARD0 $LOG_SDCARD0;
-        else
-                $BB echo "UNKOWN OR UNSUPPORTED PARTITION TYPE \"$FS_SDCARD0\"" >> $LOG_SDCARD0;
-        fi;
-        $BB echo "DONE"  >> $LOG_SDCARD0;
+	$BB echo "INTERNAL SDCARD CHECK" >> $LOG_SDCARD0;
+	if [ "$FS_SDCARD0" == "exfat" ]; then
+		$BB sh -c "$FIX_EXFAT_BINARY -R $DEVICE_SDCARD0"  >> $LOG_SDCARD0;
+	elif [ "$FS_SDCARD0" == "vfat" ]; then
+		$BB sh -c "$FIX_VFAT_BINARY -p -f $DEVICE_SDCARD0"  >> $LOG_SDCARD0;
+	elif [ "$FS_SDCARD0" == "f2fs" ]; then
+		$BB sh -c "$FIX_F2FS_BINARY -p -f $DEVICE_SDCARD0"  >> $LOG_SDCARD0;
+	elif [ "$FS_SDCARD0" == "ext4" ]; then
+		PARTITION_FIX $DEVICE_SDCARD0 $LOG_SDCARD0;
+	else
+		$BB echo "UNKOWN OR UNSUPPORTED PARTITION TYPE \"$FS_SDCARD0\"" >> $LOG_SDCARD0;
+	fi;
+	$BB echo "DONE"  >> $LOG_SDCARD0;
 }
 
 NEED_CHECK()
@@ -489,7 +492,11 @@ PARTITION_TUNING()
 	$BB umount -l $DIR_SYSTEM;
 	$BB umount -l $DIR_PRELOAD;
 
+	if [ "$FS_CACHE" = "ext4" ]; then
 	TUNE_PARTITION $DEVICE_CACHE $LOG_CACHE;
+	else
+		$BB echo "Tunning partitions ends."  >> $LOG_CACHE;
+	fi;
 
 	if [ "$FS_DATA" = "ext4" ]; then
 		TUNE_PARTITION $DEVICE_DATA $LOG_DATA;
@@ -512,8 +519,20 @@ PARTITION_TUNING()
 		DALVIK_CLEAN;
 
 		# run partition fix by forcing full scan and repair
-		PARTITION_FIX $DEVICE_DATA $LOG_DATA;
-		PARTITION_FIX $DEVICE_CACHE $LOG_CACHE;
+		if [ "$FS_DATA" = "ext4" ]; then
+			PARTITION_FIX $DEVICE_DATA $LOG_DATA;
+		elif [ "$FS_DATA" == "f2fs" ]; then
+			$BB sh -c "$FIX_F2FS_BINARY -p -f $DEVICE_DATA" >> $LOG_DATA;
+		else
+			$BB echo "UNKOWN OR UNSUPPORTED PARTITION TYPE \"$FS_DATA\"" >> $LOG_DATA;
+		fi;
+		if [ "$FS_CACHE" = "ext4" ]; then
+			PARTITION_FIX $DEVICE_CACHE $LOG_CACHE;
+		elif [ "$FS_CACHE" == "f2fs" ]; then
+			$BB sh -c "$FIX_F2FS_BINARY -p -f $DEVICE_CACHE" >> $LOG_CACHE;
+		else
+			$BB echo "UNKOWN OR UNSUPPORTED PARTITION TYPE \"$FS_CACHE\"" >> $LOG_CACHE;
+		fi;
 		PARTITION_FIX $DEVICE_SYSTEM $LOG_SYSTEM;
 		PARTITION_FIX $DEVICE_EFS $LOG_EFS;
 		if [ "$SECONDROM" = "0" ]; then
@@ -529,11 +548,21 @@ PARTITION_TUNING()
 			AUTOCHECK=1;
 			if [ "$FS_DATA" = "ext4" ]; then
 				PARTITION_FIX $DEVICE_DATA $LOG_DATA;
+			elif [ "$FS_DATA" == "f2fs" ]; then
+				$BB sh -c "$FIX_F2FS_BINARY -p -f $DEVICE_DATA" >> $LOG_DATA;
+			else
+				$BB echo "UNKOWN OR UNSUPPORTED PARTITION TYPE \"$FS_DATA\"" >> $LOG_DATA;
 			fi;
 		fi;
 		if [ "$(cat $LOG_CACHE_TMP)" -eq "0" ]; then
 			AUTOCHECK=1;
-			PARTITION_FIX $DEVICE_CACHE $LOG_CACHE;
+			if [ "$FS_CACHE" = "ext4" ]; then
+				PARTITION_FIX $DEVICE_CACHE $LOG_CACHE;
+			elif [ "$FS_CACHE" == "f2fs" ]; then
+				$BB sh -c "$FIX_F2FS_BINARY -p -f $DEVICE_CACHE" >> $LOG_CACHE;
+			else
+				$BB echo "UNKOWN OR UNSUPPORTED PARTITION TYPE \"$FS_CACHE\"" >> $LOG_CACHE;
+			fi;
 		fi;
 		if [ "$(cat $LOG_SYSTEM_TMP)" -eq "0" ]; then
 			AUTOCHECK=1;
