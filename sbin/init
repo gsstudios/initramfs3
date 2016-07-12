@@ -535,7 +535,7 @@ PARTITION_TUNING()
 		fi;
 		PARTITION_FIX $DEVICE_SYSTEM $LOG_SYSTEM;
 		PARTITION_FIX $DEVICE_EFS $LOG_EFS;
-		if [ "$SECONDROM" = "0" ]; then
+		if [ "$SECONDROM" -eq "0" ]; then
 			PARTITION_FIX $DEVICE_PRELOAD $LOG_PRELOAD;
 		fi;
 	fi;
@@ -572,7 +572,7 @@ PARTITION_TUNING()
 			AUTOCHECK=1;
 			PARTITION_FIX $DEVICE_EFS $LOG_EFS;
 		fi;
-		if [ "$SECONDROM" == "0" ]; then
+		if [ "$SECONDROM" -eq "0" ]; then
 			if [ "$(cat $LOG_SYSTEM_TMP)" -eq "0" ]; then
 				AUTOCHECK=1;
 				PARTITION_FIX $DEVICE_PRELOAD $LOG_PRELOAD;
