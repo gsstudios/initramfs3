@@ -213,11 +213,11 @@ NOBOOTLOGO=0;
 
 # dual boot check and run
 if [ -e /mnt/tmp/.nextboot ]; then
-	NEXTBOOT=$(cat /mnt/tmp/.nextboot);
+	NEXTBOOT=$($BB  /mnt/tmp/.nextboot);
 	$BB rm -f /mnt/tmp/.nextboot;
 fi;
 if [ -e /mnt/tmp/.defaultrom ]; then
-	DEFAULTROM=$(cat /mnt/tmp/.defaultrom);
+	DEFAULTROM=$($BB  /mnt/tmp/.defaultrom);
 fi;
 
 [ -e /preload/build.prop ] || SECONDROM=0;
@@ -382,7 +382,7 @@ TUNE_PARTITION()
 		$BB sh -c "/sbin/tune2fs.static -l $DEVICE" > $LOG_TMP;
 		$BB echo "" >> $LOG;
 		# set fs-feature -> [^]has_journal
-		if [ "$(cat $LOG_TMP | $BB grep 'features' | $BB grep 'has_journal' | $BB wc -l)" -eq "0" ]; then
+		if [ "$($BB  $LOG_TMP | $BB grep 'features' | $BB grep 'has_journal' | $BB wc -l)" -eq "0" ]; then
 			$BB sh -c "/sbin/tune2fs.static -O has_journal $DEVICE" >> $LOG 2>&1;
 			$BB echo "Added has_journal feature to $DEVICE" >> $LOG;
 		else
@@ -390,7 +390,7 @@ TUNE_PARTITION()
 		fi;
 
 		# set fs-feature -> [^]dir_index
-		if [ "$(cat $LOG_TMP | $BB grep 'features' | $BB grep 'dir_index' | $BB wc -l)" -eq "0" ]; then
+		if [ "$($BB  $LOG_TMP | $BB grep 'features' | $BB grep 'dir_index' | $BB wc -l)" -eq "0" ]; then
 			$BB sh -c "/sbin/tune2fs.static -O dir_index $DEVICE" >> $LOG 2>&1;
 			$BB echo "Added dir_index feature to $DEVICE" >> $LOG;
 		else
@@ -398,7 +398,7 @@ TUNE_PARTITION()
 		fi;
 
 		# set mount option -> [^]journal_data_writeback
-		if [ "$(cat $LOG_TMP | $BB grep 'Default mount options' | $BB grep 'journal_data_writeback' | $BB wc -l)" -eq "0" ]; then
+		if [ "$($BB  $LOG_TMP | $BB grep 'Default mount options' | $BB grep 'journal_data_writeback' | $BB wc -l)" -eq "0" ]; then
 			$BB sh -c "/sbin/tune2fs.static -o journal_data_writeback $DEVICE" >> $LOG 2>&1;
 			$BB echo "Added journal_data_writeback default mount option to $DEVICE" >> $LOG;
 		else
@@ -406,7 +406,7 @@ TUNE_PARTITION()
 		fi;
 
 		# set inode to 256
-		if [ "$(cat $LOG_TMP | $BB grep 'Inode size' | $BB grep '256' | $BB wc -l)" -eq "0" ]; then
+		if [ "$($BB  $LOG_TMP | $BB grep 'Inode size' | $BB grep '256' | $BB wc -l)" -eq "0" ]; then
 			$BB sh -c "/sbin/tune2fs.static -I 256 $DEVICE" >> $LOG 2>&1;
 			$BB echo "Added 256 Inode size to $DEVICE" >> $LOG;
 		else
@@ -420,9 +420,9 @@ TUNE_PARTITION()
 	$BB echo "Checking if device has errors..." >> $LOG;
 	$BB echo "" >> $LOG;
 	$BB sh -c "/sbin/e2fsck -nv $DEVICE" > $LOG_TMP;
-	cat $LOG_TMP >> $LOG;
+	$BB  $LOG_TMP >> $LOG;
 	$BB echo "" >> $LOG;
-	if [ "$(cat $LOG_TMP | $BB grep 'clean' | $BB wc -l)" -eq "0" ]; then
+	if [ "$($BB  $LOG_TMP | $BB grep 'clean' | $BB wc -l)" -eq "0" ]; then
 		NEED_CHECK;
 		$BB echo "DEVICE $DEVICE NEEDS DO BE FIX" >> $LOG;
 		$BB echo "0" > $LOG_TMP;
@@ -543,7 +543,7 @@ PARTITION_TUNING()
 	# only if set auto via stweaks without dalvik cache clean
 	if [ -e /mnt/tmp/.fix_fs_on_boot_auto ]; then
 		# run partition fix by forcing full scan and repair
-		if [ "$(cat $LOG_DATA_TMP)" -eq "0" ]; then
+		if [ "$($BB  $LOG_DATA_TMP)" -eq "0" ]; then
 			AUTOCHECK=1;
 			if [ "$FS_DATA" == "ext4" ]; then
 				PARTITION_FIX $DEVICE_DATA $LOG_DATA;
@@ -553,7 +553,7 @@ PARTITION_TUNING()
 				$BB echo "UNKOWN OR UNSUPPORTED PARTITION TYPE \"$FS_DATA\"" >> $LOG_DATA;
 			fi;
 		fi;
-		if [ "$(cat $LOG_CACHE_TMP)" -eq "0" ]; then
+		if [ "$($BB  $LOG_CACHE_TMP)" -eq "0" ]; then
 			AUTOCHECK=1;
 			if [ "$FS_CACHE" == "ext4" ]; then
 				PARTITION_FIX $DEVICE_CACHE $LOG_CACHE;
@@ -563,16 +563,16 @@ PARTITION_TUNING()
 				$BB echo "UNKOWN OR UNSUPPORTED PARTITION TYPE \"$FS_CACHE\"" >> $LOG_CACHE;
 			fi;
 		fi;
-		if [ "$(cat $LOG_SYSTEM_TMP)" -eq "0" ]; then
+		if [ "$($BB  $LOG_SYSTEM_TMP)" -eq "0" ]; then
 			AUTOCHECK=1;
 			PARTITION_FIX $DEVICE_SYSTEM $LOG_SYSTEM;
 		fi;
-		if [ "$(cat $LOG_EFS_TMP)" -eq "0" ]; then
+		if [ "$($BB  $LOG_EFS_TMP)" -eq "0" ]; then
 			AUTOCHECK=1;
 			PARTITION_FIX $DEVICE_EFS $LOG_EFS;
 		fi;
 		if [ "$SECONDROM" -eq "0" ]; then
-			if [ "$(cat $LOG_SYSTEM_TMP)" -eq "0" ]; then
+			if [ "$($BB  $LOG_SYSTEM_TMP)" -eq "0" ]; then
 				AUTOCHECK=1;
 				PARTITION_FIX $DEVICE_PRELOAD $LOG_PRELOAD;
 			fi;
@@ -581,25 +581,25 @@ PARTITION_TUNING()
 
 	LOG_ERRORS="/log-errors.html";
 	# create report to show to user after booting ;)
-	if [ "$(cat /tmp/need_check_part)" -eq "1" ] || [ "$AUTOCHECK" -gt 0 ]; then
+	if [ "$($BB  /tmp/need_check_part)" -eq "1" ] || [ "$AUTOCHECK" -gt 0 ]; then
 		if [ "$AUTOCHECK" -gt 0 ]; then
 			$BB echo "<html><body><br><p><font size=5 color=GREEN><center>ERRORS IN PARTITIONS DETECTED AND FIXED</center></font></p>" > $LOG_ERRORS;
 		else
 			$BB echo "<html><body><br><p><font size=5 color=RED><center>ERRORS IN PARTITIONS DETECTED</center></font></p>" > $LOG_ERRORS;
 		fi;
-		if [ "$(cat $LOG_DATA_TMP)" -eq "0" ]; then
+		if [ "$($BB  $LOG_DATA_TMP)" -eq "0" ]; then
 			FORMAT_ERRORS_LOG $LOG_DATA $LOG_ERRORS;
 		fi;
-		if [ "$(cat $LOG_CACHE_TMP)" -eq "0" ]; then
+		if [ "$($BB  $LOG_CACHE_TMP)" -eq "0" ]; then
 			FORMAT_ERRORS_LOG $LOG_CACHE $LOG_ERRORS;
 		fi;
-		if [ "$(cat $LOG_SYSTEM_TMP)" -eq "0" ]; then
+		if [ "$($BB  $LOG_SYSTEM_TMP)" -eq "0" ]; then
 			FORMAT_ERRORS_LOG $LOG_SYSTEM $LOG_ERRORS;
 		fi;
-		if [ "$(cat $LOG_PRELOAD_TMP)" -eq "0" ]; then
+		if [ "$($BB  $LOG_PRELOAD_TMP)" -eq "0" ]; then
 			FORMAT_ERRORS_LOG $LOG_PRELOAD $LOG_ERRORS;
 		fi;
-		if [ "$(cat $LOG_EFS_TMP)" -eq "0" ]; then
+		if [ "$($BB  $LOG_EFS_TMP)" -eq "0" ]; then
 			FORMAT_ERRORS_LOG $LOG_EFS $LOG_ERRORS;
 		fi;
 		$BB echo '<p><font size=5><center>Please use Stweaks "FIX DATA ON or OFF" option in the other tab to avoid annoying issues or use "Check and repair file system on every boot" to always check and repair partitions.</center></font></p>' >> $LOG_ERRORS;
@@ -624,7 +624,7 @@ $BB umount -l /mnt/tmp;
 SDCARD_FIX;
 
 # now that system is mounted create a init.d script to open browser and show partition error log
-if [ "$(cat /tmp/need_check_part)" -eq "1" ]; then
+if [ "$($BB  /tmp/need_check_part)" -eq "1" ]; then
 	$BB echo "#!/system/bin/sh" > "/system/etc/init.d/99Dalert";
 	$BB echo "(sleep 120; am start -a android.intent.action.VIEW -n com.android.browser/.BrowserActivity -d file:///log-errors.html)&" >> "/system/etc/init.d/99Dalert";
 	$BB chmod 755 /system/etc/init.d/99Dalert;
