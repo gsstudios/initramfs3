@@ -12,7 +12,7 @@ if [ ! -f /data/.siyah/efsbackup.tar.gz ]; then
 	$BB chmod 777 /data/media/efsdev-mmcblk0p3.img;
 	$BB chmod 777 /data/media/efsbackup.tar.gz;
 	(
-		sleep 120;
-		cp /data/media/efs* /sdcard/;
+		$BB sleep 120;
+		$BB cp -a /data/media/efs* /sdcard/;
 	)&
 fi;
