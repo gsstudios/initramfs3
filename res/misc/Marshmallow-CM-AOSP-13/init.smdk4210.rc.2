@@ -17,17 +17,17 @@ on init
 
 on fs
 # verify filesystem (UMS)
-    exec sformat /dev/block/mmcblk0p11 %TYPE%
-    
+    exec sformat /dev/block/mmcblk0p11 %TYPE_SDCARD0%
+
 # make sure sdcard is mounted because we need apps2sd to work and we may have our data and cache partitions on it
-    mount %TYPE% /dev/block/mmcblk0p11 /mnt/.secondrom wait utf8
+    mount %TYPE_SDCARD0% /dev/block/mmcblk0p11 /mnt/.secondrom wait utf8
     mkdir /mnt/.secondrom/.android_secure 0700 root root
     mkdir /mnt/.secondrom/.secondrom 0700 root root
 
 # mount partitions.
-    mount ext4 loop@/res/dev/cache /cache nosuid nodev wait
+    mount %TYPE_CACHE% loop@/res/dev/cache /cache nosuid nodev wait
     mount ext4 /dev/block/mmcblk0p1 /efs nosuid nodev wait
-    mount ext4 loop@/res/dev/data /data nosuid nodev wait
+    mount %TYPE_DATA% loop@/res/dev/data /data nosuid nodev wait
 
     mount_all /fstab.smdk4210
 

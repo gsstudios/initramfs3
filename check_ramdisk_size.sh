@@ -9,4 +9,3 @@ rm -rf /tmp/initramfs_source/res/vendor
 
 du -sh /tmp/initramfs_source/
 echo "if less than 14MB then all OK, if MORE remove something! Ramdisk can be max 14MB in RAM on boot."
-

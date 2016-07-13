@@ -31,7 +31,7 @@ $BB echo "2" > /proc/sys/kernel/sysrq;
 $BB rm -f /sbin/reboot;
 
 # fix storage folder owner
-$BB chown system.sdcard_rw /storage;
+$BB chown system:sdcard_rw /storage;
 
 PIDOFINIT=$(pgrep -f "/sbin/ext/post-init.sh");
 for i in $PIDOFINIT; do
@@ -45,7 +45,8 @@ if [ "$($BB cat /tmp/sec_rom_boot)" -eq "1" ]; then
 	$BB umount -l /preload;
 	if [ ! -e /data_pri_rom ]; then
 		$BB mkdir /data_pri_rom;
-		$BB mount -t ext4 /dev/block/mmcblk0p10 /data_pri_rom;
+		FS_DATA=$($BB cat /tmp/data_fs_check);
+		$BB mount -t $FS_DATA /dev/block/mmcblk0p10 /data_pri_rom;
 		$BB chmod 700 /data_pri_rom;
 	fi;
 	if [ ! -e /system_pri_rom ]; then
@@ -357,7 +358,9 @@ ROOT_RW;
 		done;
 	fi;
 
-	$BB mount -o remount,rw /storage/sdcard0;
+	if [ -e /tmp/cm12.1-installed ]; then
+		$BB mount -o remount,rw /storage/sdcard0;
+	fi;
 
 	# script finish here, so let me know when
 	$BB echo "Done Booting" > /data/dm-boot-check;

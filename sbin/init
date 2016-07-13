@@ -123,7 +123,7 @@ $BB chmod 666 /dev/fuse;
 # check what type of fs on "data" and "cache" partitions
 FS_DATA=$(eval $($BB blkid /dev/block/mmcblk0p10 | $BB cut -c 24-); $BB echo $TYPE);
 FS_CACHE=$(eval $($BB blkid /dev/block/mmcblk0p7 | $BB cut -c 24-); $BB echo $TYPE);
-# needed for debug
+# needed for debug and other scripts
 $BB echo "$FS_DATA" > /tmp/data_fs_check;
 $BB echo "$FS_CACHE" > /tmp/cache_fs_check;
 
@@ -638,7 +638,9 @@ SECROM_FUNCTION_AOSP()
 	# init.rc style CM/AOSP
 	if [ "$SECONDROM" -eq "1" ]; then
 		$BB mv /init.smdk4210.rc.2 /init.smdk4210.rc;
-		$BB sed -i "s/%TYPE%/$FS_SDCARD0/g" /init.smdk4210.rc;
+		$BB sed -i "s/%TYPE_SDCARD0%/$FS_SDCARD0/g" /init.smdk4210.rc;
+		$BB sed -i "s/%TYPE_CACHE%/$FS_CACHE/g" /init.smdk4210.rc;
+		$BB sed -i "s/%TYPE_DATA%/$FS_DATA/g" /init.smdk4210.rc;
 		if [ -e /fstab.smdk4210.sec ]; then
 			$BB mv /fstab.smdk4210.sec /fstab.smdk4210;
 		fi;
