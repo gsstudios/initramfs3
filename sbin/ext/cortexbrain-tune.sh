@@ -31,7 +31,9 @@ USB_POWER=0;
 TELE_DATA=init;
 # read sd-card size, set via boot
 SDCARD_SIZE=$(cat /tmp/sdcard_size);
-EXTERNAL_SDCARD_CM=$(mount | grep "/storage/sdcard1" | wc -l);
+if [ -e /tmp/cm12.1-installed ]; then
+	EXTERNAL_SDCARD_CM=$(mount | grep "/storage/sdcard1" | wc -l);
+fi;
 
 # ==============================================================
 # INITIATE
@@ -1485,17 +1487,19 @@ MOUNT_FIX()
 	local CHECK_SYSTEM=$(mount | grep "/system" | grep rw | wc -l);
 	local CHECK_DATA=$(mount | grep "/data" | cut -c 26-27 | grep ro | grep -v ec | grep -v ec | wc -l);
 	local PRELOAD_CHECK=$(mount | grep "/preload" | grep ro | wc -l);
-	local SDCARD_CHECK=$(mount | grep "/storage/sdcard0" | grep rw | grep -v tmpfs | wc -l);
+	if [ -e /tmp/cm12.1-installed ]; then
+		local SDCARD_CHECK=$(mount | grep "/storage/sdcard0" | grep rw | grep -v tmpfs | wc -l);
 
-	if [ "$SDCARD_CHECK" -eq "0" ]; then
-		mount -o remount,rw /storage/sdcard0;
-		log -p i -t "$FILE_NAME" "*** SDCARD_RO_FIX ***";
-	fi;
-	if [ "$EXTERNAL_SDCARD_CM" -eq "1" ]; then
-		local EXT_SDCARD_CHECK=$(mount | grep "/storage/sdcard1" | grep rw | wc -l);
-		if [ "$EXT_SDCARD_CHECK" -eq "0" ]; then
-			mount -o remount,rw /storage/sdcard1;
-			log -p i -t "$FILE_NAME" "*** EXT_SDCARD_RO_FIX ***";
+		if [ "$SDCARD_CHECK" -eq "0" ]; then
+			mount -o remount,rw /storage/sdcard0;
+			log -p i -t "$FILE_NAME" "*** SDCARD_RO_FIX ***";
+		fi;
+		if [ "$EXTERNAL_SDCARD_CM" -eq "1" ]; then
+			local EXT_SDCARD_CHECK=$(mount | grep "/storage/sdcard1" | grep rw | wc -l);
+			if [ "$EXT_SDCARD_CHECK" -eq "0" ]; then
+				mount -o remount,rw /storage/sdcard1;
+				log -p i -t "$FILE_NAME" "*** EXT_SDCARD_RO_FIX ***";
+			fi;
 		fi;
 	fi;
 	if [ "$CHECK_SYSTEM" -eq "0" ]; then
