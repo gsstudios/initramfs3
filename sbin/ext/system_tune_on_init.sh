@@ -56,7 +56,7 @@ if [ -e /tmp/wrong_kernel ]; then
 		$BB cp /system/bin/wrong_kernel.png /res/images/icon_clockwork.png;
 		/sbin/choose_rom 0;
 	fi;
-	sleep 15;
+	$BB sleep 15;
 	sync;
 	reboot;
 else

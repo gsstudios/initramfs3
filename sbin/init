@@ -13,8 +13,6 @@ fi;
 # mount root as rw
 $BB mount -t rootfs -o remount,rw rootfs;
 
-$BB mkdir -p /dev/block;
-
 if $BB grep -q bootmode=2 /proc/cmdline; then
 	# recovery mode
 	$BB echo "0" > /proc/sys/kernel/rom_feature_set;
@@ -87,6 +85,7 @@ $BB umount -l /storage/sdcard1;
 # cleaning and rebuilding the /mnt and sdcards mounts folders
 $BB rm -rf /vendor;
 $BB rm -rf /tmp/*;
+$BB mkdir -p /dev/block;
 $BB mkdir -p /dev/input;
 $BB mkdir -p /dev/graphics;
 $BB mkdir -p /mnt/asec;
@@ -383,7 +382,7 @@ TUNE_PARTITION()
 		$BB sh -c "/sbin/tune2fs.static -l $DEVICE" > $LOG_TMP;
 		$BB echo "" >> $LOG;
 		# set fs-feature -> [^]has_journal
-		if [ "$(cat $LOG_TMP | $BB grep 'features' | $BB grep 'has_journal' | wc -l)" -eq "0" ]; then
+		if [ "$(cat $LOG_TMP | $BB grep 'features' | $BB grep 'has_journal' | $BB wc -l)" -eq "0" ]; then
 			$BB sh -c "/sbin/tune2fs.static -O has_journal $DEVICE" >> $LOG 2>&1;
 			$BB echo "Added has_journal feature to $DEVICE" >> $LOG;
 		else
@@ -391,7 +390,7 @@ TUNE_PARTITION()
 		fi;
 
 		# set fs-feature -> [^]dir_index
-		if [ "$(cat $LOG_TMP | $BB grep 'features' | $BB grep 'dir_index' | wc -l)" -eq "0" ]; then
+		if [ "$(cat $LOG_TMP | $BB grep 'features' | $BB grep 'dir_index' | $BB wc -l)" -eq "0" ]; then
 			$BB sh -c "/sbin/tune2fs.static -O dir_index $DEVICE" >> $LOG 2>&1;
 			$BB echo "Added dir_index feature to $DEVICE" >> $LOG;
 		else
@@ -399,7 +398,7 @@ TUNE_PARTITION()
 		fi;
 
 		# set mount option -> [^]journal_data_writeback
-		if [ "$(cat $LOG_TMP | $BB grep 'Default mount options' | $BB grep 'journal_data_writeback' | wc -l)" -eq "0" ]; then
+		if [ "$(cat $LOG_TMP | $BB grep 'Default mount options' | $BB grep 'journal_data_writeback' | $BB wc -l)" -eq "0" ]; then
 			$BB sh -c "/sbin/tune2fs.static -o journal_data_writeback $DEVICE" >> $LOG 2>&1;
 			$BB echo "Added journal_data_writeback default mount option to $DEVICE" >> $LOG;
 		else
@@ -407,7 +406,7 @@ TUNE_PARTITION()
 		fi;
 
 		# set inode to 256
-		if [ "$(cat $LOG_TMP | $BB grep 'Inode size' | $BB grep '256' | wc -l)" -eq "0" ]; then
+		if [ "$(cat $LOG_TMP | $BB grep 'Inode size' | $BB grep '256' | $BB wc -l)" -eq "0" ]; then
 			$BB sh -c "/sbin/tune2fs.static -I 256 $DEVICE" >> $LOG 2>&1;
 			$BB echo "Added 256 Inode size to $DEVICE" >> $LOG;
 		else
@@ -423,7 +422,7 @@ TUNE_PARTITION()
 	$BB sh -c "/sbin/e2fsck -nv $DEVICE" > $LOG_TMP;
 	cat $LOG_TMP >> $LOG;
 	$BB echo "" >> $LOG;
-	if [ "$(cat $LOG_TMP | $BB grep 'clean' | wc -l)" -eq "0" ]; then
+	if [ "$(cat $LOG_TMP | $BB grep 'clean' | $BB wc -l)" -eq "0" ]; then
 		NEED_CHECK;
 		$BB echo "DEVICE $DEVICE NEEDS DO BE FIX" >> $LOG;
 		$BB echo "0" > $LOG_TMP;
@@ -687,8 +686,8 @@ if [ -f /system/recovery.cpio.gz ]; then
 fi;
 
 # ROM check init
-CM_AOSP_12_1_LP=$($BB cat /system/build.prop | $BB grep "ro.build.version.release=5.1" | wc -l);
-CM_AOSP_13_MM=$($BB cat /system/build.prop | $BB grep "ro.build.version.release=6.0" | wc -l);
+CM_AOSP_12_1_LP=$($BB cat /system/build.prop | $BB grep "ro.build.version.release=5.1" | $BB wc -l);
+CM_AOSP_13_MM=$($BB cat /system/build.prop | $BB grep "ro.build.version.release=6.0" | $BB wc -l);
 
 USER_ACTIONS()
 {

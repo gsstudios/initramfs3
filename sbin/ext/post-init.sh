@@ -22,10 +22,10 @@ $BB chmod 666 /sys/module/lowmemorykiller/parameters/cost;
 $BB chmod 666 /sys/module/lowmemorykiller/parameters/adj;
 
 # protect init from oom
-echo "-1000" > /proc/1/oom_score_adj;
+$BB echo "-1000" > /proc/1/oom_score_adj;
 
 # set sysrq to 2 = enable control of console logging level as with CM-KERNEL
-echo "2" > /proc/sys/kernel/sysrq;
+$BB echo "2" > /proc/sys/kernel/sysrq;
 
 # bypass for reboot command till fixed.
 $BB rm -f /sbin/reboot;
@@ -35,10 +35,10 @@ $BB chown system.sdcard_rw /storage;
 
 PIDOFINIT=$(pgrep -f "/sbin/ext/post-init.sh");
 for i in $PIDOFINIT; do
-	echo "-600" > /proc/"$i"/oom_score_adj;
+	$BB echo "-600" > /proc/"$i"/oom_score_adj;
 done;
 
-if [ "$(cat /tmp/sec_rom_boot)" -eq "1" ]; then
+if [ "$($BB cat /tmp/sec_rom_boot)" -eq "1" ]; then
 	$BB mount -o remount,rw,noauto_da_alloc,journal_async_commit /data;
 	$BB mount -o remount,rw,noauto_da_alloc,journal_async_commit /efs;
 	$BB mount -o remount,rw /
@@ -58,13 +58,13 @@ else
 fi;
 
 # allow user and admin to use all free mem.
-echo 0 > /proc/sys/vm/user_reserve_kbytes;
-echo 8192 > /proc/sys/vm/admin_reserve_kbytes;
+$BB echo 0 > /proc/sys/vm/user_reserve_kbytes;
+$BB echo 8192 > /proc/sys/vm/admin_reserve_kbytes;
 
 
 # Tune entropy parameters.
-echo "512" > /proc/sys/kernel/random/read_wakeup_threshold;
-echo "256" > /proc/sys/kernel/random/write_wakeup_threshold;
+$BB echo "512" > /proc/sys/kernel/random/read_wakeup_threshold;
+$BB echo "256" > /proc/sys/kernel/random/write_wakeup_threshold;
 
 if [ ! -d /data/.siyah ]; then
 	$BB mkdir -p /data/.siyah;
@@ -72,10 +72,10 @@ fi;
 
 # get rid of siyah in kernel name
 CHECK_VER=$(cat /proc/sys/kernel/osrelease);
-echo "$CHECK_VER" > /data/.siyah/check_ver;
-sed -i "s/-Siyah*//g" /data/.siyah/check_ver;
+$BB echo "$CHECK_VER" > /data/.siyah/check_ver;
+$BB sed -i "s/-Siyah*//g" /data/.siyah/check_ver;
 CHANGE_VER=$(cat /data/.siyah/check_ver);
-echo "$CHANGE_VER" > /proc/sys/kernel/osrelease;
+$BB echo "$CHANGE_VER" > /proc/sys/kernel/osrelease;
 $BB rm -f /data/.siyah/check_ver;
 
 # reset config-backup-restore
@@ -87,20 +87,20 @@ fi;
 # just set number $RESET_MAGIC + 1 and profiles will be reset one time on next boot with new kernel.
 RESET_MAGIC=1;
 if [ ! -e /data/.siyah/reset_profiles ]; then
-	echo "0" > /data/.siyah/reset_profiles;
+	$BB echo "0" > /data/.siyah/reset_profiles;
 fi;
-if [ "$(cat /data/.siyah/reset_profiles)" -eq "$RESET_MAGIC" ]; then
-	echo "no need to reset profiles";
+if [ "$($BB cat /data/.siyah/reset_profiles)" -eq "$RESET_MAGIC" ]; then
+	$BB echo "no need to reset profiles";
 else
 	$BB rm -f /data/.siyah/*.profile;
-	echo "$RESET_MAGIC" > /data/.siyah/reset_profiles;
+	$BB echo "$RESET_MAGIC" > /data/.siyah/reset_profiles;
 fi;
 
-[ ! -f /data/.siyah/default.profile ] && cp -a /res/customconfig/default.profile /data/.siyah/default.profile;
-[ ! -f /data/.siyah/battery.profile ] && cp -a /res/customconfig/battery.profile /data/.siyah/battery.profile;
-[ ! -f /data/.siyah/performance.profile ] && cp -a /res/customconfig/performance.profile /data/.siyah/performance.profile;
-[ ! -f /data/.siyah/extreme_performance.profile ] && cp -a /res/customconfig/extreme_performance.profile /data/.siyah/extreme_performance.profile;
-[ ! -f /data/.siyah/extreme_battery.profile ] && cp -a /res/customconfig/extreme_battery.profile /data/.siyah/extreme_battery.profile;
+[ ! -f /data/.siyah/default.profile ] && $BB cp -a /res/customconfig/default.profile /data/.siyah/default.profile;
+[ ! -f /data/.siyah/battery.profile ] && $BB cp -a /res/customconfig/battery.profile /data/.siyah/battery.profile;
+[ ! -f /data/.siyah/performance.profile ] && $BB cp -a /res/customconfig/performance.profile /data/.siyah/performance.profile;
+[ ! -f /data/.siyah/extreme_performance.profile ] && $BB cp -a /res/customconfig/extreme_performance.profile /data/.siyah/extreme_performance.profile;
+[ ! -f /data/.siyah/extreme_battery.profile ] && $BB cp -a /res/customconfig/extreme_battery.profile /data/.siyah/extreme_battery.profile;
 
 $BB chmod -R 0777 /data/.siyah/;
 
@@ -109,7 +109,7 @@ read_defaults;
 read_config;
 
 # custom boot booster stage 1
-echo "$boot_boost" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
+$BB echo "$boot_boost" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
 
 # mdnie sharpness tweak
 if [ "$mdniemod" == "on" ]; then
@@ -129,7 +129,7 @@ $BB rm -rf /res/misc/sql /res/images /res/misc/vendor;
 	dmesg | grep VDD_INT | cut -c 19-50 > /tmp/cpu-voltage_group;
 	$BB chmod 777 /tmp/cpu-voltage_group;
 
-	VDD_INT=$(cat /tmp/cpu-voltage_group | cut -c 24);
+	VDD_INT=$($BB cat /tmp/cpu-voltage_group | $BB cut -c 24);
 
 	if [ "$cpu_voltage_switch" == "off" ] && [ "$VDD_INT" != "3" ]; then
 		if [ "$VDD_INT" -eq "1" ]; then
@@ -252,12 +252,12 @@ if [ ! -e /cpufreq ]; then
 fi;
 
 # enable kmem interface for everyone by GM
-echo "0" > /proc/sys/kernel/kptr_restrict;
+$BB echo "0" > /proc/sys/kernel/kptr_restrict;
 
 # Cortex parent should be ROOT/INIT and not STweaks
 nohup /sbin/ext/cortexbrain-tune.sh;
-CORTEX=$(pgrep -f "/sbin/ext/cortexbrain-tune.sh");
-echo "-900" > /proc/"$CORTEX"/oom_score_adj;
+CORTEX=$($BB pgrep -f "/sbin/ext/cortexbrain-tune.sh");
+$BB echo "-900" > /proc/"$CORTEX"/oom_score_adj;
 
 # create init.d folder if missing
 if [ ! -d /system/etc/init.d ]; then
@@ -266,32 +266,27 @@ if [ ! -d /system/etc/init.d ]; then
 fi;
 
 (
-	if [ -e /system/framework/framework-miui-res.apk ]; then
-		JBMIUI=1;
-	else
-		JBMIUI=0;
-	fi;
-	if [ "$init_d" == "on" ] || [ "$JBMIUI" -eq "1" ]; then
+	if [ "$init_d" == "on" ]; then
 		$BB sh /sbin/ext/run-init-scripts.sh;
 	fi;
 )&
 
 # disable debugging on some modules
 if [ "$logger" == "off" ]; then
-	echo "0" > /sys/module/ump/parameters/ump_debug_level;
-	echo "0" > /sys/module/mali/parameters/mali_debug_level;
-	echo "0" > /sys/module/kernel/parameters/initcall_debug;
-	echo "0" > /sys/module/lowmemorykiller/parameters/debug_level;
-	echo "0" > /sys/module/cpuidle_exynos4/parameters/log_en;
-	echo "0" > /sys/module/earlysuspend/parameters/debug_mask;
-	echo "0" > /sys/module/alarm/parameters/debug_mask;
-	echo "0" > /sys/module/alarm_dev/parameters/debug_mask;
-	echo "0" > /sys/module/binder/parameters/debug_mask;
-	echo "0" > /sys/module/xt_qtaguid/parameters/debug_mask;
+	$BB echo "0" > /sys/module/ump/parameters/ump_debug_level;
+	$BB echo "0" > /sys/module/mali/parameters/mali_debug_level;
+	$BB echo "0" > /sys/module/kernel/parameters/initcall_debug;
+	$BB echo "0" > /sys/module/lowmemorykiller/parameters/debug_level;
+	$BB echo "0" > /sys/module/cpuidle_exynos4/parameters/log_en;
+	$BB echo "0" > /sys/module/earlysuspend/parameters/debug_mask;
+	$BB echo "0" > /sys/module/alarm/parameters/debug_mask;
+	$BB echo "0" > /sys/module/alarm_dev/parameters/debug_mask;
+	$BB echo "0" > /sys/module/binder/parameters/debug_mask;
+	$BB echo "0" > /sys/module/xt_qtaguid/parameters/debug_mask;
 fi;
 
 # for ntfs automounting
-mount -t tmpfs -o mode=0777,gid=1000 tmpfs /mnt/ntfs
+$BB mount -t tmpfs -o mode=0777,gid=1000 tmpfs /mnt/ntfs
 
 $BB sh /sbin/ext/properties.sh;
 
@@ -300,78 +295,73 @@ ROOT_RW;
 (
 	# mount apps2sd partition point for CyanogenMod
 	if [ -e /tmp/cm-installed ]; then
-		if [ "$(cat /tmp/sec_rom_boot)" -eq "1" ]; then
+		if [ "$($BB cat /tmp/sec_rom_boot)" -eq "1" ]; then
 			$BB mount --bind /mnt/.secondrom/.android_secure /mnt/secure/asec;
 		fi;
 	fi;
 
 	SD_COUNTER=0;
-	while [ "$($BB mount | grep "/storage/sdcard0" | wc -l)" == "0" ]; do
+	while [ "$($BB mount | ($BB grep '179_11' || $BB grep '179:11') | $BB wc -l)" == "0" ]; do
 		if [ "$SD_COUNTER" -ge "60" ]; then
 			break;
 		fi;
-		echo "Waiting For Internal SDcard to be mounted";
-		sleep 5;
+		$BB echo "Waiting For Internal SDcard to be mounted";
+		$BB sleep 5;
 		SD_COUNTER=$((SD_COUNTER+1));
 		# max 5min
 	done;
 
 	if [ -e /sys/block/mmcblk1/queue/scheduler ]; then
-		echo "deadline" > /sys/block/mmcblk1/queue/scheduler;
+		$BB echo "deadline" > /sys/block/mmcblk1/queue/scheduler;
 	fi;
 )&
 
 (
 	COUNTER=0;
-	echo "0" > /tmp/uci_done;
+	$BB echo "0" > /tmp/uci_done;
 	$BB chmod 666 /tmp/uci_done;
 
-	while [ "$(cat /tmp/uci_done)" != "1" ]; do
+	while [ "$($BB cat /tmp/uci_done)" != "1" ]; do
 		if [ "$COUNTER" -ge "40" ]; then
 			break;
 		fi;
-		echo "500000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
-		echo "$boot_boost" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
+		$BB echo "500000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
+		$BB echo "$boot_boost" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
 		$BB pkill -f "com.gokhanmoral.stweaks.app";
-		echo "Waiting For UCI to finish";
-		sleep 3;
+		$BB echo "Waiting For UCI to finish";
+		$BB sleep 3;
 		COUNTER=$((COUNTER+1));
 		# max 2min
 	done;
 
 	# restore normal freq
-	echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
+	$BB echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
 	if [ "$scaling_max_freq" -eq "1000000" ] && [ "$scaling_max_freq_oc" -gt "1000000" ]; then
-		echo "$scaling_max_freq_oc" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
+		$BB echo "$scaling_max_freq_oc" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
 	else
-		echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
-	fi;
-
-	# ROOTBOX fix notification_wallpaper
-	if [ -e /data/data/com.aokp.romcontrol/files/notification_wallpaper.jpg ]; then
-		$BB chmod 777 /data/data/com.aokp.romcontrol/files/notification_wallpaper.jpg
+		$BB echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
 	fi;
 
 	# tweaks all the dm partitions that hold moved to sdcard apps
-	sleep 30;
-	DM_COUNT=$(find /sys/block/dm* | wc -l);
+	$BB sleep 30;
+	DM_COUNT=$($BB find /sys/block/dm* | $BB wc -l);
 	if [ "$DM_COUNT" -gt "0" ]; then
-		for d in $($BB mount | grep dm | cut -d " " -f1 | grep -v vold); do
+		for d in $($BB mount | $BB grep dm | $BB cut -d " " -f1 | $BB grep -v vold); do
 			$BB mount -o remount,noauto_da_alloc "$d";
 		done;
 
 		DM=$(find /sys/block/dm*);
 		for i in ${DM}; do
-			echo "0" > "$i"/queue/rotational;
-			echo "0" > "$i"/queue/iostats;
+			$BB echo "0" > "$i"/queue/rotational;
+			$BB echo "0" > "$i"/queue/iostats;
 		done;
 	fi;
 
 	$BB mount -o remount,rw /storage/sdcard0;
 
 	# script finish here, so let me know when
-	echo "Done Booting" > /data/dm-boot-check;
-	date >> /data/dm-boot-check;
+	$BB echo "Done Booting" > /data/dm-boot-check;
+	$BB date >> /data/dm-boot-check;
 )&
 
 (
@@ -383,14 +373,14 @@ ROOT_RW;
 	$BB chmod 6755 /res/no-push-on-boot/*;
 
 	# apply STweaks settings
-	echo "booting" > /data/.siyah/booting;
+	$BB echo "booting" > /data/.siyah/booting;
 	$BB chmod 777 /data/.siyah/booting;
 	$BB pkill -f "com.gokhanmoral.stweaks.app";
 	nohup $BB sh /res/uci.sh restore;
 	UCI_PID=$(pgrep -f "/res/uci.sh");
-	echo "-800" > /proc/"$UCI_PID"/oom_score_adj;
+	$BB echo "-800" > /proc/"$UCI_PID"/oom_score_adj;
 	ROOT_RW;
-	echo "1" > /tmp/uci_done;
+	$BB echo "1" > /tmp/uci_done;
 
 	# restore all the PUSH Button Actions back to there location
 	$BB mv /res/no-push-on-boot/* /res/customconfig/actions/push-actions/;
@@ -407,7 +397,7 @@ ROOT_RW;
 	# I/O related tweaks
 	# ###############################################################
 
-	mount -o remount,rw /system;
+	$BB mount -o remount,rw /system;
 	# correct touch keys light, if rom mess user configuration
 	$BB sh /res/uci.sh generic /sys/class/misc/notification/led_timeout_ms "$led_timeout_ms";
 )&

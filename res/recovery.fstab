@@ -1,7 +1,7 @@
 # mount point		fstype	device			device2
-/cache			ext4	/dev/block/mmcblk0p7
+/cache			auto	/dev/block/mmcblk0p7
 /system			ext4	/dev/block/mmcblk0p9
-/data			ext4	/dev/block/mmcblk0p10	length=-16384
+/data			auto	/dev/block/mmcblk0p10	length=-16384
 /preload		ext4	/dev/block/mmcblk0p12
 /sdcard			auto	/dev/block/mmcblk1p1	/dev/block/mmcblk1
 /sdcard1		auto	/dev/block/mmcblk0p11
