@@ -28,8 +28,8 @@ $BB cat /res/etc/recovery.fstab > /etc/recovery.fstab
 
 stop tvout
 
-echo "0" > /sys/class/mdnie/mdnie/scenario
-echo "1" > /sys/class/mdnie/mdnie/mode
+$BB echo "0" > /sys/class/mdnie/mdnie/scenario
+$BB echo "1" > /sys/class/mdnie/mdnie/mode
 
 $BB rm -rf /cache
 $BB mkdir /cache
@@ -45,7 +45,7 @@ FS_SDCARD0=$(eval $(/sbin/blkid /dev/block/mmcblk0p11 | /sbin/busybox cut -c 24-
 if [ "$FS_SDCARD0" == "exfat" ]; then
 	/sbin/mount.exfat /dev/block/mmcblk0p11 /mnt/.secondrom
 else
-	mount -t $FS_SDCARD0 /dev/block/mmcblk0p11 /mnt/.secondrom
+	$BB mount -t $FS_SDCARD0 /dev/block/mmcblk0p11 /mnt/.secondrom
 fi;
 $BB rm -rf /secondrom_cache
 $BB mkdir -p /secondrom_cache
@@ -54,16 +54,16 @@ $BB mkdir -p /secondrom_data
 $BB rm -rf /secondrom_system
 $BB mkdir -p /secondrom_system
 
-echo "75" > /sys/class/timed_output/vibrator/pwm_value
-echo "102" > /sys/devices/virtual/sec/sec_key/set_homekey
+$BB echo "75" > /sys/class/timed_output/vibrator/pwm_value
+$BB echo "102" > /sys/devices/virtual/sec/sec_key/set_homekey
 
 # Enable Dual Mount in recovery! and fix .android_secure backup and restore.
-echo "/dev/block/mmcblk0p11" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun0/file;
+$BB echo "/dev/block/mmcblk0p11" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun0/file;
 if [ -e /dev/block/mmcblk1p1 ]; then
-	echo "/dev/block/mmcblk1p1" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun1/file;
+	$BB echo "/dev/block/mmcblk1p1" > /sys/devices/virtual/android_usb/android0/f_mass_storage/lun1/file;
 	# for now set DEADLINE gov for External SD to fix file transfer via USB
-	echo "deadline" > /sys/block/mmcblk1/queue/scheduler;
+	$BB echo "deadline" > /sys/block/mmcblk1/queue/scheduler;
 fi;
 
-echo 1 > /sbin/recovery-is-running
+$BB echo 1 > /sbin/recovery-is-running
 recovery

@@ -46,7 +46,7 @@ fi;
 if [ ! -e /system/lib/hw/lights.exynos4.so.BAK ]; then
 	$BB mv /system/lib/hw/lights.exynos4.so /system/lib/hw/lights.exynos4.so.BAK;
 fi;
-echo "Copying liblights";
+$BB echo "Copying liblights";
 $BB cp -a /res/misc/lights.exynos4.so /system/lib/hw/lights.exynos4.so;
 $BB chown root:root /system/lib/hw/lights.exynos4.so;
 $BB chmod 644 /system/lib/hw/lights.exynos4.so;
