@@ -30,4 +30,3 @@ mv /tmp/indeterminate*.png res/images/;
 mv /tmp/progress_*.png res/images/;
 
 echo "done, picks optimized"
-
