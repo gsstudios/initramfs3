@@ -400,6 +400,7 @@
 		<spinner description="Here you can set the level of low mem management by kernel lowmemkiller function. More aggressive, equals more free RAM but more killed apps. For best performance, keep this set to default or higher!" name="OOM Level Screen ON" action="oom_config_screen_on">
 			<spinnerItem name="medium" value="medium"/> 
 			<spinnerItem name="default" value="default"/> 
+			<spinnerItem name="optimized" value="optimized"/> 
 			<spinnerItem name="aggressive" value="aggressive"/> 
 			<spinnerItem name="exterminate" value="exterminate"/> 
 		</spinner>
@@ -407,6 +408,7 @@
 		<spinner description="Here you can set the level of low mem management by kernel lowmemkiller function. More aggressive equals more free RAM but more killed apps. For best performance, keep this set to default or higher!" name="OOM Level Screen OFF" action="oom_config_screen_off">
 			<spinnerItem name="medium" value="medium"/> 
 			<spinnerItem name="default" value="default"/> 
+			<spinnerItem name="optimized" value="optimized"/> 
 			<spinnerItem name="aggressive" value="aggressive"/> 
 			<spinnerItem name="exterminate" value="exterminate"/> 
 		</spinner>
