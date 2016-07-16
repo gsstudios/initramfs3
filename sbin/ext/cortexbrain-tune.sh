@@ -1210,7 +1210,7 @@ fi;
 # disable/enable ipv6
 IPV6()
 {
-	local state='';
+	local state="$1";
 
 	if [ -e /data/data/com.cisco.anyconnec* ]; then
 		local CISCO_VPN=1;

@@ -902,6 +902,7 @@
 
 		<checkbox description="Enable or Disable TCP-RAM-Tweaks (reboot needed)." name="TCP-RAM-Tweaks" action="generic_cortex /tmp/cortexbrain_tcp_ram" label="TCP-RAM-Tweaks"/>
 
+		<checkbox description="Enable or Disable IPv6 Network. !!! Depends on CortexBrain-Background-Process !!!" name="IPv6 Tweaks" action="generic_cortex /tmp/cortexbrain_ipv6" label="IPv6"/>
 		<checkbox description="Enable or Disable CPU-Tweaks (reboot needed)." name="CPU-Tweaks" action="generic_cortex /tmp/cortexbrain_cpu" label="CPU-Tweaks"/>
 
 		<checkbox description="Enable or Disable Memory-Tweaks (reboot needed)." name="Memory-Tweaks" action="generic_cortex /tmp/cortexbrain_memory" label="Memory-Tweaks"/>
