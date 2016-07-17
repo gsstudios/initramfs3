@@ -368,9 +368,7 @@
 			<spinnerItem name="NOOP" value="noop"/> 
 			<spinnerItem name="ROW" value="row"/> 
 			<spinnerItem name="SIO" value="sio"/> 
-			<spinnerItem name="VR" value="vr"/> 
 			<spinnerItem name="ZEN" value="zen"/> 
-			<spinnerItem name="FIFO" value="fifo"/> 
 		</spinner>
 
 		<spinner description="This will set the STANDBY and DEEPSLEEP IO scheduler for internal, system, data and external sdcard. (Default: BFQ) !!! Depends on CortexBrain-Background-Process !!!" name="STANDBY and DEEPSLEEP IO Scheduler" action="generic_cortex /tmp/sleep_scheduler">
@@ -380,9 +378,7 @@
 			<spinnerItem name="NOOP" value="noop"/> 
 			<spinnerItem name="ROW" value="row"/> 
 			<spinnerItem name="SIO" value="sio"/> 
-			<spinnerItem name="VR" value="vr"/> 
 			<spinnerItem name="ZEN" value="zen"/> 
-			<spinnerItem name="FIFO" value="fifo"/> 
 		</spinner>
 
 	</settingsPane>
