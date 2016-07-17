@@ -323,7 +323,7 @@
 
 		<seekBar description="The frequency at which governor scales CPU down. Cur Load less than down_load: Cpu Hotplug OUT. Value corresponding to 101 causes immediately HOTPLUG OUT. (Only when Nightmare, Darkness hotplugging is Enabled) (Default: 30%)" name="down_load_sleep" action="generic_cortex /tmp/down_load_sleep" unit="%" min="0" reversed="false" step="1" max="101"/>
 
-</settingsTab>
+</settingsPane>
 
 <settingsTab name="IO">
 
@@ -971,6 +971,5 @@
 	</settingsPane>
 
 </settingsTab>
-
+</settingsTab>
 </settingsRoot>
-
