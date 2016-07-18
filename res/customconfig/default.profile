@@ -117,6 +117,7 @@ sleep_scheduler=cfq
 auto_oom=on
 oom_config_screen_on=default
 oom_config_screen_off=default
+lowmem_reserve=default
 dirty_background_ratio=15
 dirty_ratio=20
 zramtweaks=4
