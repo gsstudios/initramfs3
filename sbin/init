@@ -22,8 +22,8 @@ if $BB grep -q bootmode=2 /proc/cmdline; then
 
 	# make the /dev/block/platform/dw_mmc/by-name/RECOVERY
 	# (/dev/block/mmcblk0p6) partition accessible
-	$BB mkdir /isorec-tmp
-	$BB mknod /isorec-tmp/mmcblk0p6 b 179 6
+	$BB mkdir /isorec-tmp;
+	$BB mknod /isorec-tmp/mmcblk0p6 b 179 6;
 
 	# if the raw partition contains valid lzop-compressed data
 	if $BB lzop -dc /isorec-tmp/mmcblk0p6 > /isorec-tmp/isorec.cpio; then
@@ -33,45 +33,43 @@ if $BB grep -q bootmode=2 /proc/cmdline; then
 			# isorec boot
 
 			# unmount everything
-			$BB umount /sys
-			$BB umount /proc
+			$BB umount /sys;
+			$BB umount /proc;
 
 			# copy busybox to /isorec-tmp
 			# WARNING: this assumes static linking
-			$BB cp $(readlink -f $BB) /isorec-tmp/busybox
-			BB=/isorec-tmp/busybox
+			$BB cp $(readlink -f $BB) /isorec-tmp/busybox;
+			BB=/isorec-tmp/busybox;
 
 			# remove everything not in /isorec-tmp
-			$BB mkdir /isorec-tmp/junk
-			$BB mv /* /.* /isorec-tmp/junk
-			$BB rm -rf /isorec-tmp/junk
+			$BB mkdir /isorec-tmp/junk;
+			$BB mv /* /.* /isorec-tmp/junk;
+			$BB rm -rf /isorec-tmp/junk;
 
 			# extract the isorec ramdisk
-			$BB cpio -i < /isorec-tmp/isorec.cpio
+			$BB cpio -i < /isorec-tmp/isorec.cpio;
 
 			# clean up and pass control to ramdisk
-			$BB rm -rf /isorec-tmp
-			exec /init
+			$BB rm -rf /isorec-tmp;
+			exec /init;
 
-		fi
-	fi
+		fi;
+	fi;
 
 	# clean up for non-isorec boot
-	$BB rm -rf /isorec-tmp
+	$BB rm -rf /isorec-tmp;
 
 
 	$BB cp /res/images/recovery-icon.png /res/images/icon_clockwork.png;
 	$BB cp -a /recovery.rc /init.rc;
-	# BUG: these mknod commands do nothing because /dev/block does not exist!
-	# FIX: mkdir -p /dev/block
-	mknod /dev/block/mmcblk0p1 b 179 1
-	mknod /dev/block/mmcblk0p7 b 179 7
-	mknod /dev/block/mmcblk1p1 b 179 9
-	mknod /dev/block/mmcblk0p9 b 259 1
-	mknod /dev/block/mmcblk0p10 b 259 2
-	mknod /dev/block/mmcblk0p11 b 259 3
-	mknod /dev/block/mmcblk0p12 b 259 4
-	mknod /dev/block/loop0 b 7 0
+	mknod /dev/block/mmcblk0p1 b 179 1;
+	mknod /dev/block/mmcblk0p7 b 179 7;
+	mknod /dev/block/mmcblk1p1 b 179 9;
+	mknod /dev/block/mmcblk0p9 b 259 1;
+	mknod /dev/block/mmcblk0p10 b 259 2;
+	mknod /dev/block/mmcblk0p11 b 259 3;
+	mknod /dev/block/mmcblk0p12 b 259 4;
+	mknod /dev/block/loop0 b 7 0;
 	exec /sbin/init.recovery;
 fi;
 
