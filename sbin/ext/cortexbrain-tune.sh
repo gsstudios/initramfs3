@@ -595,9 +595,14 @@ CPU_GOV_TWEAKS()
 			freq_limit_tmp="/dev/null";
 		fi;
 
-		local fast_scaling_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/fast_scaling";
-		if [ ! -e "$fast_scaling_tmp" ]; then
-			fast_scaling_tmp="/dev/null";
+		local fast_scaling_up_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/fast_scaling_up";
+		if [ ! -e "$fast_scaling_up_tmp" ]; then
+			fast_scaling_up_tmp="/dev/null";
+		fi;
+
+		local fast_scaling_down_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/fast_scaling_down";
+		if [ ! -e "$fast_scaling_down_tmp" ]; then
+			fast_scaling_down_tmp="/dev/null";
 		fi;
 
 		local early_demand_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/early_demand";
@@ -692,7 +697,8 @@ CPU_GOV_TWEAKS()
 			echo "$down_threshold_hp_freq_fst" > "$down_threshold_hp_freq_fst_tmp";
 			echo "$smooth_up" > "$smooth_up_tmp";
 			echo "$freq_limit" > "$freq_limit_tmp";
-			echo "$fast_scaling" > "$fast_scaling_tmp";
+			echo "$fast_scaling_up" > "$fast_scaling_up_tmp";
+			echo "$fast_scaling_down" > "$fast_scaling_down_tmp";
 			echo "$early_demand" > "$early_demand_tmp";
 			echo "$grad_up_threshold" > "$grad_up_threshold_tmp";
 			echo "$profile_number" > "$profile_number_tmp";
