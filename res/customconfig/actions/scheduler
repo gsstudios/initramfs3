@@ -55,6 +55,6 @@ case "${scheduler}" in
 		SCHED_SET;
 	;;
 	*)
-		scheduler=row;
+		scheduler=cfq;
 	;;
 esac;
