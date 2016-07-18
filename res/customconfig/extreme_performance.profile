@@ -59,6 +59,7 @@ hotplug_freq_snd=300000
 up_load=50
 down_load=30
 force_freqs_step=0
+profile_number=0
 sampling_down_max_mom=0
 sampling_down_mom_sens=50
 up_threshold_hp_fst=68
