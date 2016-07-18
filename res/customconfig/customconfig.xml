@@ -247,6 +247,8 @@
 
 	</settingsPane>
 
+</settingsTab>
+
 <settingsTab name="CPU-TUNING (SLEEP)">
 
 	<settingsPane description="Here you can manage advanced governor settings. These settings are only active when the screen is off. !!! Depends on CortexBrain-Background-Process and CortexBrain-CPU-Tweaks!!!" name="Governor Parameters tuning">
