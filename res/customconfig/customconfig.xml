@@ -667,6 +667,27 @@
 
 <settingsTab name="Other">
 
+		<settingsPane description="Congestion control concerns controlling traffic entry into a telecommunications network, so as to avoid congestive collapse by attempting to avoid oversubscription of any of the processing or link capabilities of the intermediate nodes and networks and taking resource reducing steps." name="Net Congestion Control">
+
+		<spinner description="Allows user to change TCP algorithm. If you are unsure of what to set here, just keep it to the defaults (Default: Westwood). Otherwise, I highly recommend using Westwood. If you experience problems, change this back to Cubic." name="Net Congestion Control" action="generic /proc/sys/net/ipv4/tcp_congestion_control">
+			<spinnerItem name="Set CUBIC" value="cubic"/> 
+			<spinnerItem name="Set RENO" value="reno"/> 
+			<spinnerItem name="Set WESTWOOD" value="westwood"/> 
+			<spinnerItem name="Set BIC" value="bic"/> 
+			<spinnerItem name="Set HTCP" value="htcp"/> 
+			<spinnerItem name="Set HighSpeed (HSTCP)" value="highspeed"/> 
+			<spinnerItem name="Set Veno" value="veno"/> 
+			<spinnerItem name="Set Hybla" value="hybla"/> 
+			<spinnerItem name="Set Vegas" value="vegas"/> 
+			<spinnerItem name="Set Scalable" value="scalable"/> 
+			<spinnerItem name="Set LP" value="lp"/> 
+			<spinnerItem name="Set Yeah" value="yeah"/> 
+			<spinnerItem name="Set Illinois" value="illinois"/> 
+
+		</spinner>
+
+	</settingsPane>	
+
 	<settingsPane description="Here you can activate some scripts, which will automatically run in the background, at a specified time." name="cron">
 
 		<spinner description="Main switch for Cron Tasker. If you set this to OFF, then all tasks below have no effect!" name="CRON TASK MAIN SWITCH" action="crontab">
