@@ -1580,6 +1580,11 @@ AWAKE_MODE()
 			log -p i -t "$FILE_NAME" "*** USB_POWER_WAKE: done ***";
 		fi;
 	fi;
+
+	if [ "$auto_oom" == "on" ]; then
+		sleep 1;
+		$BB sh /res/uci.sh oom_config_screen_on $oom_config_screen_on;
+	fi;
 }
 
 # ==============================================================
