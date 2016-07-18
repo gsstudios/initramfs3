@@ -346,7 +346,7 @@
 			<spinnerItem name="DEADLINE" value="deadline"/> 
 			<spinnerItem name="NOOP" value="noop"/> 
 			<spinnerItem name="ROW" value="row"/> 
-			<spinnerItem name="SIO" value="sio"/> 
+			<spinnerItem name="SIOPLUS" value="sioplus"/> 
 			<spinnerItem name="FIOPS" value="fiops"/> 
 			<spinnerItem name="ZEN" value="zen"/> 
 		</spinner>
@@ -357,7 +357,7 @@
 			<spinnerItem name="DEADLINE" value="deadline"/> 
 			<spinnerItem name="NOOP" value="noop"/> 
 			<spinnerItem name="ROW" value="row"/> 
-			<spinnerItem name="SIO" value="sio"/>
+			<spinnerItem name="SIOPLUS" value="sioplus"/>
 			<spinnerItem name="FIOPS" value="fiops"/>  
 			<spinnerItem name="ZEN" value="zen"/> 
 		</spinner>
