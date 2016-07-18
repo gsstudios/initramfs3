@@ -620,7 +620,6 @@ CPU_GOV_TWEAKS()
 			profile_number_tmp="/dev/null";
 		fi;
 
-
 		local boostfreq_tmp="/sys/devices/system/cpu/cpufreq/$SYSTEM_GOVERNOR/boostfreq";
 		if [ ! -e "$boostfreq_tmp" ]; then
 			boostfreq_tmp="/dev/null";
@@ -660,7 +659,6 @@ CPU_GOV_TWEAKS()
 			echo "$fast_scaling_sleep" > "$fast_scaling_tmp";
 			echo "$early_demand_sleep" > "$early_demand_tmp";
 			echo "$grad_up_threshold_sleep" > "$grad_up_threshold_tmp";
-			echo "$disable_hotplug_sleep" > "$disable_hotplug_tmp";
 			CPU_HOTPLUG_TWEAKS "sleep";
 		# awake-settings
 		elif [ "$state" == "awake" ]; then
@@ -674,11 +672,7 @@ CPU_GOV_TWEAKS()
 			echo "$sampling_down_factor" > "$sampling_down_factor_tmp";
 			echo "$down_differential" > "$down_differential_tmp";
 			echo "$freq_step_at_min_freq" > "$freq_step_at_min_freq_tmp";
-			if [ "$SYSTEM_GOVERNOR" == "zzmoove" ]; then
-				echo "5" > "$freq_step_tmp";
-			else
-				echo "$freq_step" > "$freq_step_tmp";
-			fi;
+			echo "$freq_step" > "$freq_step_tmp";
 			echo "$freq_step_dec" > "$freq_step_dec_tmp";
 			echo "$freq_step_dec_at_max_freq" > "$freq_step_dec_at_max_freq_tmp";
 			echo "$freq_for_responsiveness" > "$freq_for_responsiveness_tmp";
@@ -701,7 +695,6 @@ CPU_GOV_TWEAKS()
 			echo "$fast_scaling" > "$fast_scaling_tmp";
 			echo "$early_demand" > "$early_demand_tmp";
 			echo "$grad_up_threshold" > "$grad_up_threshold_tmp";
-			echo "$disable_hotplug" > "$disable_hotplug_tmp";
 			echo "$profile_number" > "$profile_number_tmp";
 			echo "$boostfreq" > "$boostfreq_tmp";
 		fi;

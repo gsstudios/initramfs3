@@ -201,10 +201,10 @@
 
 	</settingsPane>
 
-	<settingsPane description="ZZMOOVE Gov Configuration, see descriptions" name="ZZMOOVE GOV CONFIGURATON">
+	<settingsPane description="ZZMOOVE Governor Configuration. The variables below only work if profile has been set to Tunable mode! Otherwise the in-built zzmoove profiles will override all values!" name="ZZMOOVE GOV CONFIGURATON">
 
-		<spinner description="Switch zzmoove profiles (Default: Default)" name="profile_number" action="generic_cortex /tmp/profile_number">
-			<spinnerItem name="No profile (tunable mode)" value="0"/> 
+		<spinner description="Switch zzmoove profiles (Default: Tunable mode)" name="profile_number" action="generic_cortex /tmp/profile_number">
+			<spinnerItem name="Tunable mode" value="0"/> 
 			<spinnerItem name="Default" value="1"/> 
 			<spinnerItem name="Yank Battery" value="2"/> 
 			<spinnerItem name="Yank Battery Extreme" value="3"/> 
@@ -218,39 +218,34 @@
 			<spinnerItem name="ZaneZam Relax" value="11"/> 
 		</spinner>
 
-		<seekBar description="Max sampling down factor which should be set by momentum (0 disable momentum, possible range from sampling_down_factor up to 100000. (Default: 0)" name="sampling_down_max_mom_sleep" action="generic_cortex /tmp/sampling_down_max_mom_sleep" unit="int" min="0" reversed="false" step="10" max="100000"/>
+		<seekBar description="Max sampling down factor which should be set by momentum (0 disable momentum, possible range from sampling_down_factor up to 100000. (Default: 0)" name="sampling_down_max_mom" action="generic_cortex /tmp/sampling_down_max_mom" unit="int" min="0" reversed="false" step="10" max="100000"/>
 
-		<seekBar description="How fast the sampling down factor should be switched (possible values from 1 to 500. (Default: 50)" name="sampling_down_mom_sens_sleep" action="generic_cortex /tmp/sampling_down_mom_sens_sleep" unit="int" min="1" reversed="false" step="10" max="500"/>
+		<seekBar description="How fast the sampling down factor should be switched (possible values from 1 to 500. (Default: 50)" name="sampling_down_mom_sens" action="generic_cortex /tmp/sampling_down_mom_sens" unit="int" min="1" reversed="false" step="10" max="500"/>
 
-		<seekBar description="Hotplug threshold for cpu1 (0 disable core1, possible range from down_threshold up to 100) (Default: 68%)" name="up_threshold_hp_fst_sleep" action="generic_cortex /tmp/up_threshold_hp_fst_sleep" unit="%" min="0" reversed="false" step="1" max="100"/>
+		<seekBar description="Hotplug threshold for cpu1 (0 disable core1, possible range from down_threshold up to 100) (Default: 68%)" name="up_threshold_hp_fst" action="generic_cortex /tmp/up_threshold_hp_fst" unit="%" min="0" reversed="false" step="1" max="100"/>
 
-		<seekBar description="Hotplug threshold for cpu1 (possible range from 11 to under up_threshold). (Default: 55%)" name="down_threshold_hp_fst_sleep" action="generic_cortex /tmp/down_threshold_hp_fst_sleep" unit="%" min="0" reversed="false" step="1" max="100"/>
+		<seekBar description="Hotplug threshold for cpu1 (possible range from 11 to under up_threshold). (Default: 55%)" name="down_threshold_hp_fst" action="generic_cortex /tmp/down_threshold_hp_fst" unit="%" min="0" reversed="false" step="1" max="100"/>
 
-		<seekBar description="Hotplug up frequency threshold for core1. Possible values 0 disable and range from over down_threshold_hotplug_freq1 to max scaling frequency. (Default: 0 kHz)" name="up_threshold_hp_freq_fst_sleep" action="generic_cortex /tmp/up_threshold_hp_freq_fst_sleep" unit="kHz" min="0" reversed="false" step="100000" max="1600000"/>
+		<seekBar description="Hotplug up frequency threshold for core1. Possible values 0 disable and range from over down_threshold_hotplug_freq1 to max scaling frequency. (Default: 0 kHz)" name="up_threshold_hp_freq_fst" action="generic_cortex /tmp/up_threshold_hp_freq_fst" unit="kHz" min="0" reversed="false" step="100000" max="1600000"/>
 
-		<seekBar description="Hotplug down frequency threshold for core1. Possible values 0 disable and range from min scaling to under up_threshold_hotplug_freq1 frequency. (Default: 0 kHz)" name="down_threshold_hp_freq_fst_sleep" action="generic_cortex /tmp/down_threshold_hp_freq_fst_sleep" unit="kHz" min="0" reversed="false" step="100000" max="1600000"/>
+		<seekBar description="Hotplug down frequency threshold for core1. Possible values 0 disable and range from min scaling to under up_threshold_hotplug_freq1 frequency. (Default: 0 kHz)" name="down_threshold_hp_freq_fst" action="generic_cortex /tmp/down_threshold_hp_freq_fst" unit="kHz" min="0" reversed="false" step="100000" max="1600000"/>
 
-		<seekBar description="This modification makes the governor use two lookup tables holding current, next and previous frequency to directly get a correct target frequency instead of calculating target frequencies with up_threshold and step_up percentage. The two scaling lookup tables used contain different scaling steps/frequencies to achieve faster upscaling on higher CPU load. (Default: 100%)" name="smooth_up_sleep" action="generic_cortex /tmp/smooth_up_sleep" unit="%" min="0" reversed="false" step="1" max="100"/>
+		<seekBar description="This modification makes the governor use two lookup tables holding current, next and previous frequency to directly get a correct target frequency instead of calculating target frequencies with up_threshold and step_up percentage. The two scaling lookup tables used contain different scaling steps/frequencies to achieve faster upscaling on higher CPU load. (Default: 75%)" name="smooth_up" action="generic_cortex /tmp/smooth_up" unit="%" min="0" reversed="false" step="1" max="100"/>
 
-		<seekBar description="Limit frequency. (possible values 0 disable limit, 100000 kHz - 1600000 kHz) (Default: 0 kHz)" name="freq_limit_sleep" action="generic_cortex /tmp/freq_limit_sleep" unit="kHz" min="0" reversed="false" step="100000" max="1600000"/>
+		<seekBar description="Limit frequency. (possible values 0 disable limit, 100000 kHz - 1600000 kHz) (Default: 0 kHz)" name="freq_limit" action="generic_cortex /tmp/freq_limit" unit="kHz" min="0" reversed="false" step="100000" max="1600000"/>
 
-<seekBar description="1-4 number of scaling jumps only for upscaling, 5-8 equivalent to 1-4 for up and down scaling. (Default: 0)" name="fast_scaling_sleep" action="generic_cortex /tmp/fast_scaling_sleep" unit="int" min="0" reversed="false" step="1" max="8"/>
-			
-	       <spinner description="Switch to enable/disable early demand functionality (possible values 0 disable or 1 enable. (Default: Disabled)" name="early_demand_sleep" action="generic_cortex /tmp/early_demand_sleep">
-<spinnerItem name="Disabled" value="0"/> 
+		<seekBar description="1-4 number of scaling jumps only for upscaling, 5 is for auto scaling. (Default: 0)" name="fast_scaling_up" action="generic_cortex /tmp/fast_scaling_up" unit="int" min="0" reversed="false" step="1" max="5"/>
+
+		<seekBar description="1-4 number of scaling jumps only for downscaling, 5 is for auto scaling. (Default: 0)" name="fast_scaling_down" action="generic_cortex /tmp/fast_scaling_down" unit="int" min="0" reversed="false" step="1" max="5"/>
+
+		<spinner description="Switch to enable/disable early demand functionality (possible values 0 disable or 1 enable. (Default: Disabled)" name="early_demand" action="generic_cortex /tmp/early_demand">
+			<spinnerItem name="Disabled" value="0"/> 
 			<spinnerItem name="Enabled" value="1"/> 
 		</spinner>
 
 		<seekBar description="Scale up frequency if the load goes up in one step of grad up value. (Default: 50%)" name="grad_up_threshold" action="generic_cortex /tmp/grad_up_threshold" unit="%" min="11" reversed="false" step="1" max="100"/>
 
-		<spinner description="Switch to enable/disable hotplugging (possible values are any value above 0 to disable hotplugging and 0 to enable it. (Default: Enabled)" name="disable_hotplug" action="generic_cortex /tmp/disable_hotplug">
-			<spinnerItem name="Enabled" value="0"/> 
-			<spinnerItem name="Disabled" value="1"/> 
-		</spinner>
-
 	</settingsPane>
-
-</settingsTab>
 
 <settingsTab name="CPU-TUNING (SLEEP)">
 
