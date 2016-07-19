@@ -58,6 +58,10 @@ fi;
 echo 0 > /proc/sys/vm/user_reserve_kbytes;
 echo 8192 > /proc/sys/vm/admin_reserve_kbytes;
 
+# Tune entropy parameters.
+$BB echo "512" > /proc/sys/kernel/random/read_wakeup_threshold;
+$BB echo "256" > /proc/sys/kernel/random/write_wakeup_threshold;
+
 if [ ! -d /data/.siyah ]; then
 	$BB mkdir -p /data/.siyah;
 fi;
