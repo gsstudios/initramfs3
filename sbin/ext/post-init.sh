@@ -28,7 +28,7 @@ echo "-1000" > /proc/1/oom_score_adj;
 echo "2" > /proc/sys/kernel/sysrq;
 
 # bypass for reboot command till fixed.
-rm -f /sbin/reboot;
+$BB rm -f /sbin/reboot;
 
 PIDOFINIT=$(pgrep -f "/sbin/ext/post-init.sh");
 for i in $PIDOFINIT; do
@@ -41,14 +41,14 @@ if [ "$(cat /tmp/sec_rom_boot)" -eq "1" ]; then
 	$BB mount -o remount,rw /
 	$BB umount -l /preload;
 	if [ ! -e /data_pri_rom ]; then
-		mkdir /data_pri_rom;
+		$BB mkdir /data_pri_rom;
 		$BB mount -t ext4 /dev/block/mmcblk0p10 /data_pri_rom;
-		chmod 700 /data_pri_rom;
+		$BB chmod 700 /data_pri_rom;
 	fi;
 	if [ ! -e /system_pri_rom ]; then
-		mkdir /system_pri_rom;
+		$BB mkdir /system_pri_rom;
 		$BB mount -t ext4 /dev/block/mmcblk0p9 /system_pri_rom;
-		chmod 700 /system_pri_rom;
+		$BB chmod 700 /system_pri_rom;
 	fi;
 else
 	$BB mount -o remount,rw,noauto_da_alloc,journal_async_commit /preload;
@@ -72,11 +72,11 @@ echo "$CHECK_VER" > /data/.siyah/check_ver;
 sed -i "s/-Siyah*//g" /data/.siyah/check_ver;
 CHANGE_VER=$(cat /data/.siyah/check_ver);
 echo "$CHANGE_VER" > /proc/sys/kernel/osrelease;
-rm /data/.siyah/check_ver;
+$BB rm /data/.siyah/check_ver;
 
 # reset config-backup-restore
 if [ -f /data/.siyah/restore_running ]; then
-	rm -f /data/.siyah/restore_running;
+	$BB rm -f /data/.siyah/restore_running;
 fi;
 
 # reset profiles auto trigger to be used by kernel ADMIN, in case of need, if new value added in default profiles
@@ -88,7 +88,7 @@ fi;
 if [ "$(cat /data/.siyah/reset_profiles)" -eq "$RESET_MAGIC" ]; then
 	echo "no need to reset profiles";
 else
-	rm -f /data/.siyah/*.profile;
+	$BB rm -f /data/.siyah/*.profile;
 	echo "$RESET_MAGIC" > /data/.siyah/reset_profiles;
 fi;
 
@@ -257,7 +257,7 @@ echo "-900" > /proc/"$CORTEX"/oom_score_adj;
 
 # create init.d folder if missing
 if [ ! -d /system/etc/init.d ]; then
-	mkdir -p /system/etc/init.d/
+	$BB mkdir -p /system/etc/init.d/
 	$BB chmod 755 /system/etc/init.d/;
 fi;
 
@@ -402,8 +402,8 @@ ROOT_RW;
 
 	# apply STweaks settings
 	echo "booting" > /data/.siyah/booting;
-	chmod 777 /data/.siyah/booting;
-	pkill -f "com.gokhanmoral.stweaks.app";
+	$BB chmod 777 /data/.siyah/booting;
+	$BB pkill -f "com.gokhanmoral.stweaks.app";
 	nohup $BB sh /res/uci.sh restore;
 	UCI_PID=$(pgrep -f "/res/uci.sh");
 	echo "-800" > /proc/"$UCI_PID"/oom_score_adj;
