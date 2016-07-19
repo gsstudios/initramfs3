@@ -54,6 +54,10 @@ case "${scheduler}" in
 		BLOCK_GOV=zen;
 		SCHED_SET;
 	;;
+	tripndroid)
+		BLOCK_GOV=tripndroid;
+		SCHED_SET;
+	;;
 	*)
 		scheduler=cfq;
 	;;

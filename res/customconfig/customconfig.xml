@@ -349,6 +349,7 @@
 			<spinnerItem name="SIOPLUS" value="sioplus"/> 
 			<spinnerItem name="FIOPS" value="fiops"/> 
 			<spinnerItem name="ZEN" value="zen"/> 
+			<spinnerItem name="TRIPNDROID" value="tripndroid"/> 
 		</spinner>
 
 		<spinner description="This will set the STANDBY and DEEPSLEEP IO scheduler for internal, system, data and external sdcard. (Default: CFQ) !!! Depends on CortexBrain-Background-Process !!!" name="STANDBY and DEEPSLEEP IO Scheduler" action="generic_cortex /tmp/sleep_scheduler">
@@ -360,6 +361,7 @@
 			<spinnerItem name="SIOPLUS" value="sioplus"/>
 			<spinnerItem name="FIOPS" value="fiops"/>  
 			<spinnerItem name="ZEN" value="zen"/> 
+			<spinnerItem name="TRIPNDROID" value="tripndroid"/> 
 		</spinner>
 
 	</settingsPane>
