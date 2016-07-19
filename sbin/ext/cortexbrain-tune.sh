@@ -694,6 +694,7 @@ CPU_GOV_TWEAKS()
 			echo "$fast_scaling_down" > "$fast_scaling_down_tmp";
 			echo "$early_demand" > "$early_demand_tmp";
 			echo "$grad_up_threshold" > "$grad_up_threshold_tmp";
+			echo "1" > "$disable_hotplug_tmp";
 			echo "$profile_number" > "$profile_number_tmp";
 			echo "$boostfreq" > "$boostfreq_tmp";
 		fi;
