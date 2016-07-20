@@ -425,6 +425,10 @@
 
 		<button description="Clean RAM Cache. This will release all cached and buffered RAM, please WAIT 3sec to get cleanup report" name="CLEAN RAM CACHE" action="push-actions/clean_ram_cache" label="CLEAN RAM CACHE NOW"/>
 
+	</settingsPane>
+
+	<settingsPane description="ZRAM Control Module take real RAM and compress it by 35-40% to create more FREE RAM for apps. Compression method is LZ4. The more RAM is allocated in ZRAM, the more physical RAM is given to user at cost of CPU power and faster battery discharging. When switching ZRAM size from one to another, decompression and new compression will take some TIME. In some cases that will take more than 2 min." name="ZRAM">
+
 		<spinner description="ZRAM Module settings. Here you can shut down ZRAM or add more compressed RAM for your system. Make sure to also set a value higher than zero for swappiness if you want to use zram." name="ZRAM Settings" action="zramtweaks">
 			<spinnerItem name="Set ZRAM to 150MB" value="1"/> 
 			<spinnerItem name="Set ZRAM to 300MB (default)" value="2"/> 
