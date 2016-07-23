@@ -322,7 +322,7 @@ if [ "$(cat /sys/devices/platform/dw_mmc/mmc_host/mmc0/mmc0:0001/block/mmcblk0/q
 fi;
 
 if [ -e /sys/devices/platform/s3c-sdhci.2/mmc_host/mmc1/mmc1:59b4/block/mmcblk1 ]; then
-	if [ "$(cat /sys/devices/platform/s3c-sdhci.2/mmc_host/mmc1/mmc1:59b4/block/mmcblk1/queue/nomerges)" != "2" ]; then
+	if [ "$(cat /sys/devices/platform/s3c-sdhci.2/mmc_host/mmc1/mmc1:59b4/block/mmcblk1/queue/rq_affinity)" != "1" ]; then
 		echo "1" > /sys/devices/platform/s3c-sdhci.2/mmc_host/mmc1/mmc1:59b4/block/mmcblk1/queue/rq_affinity;
 	fi;
 fi;
