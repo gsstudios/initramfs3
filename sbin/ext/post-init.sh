@@ -286,11 +286,6 @@ if [ "$logger" == "off" ]; then
 	$BB echo "0" > /sys/module/xt_qtaguid/parameters/debug_mask;
 fi;
 
-# for ntfs automounting
-$BB mount -t tmpfs -o mode=0777,gid=1000 tmpfs /mnt/ntfs
-
-$BB sh /sbin/ext/properties.sh;
-
 ROOT_RW;
 
 (
@@ -401,6 +396,7 @@ ROOT_RW;
 	# ###############################################################
 
 	$BB mount -o remount,rw /system;
+
 	# correct touch keys light, if rom mess user configuration
 	$BB sh /res/uci.sh generic /sys/class/misc/notification/led_timeout_ms "$led_timeout_ms";
 
