@@ -95,7 +95,7 @@ IO_TWEAKS()
 			echo "$scheduler" > "$i"/queue/scheduler;
 			echo "0" > "$i"/queue/rotational;
 			echo "0" > "$i"/queue/iostats;
-			echo "1" > "$i"/queue/rq_affinity;
+			echo "2" > "$i"/queue/nomerges;
 		done;
 
 		if [ -e /sys/block/mmcblk1/queue/scheduler ]; then
