@@ -28,12 +28,7 @@ on fs
     mkdir /data/misc/vpn/profiles 0770 system system
     mkdir /data/misc/radio 0775 radio system
     mkdir /data/radio 0770 radio radio
-    chmod 0770 /data/misc/wifi 
-
-on charger
-
-# EHCI runtime enable for LPA
-    write /sys/devices/platform/s5p-ehci/power/control auto
+    chmod 0770 /data/misc/wifi
 
 on post-fs-data
     
@@ -316,11 +311,6 @@ service cpboot-daemon /sbin/cbd -d -p 8
     user root
     group radio cache inet misc audio sdcard_rw log sdcard_r
     seclabel u:r:cpboot-daemon:s0
-
-service charger /sbin/healthd -c
-    class charger
-    critical
-    seclabel u:r:healthd:s0
 
 service p2p_supplicant /system/bin/wpa_supplicant \
     -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \

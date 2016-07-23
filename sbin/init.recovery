@@ -1,5 +1,1 @@
-#!/sbin/busybox sh
-
-mv /bootbin /init
-exec /init
-
+init.samsung

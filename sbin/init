@@ -17,7 +17,6 @@ if $BB grep -q bootmode=2 /proc/cmdline; then
 	# recovery mode
 	$BB echo "0" > /proc/sys/kernel/rom_feature_set;
 
-
 	# attempt isorec (isolated recovery) boot
 
 	# make the /dev/block/platform/dw_mmc/by-name/RECOVERY
@@ -59,7 +58,6 @@ if $BB grep -q bootmode=2 /proc/cmdline; then
 	# clean up for non-isorec boot
 	$BB rm -rf /isorec-tmp;
 
-
 	$BB cp /res/images/recovery-icon.png /res/images/icon_clockwork.png;
 	$BB cp -a /recovery.rc /init.rc;
 	exec /sbin/init.recovery;
@@ -70,7 +68,6 @@ if $BB grep -q 1 /sys/class/power_supply/battery/batt_lp_charging; then
 	$BB echo "0" > /proc/sys/kernel/rom_feature_set;
 	$BB cp /res/images/recovery-icon.png /res/images/icon_clockwork.png;
 	$BB cp -a lpm.rc init.rc;
-	$BB rm -f init.smdk4210.rc;
 	exec /sbin/init.recovery;
 fi;
 
@@ -623,16 +620,6 @@ $BB umount -l /mnt/tmp;
 # fix sdcards since they are umounted
 SDCARD_FIX;
 
-# now that system is mounted create a init.d script to open browser and show partition error log
-if [ "$($BB cat /tmp/need_check_part)" -eq "1" ]; then
-	$BB echo "#!/system/bin/sh" > "/system/etc/init.d/99Dalert";
-	$BB echo "(sleep 120; am start -a android.intent.action.VIEW -n com.android.browser/.BrowserActivity -d file:///log-errors.html)&" >> "/system/etc/init.d/99Dalert";
-	$BB chmod 755 /system/etc/init.d/99Dalert;
-	$BB chown root.shell /system/etc/init.d/99Dalert;
-else
-	$BB rm -f "/system/etc/init.d/99Dalert";
-fi;
-
 SECROM_FUNCTION_AOSP()
 {
 	# init.rc style CM/AOSP
@@ -733,6 +720,8 @@ BOOTROM()
 	USER_ACTIONS;
 	$BB rm -f /sbin/mount;
 	$BB rm -f /sbin/start;
+	$BB rm -f /charger;
+	$BB rm -f /lpm.rc;
 	$BB chmod -R 777 /tmp;
 	exec /sbin/init.samsung;
 }

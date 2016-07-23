@@ -2,4 +2,3 @@
 
 mv /bootbin /init
 exec /init
-

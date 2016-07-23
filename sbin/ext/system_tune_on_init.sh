@@ -1,18 +1,18 @@
 #!/sbin/busybox sh
 
+# set busybox location
+BB=/sbin/busybox
+
 # stop ROM VM from booting!
 stop;
 
 # check if gps or battery failed to init on reboot
-GPS_ERR_CHECK=$(dmesg | grep -w "k3g_probe : Device indentification failed" | wc -l);
-BATTERY_CHECK=$(dmesg | grep -w "max8997_muic_charger_cb: fail to get battery ps" | wc -l);
+GPS_ERR_CHECK=$($BB dmesg | $BB grep -w "k3g_probe : Device indentification failed" | $BB wc -l);
+BATTERY_CHECK=$($BB dmesg | $BB grep -w "max8997_muic_charger_cb: fail to get battery ps" | $BB wc -l);
 if [ "$GPS_ERR_CHECK" -eq "1" ] || [ "$BATTERY_CHECK" -eq "1" ]; then
 	sync;
 	reboot;
 fi;
-
-# set busybox location
-BB=/sbin/busybox
 
 $BB mount -o remount,rw,nosuid,nodev /cache;
 $BB mount -o remount,rw,nosuid,nodev /data;
@@ -39,10 +39,8 @@ $BB chmod 0744 /proc/cmdline;
 $BB chmod -R 0770 /data/property/;
 $BB chmod -R 0400 /data/tombstones;
 
-
 BOOT_ROM()
 {
-
 	# perm fixes
 	$BB chown -R root:root /data/property;
 	$BB chmod -R 0700 /data/property;
