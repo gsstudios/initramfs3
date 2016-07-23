@@ -293,40 +293,6 @@ $BB sh /sbin/ext/properties.sh;
 
 ROOT_RW;
 
-# tune I/O controls to boost I/O performance
-
-#This enables the user to disable the lookup logic involved with IO
-#merging requests in the block layer. By default (0) all merges are
-#enabled. When set to 1 only simple one-hit merges will be tried. When
-#set to 2 no merge algorithms will be tried (including one-hit or more
-#complex tree/hash lookups).
-if [ "$($BB cat /sys/devices/platform/dw_mmc/mmc_host/mmc0/mmc0:0001/block/mmcblk0/queue/nomerges)" != "2" ]; then
-	$BB echo "2" > /sys/devices/platform/dw_mmc/mmc_host/mmc0/mmc0:0001/block/mmcblk0/queue/nomerges;
-fi;
-
-
-if [ -e /sys/devices/platform/s3c-sdhci.2/mmc_host/mmc1/mmc1:59b4/block/mmcblk1/queue/nomerges ]; then
-	if [ "$($BB cat /sys/devices/platform/s3c-sdhci.2/mmc_host/mmc1/mmc1:59b4/block/mmcblk1/queue/nomerges)" != "2" ]; then
-		$BB echo "2" > /sys/devices/platform/s3c-sdhci.2/mmc_host/mmc1/mmc1:59b4/block/mmcblk1/queue/nomerges;
-	fi;
-fi;
-
-#If this option is '1', the block layer will migrate request completions to the
-#cpu "group" that originally submitted the request. For some workloads this
-#provides a significant reduction in CPU cycles due to caching effects.
-#For storage configurations that need to maximize distribution of completion
-#processing setting this option to '2' forces the completion to run on the
-#requesting cpu (bypassing the "group" aggregation logic).
-if [ "$($BB cat /sys/devices/platform/dw_mmc/mmc_host/mmc0/mmc0:0001/block/mmcblk0/queue/rq_affinity)" != "1" ]; then
-	$BB echo "1" > /sys/devices/platform/dw_mmc/mmc_host/mmc0/mmc0:0001/block/mmcblk0/queue/rq_affinity;
-fi;
-
-if [ -e /sys/devices/platform/s3c-sdhci.2/mmc_host/mmc1/mmc1:59b4/block/mmcblk1/queue/rq_affinity ]; then
-	if [ "$($BB cat /sys/devices/platform/s3c-sdhci.2/mmc_host/mmc1/mmc1:59b4/block/mmcblk1/queue/rq_affinity)" != "1" ]; then
-		$BB echo "1" > /sys/devices/platform/s3c-sdhci.2/mmc_host/mmc1/mmc1:59b4/block/mmcblk1/queue/rq_affinity;
-	fi;
-fi;
-
 (
 	# mount apps2sd partition point for CyanogenMod
 	if [ -e /tmp/cm-installed ]; then
