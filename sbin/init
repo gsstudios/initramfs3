@@ -17,7 +17,6 @@ if $BB grep -q bootmode=2 /proc/cmdline; then
 	# recovery mode
 	$BB echo "0" > /proc/sys/kernel/rom_feature_set;
 
-
 	# attempt isorec (isolated recovery) boot
 
 	# make the /dev/block/platform/dw_mmc/by-name/RECOVERY
@@ -59,7 +58,6 @@ if $BB grep -q bootmode=2 /proc/cmdline; then
 	# clean up for non-isorec boot
 	$BB rm -rf /isorec-tmp;
 
-
 	$BB cp /res/images/recovery-icon.png /res/images/icon_clockwork.png;
 	$BB cp -a /recovery.rc /init.rc;
 	exec /sbin/init.recovery;
@@ -70,7 +68,6 @@ if $BB grep -q 1 /sys/class/power_supply/battery/batt_lp_charging; then
 	$BB echo "0" > /proc/sys/kernel/rom_feature_set;
 	$BB cp /res/images/recovery-icon.png /res/images/icon_clockwork.png;
 	$BB cp -a lpm.rc init.rc;
-	$BB rm -f init.smdk4210.rc;
 	exec /sbin/init.recovery;
 fi;
 
@@ -733,6 +730,8 @@ BOOTROM()
 	USER_ACTIONS;
 	$BB rm -f /sbin/mount;
 	$BB rm -f /sbin/start;
+	$BB rm -f /charger;
+	$BB rm -f /lpm.rc;
 	$BB chmod -R 777 /tmp;
 	exec /sbin/init.samsung;
 }
