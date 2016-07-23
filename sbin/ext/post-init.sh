@@ -300,14 +300,14 @@ ROOT_RW;
 #enabled. When set to 1 only simple one-hit merges will be tried. When
 #set to 2 no merge algorithms will be tried (including one-hit or more
 #complex tree/hash lookups).
-if [ "$(cat /sys/devices/platform/dw_mmc/mmc_host/mmc0/mmc0:0001/block/mmcblk0/queue/nomerges)" != "2" ]; then
-	echo "2" > /sys/devices/platform/dw_mmc/mmc_host/mmc0/mmc0:0001/block/mmcblk0/queue/nomerges;
+if [ "$($BB cat /sys/devices/platform/dw_mmc/mmc_host/mmc0/mmc0:0001/block/mmcblk0/queue/nomerges)" != "2" ]; then
+	$BB echo "2" > /sys/devices/platform/dw_mmc/mmc_host/mmc0/mmc0:0001/block/mmcblk0/queue/nomerges;
 fi;
 
 
 if [ -e /sys/devices/platform/s3c-sdhci.2/mmc_host/mmc1/mmc1:59b4/block/mmcblk1/queue/nomerges ]; then
-	if [ "$(cat /sys/devices/platform/s3c-sdhci.2/mmc_host/mmc1/mmc1:59b4/block/mmcblk1/queue/nomerges)" != "2" ]; then
-		echo "2" > /sys/devices/platform/s3c-sdhci.2/mmc_host/mmc1/mmc1:59b4/block/mmcblk1/queue/nomerges;
+	if [ "$($BB cat /sys/devices/platform/s3c-sdhci.2/mmc_host/mmc1/mmc1:59b4/block/mmcblk1/queue/nomerges)" != "2" ]; then
+		$BB echo "2" > /sys/devices/platform/s3c-sdhci.2/mmc_host/mmc1/mmc1:59b4/block/mmcblk1/queue/nomerges;
 	fi;
 fi;
 
@@ -317,13 +317,13 @@ fi;
 #For storage configurations that need to maximize distribution of completion
 #processing setting this option to '2' forces the completion to run on the
 #requesting cpu (bypassing the "group" aggregation logic).
-if [ "$(cat /sys/devices/platform/dw_mmc/mmc_host/mmc0/mmc0:0001/block/mmcblk0/queue/rq_affinity)" != "1" ]; then
-	echo "1" > /sys/devices/platform/dw_mmc/mmc_host/mmc0/mmc0:0001/block/mmcblk0/queue/rq_affinity;
+if [ "$($BB cat /sys/devices/platform/dw_mmc/mmc_host/mmc0/mmc0:0001/block/mmcblk0/queue/rq_affinity)" != "1" ]; then
+	$BB echo "1" > /sys/devices/platform/dw_mmc/mmc_host/mmc0/mmc0:0001/block/mmcblk0/queue/rq_affinity;
 fi;
 
 if [ -e /sys/devices/platform/s3c-sdhci.2/mmc_host/mmc1/mmc1:59b4/block/mmcblk1/queue/rq_affinity ]; then
-	if [ "$(cat /sys/devices/platform/s3c-sdhci.2/mmc_host/mmc1/mmc1:59b4/block/mmcblk1/queue/rq_affinity)" != "1" ]; then
-		echo "1" > /sys/devices/platform/s3c-sdhci.2/mmc_host/mmc1/mmc1:59b4/block/mmcblk1/queue/rq_affinity;
+	if [ "$($BB cat /sys/devices/platform/s3c-sdhci.2/mmc_host/mmc1/mmc1:59b4/block/mmcblk1/queue/rq_affinity)" != "1" ]; then
+		$BB echo "1" > /sys/devices/platform/s3c-sdhci.2/mmc_host/mmc1/mmc1:59b4/block/mmcblk1/queue/rq_affinity;
 	fi;
 fi;
 
