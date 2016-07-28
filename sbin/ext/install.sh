@@ -72,7 +72,7 @@ fi;
 
 if [ "$install_root" == "on" ]; then
 	if [ "$NEW_SU" -eq "0" ]; then
-		echo "SuperSU already exists";
+		$BB echo "SuperSU already exists";
 		$BB chmod 06755 /system/xbin/su;
 		if [ -e /system/xbin/daemonsu ]; then
 			$BB chmod 6755 /system/xbin/daemonsu;
@@ -81,7 +81,7 @@ if [ "$install_root" == "on" ]; then
 			fi;
 		fi;
 	else
-		echo "ROOT NOT detected, Installing SuperSU";
+		$BB echo "ROOT NOT detected, Installing SuperSU";
 		#extract_payload;
 		# clean su traces
 		$BB rm -f /system/bin/su > /dev/null 2>&1;
@@ -158,14 +158,14 @@ if [ "$install_root" == "on" ]; then
 				$BB mv /data/system/chain_pro.apk_bkp /system/app/eu.chainfire.supersu.pro-1.apk;
 				$BB chmod 644 /system/app/eu.chainfire.supersu.pro-1.apk;
 			else
-				echo "no su pro" > /dev/null 2>&1;
+				$BB echo "no su pro" > /dev/null 2>&1;
 			fi;
 		fi;
 
 		# restore witch if exist
 		if [ -e /system/xbin/waswhich-bkp ]; then
 			$BB rm -f /system/xbin/which;
-			$BB cp /system/xbin/waswhich-bkp /system/xbin/which;
+			$BB cp -a /system/xbin/waswhich-bkp /system/xbin/which;
 			$BB chmod 755 /system/xbin/which;
 		fi;
 
@@ -178,8 +178,8 @@ if [ "$install_root" == "on" ]; then
 		fi;
 
 		# kill superuser pid
-		pkill -f "com.noshufou.android.su";
-		pkill -f "eu.chainfire.supersu";
+		$BB pkill -f "com.noshufou.android.su";
+		$BB pkill -f "eu.chainfire.supersu";
 		/system/xbin/daemonsu --auto-daemon &
 	fi;
 fi;
@@ -188,7 +188,7 @@ fi;
 if [ ! -e /system/lib/hw/lights.exynos4.so.BAK ]; then
 	$BB mv /system/lib/hw/lights.exynos4.so /system/lib/hw/lights.exynos4.so.BAK;
 fi;
-echo "Copying liblights";
+$BB echo "Copying liblights";
 $BB cp -a /res/misc/lights.exynos4.so /system/lib/hw/lights.exynos4.so;
 $BB chown root:root /system/lib/hw/lights.exynos4.so;
 $BB chmod 644 /system/lib/hw/lights.exynos4.so;
@@ -220,7 +220,7 @@ if [ -f /system/app/STweaks.apk ]; then
 		$BB rm -f /data/data/com.gokhanmoral.stweaks*/* > /dev/null 2>&1;
 		$BB rm -f /data/dalvik-cache/*gokhanmoral.*weak*.apk* > /dev/null 2>&1;
 		$BB rm -f /cache/dalvik-cache/*gokhanmoral.*weak*.apk* > /dev/null 2>&1;
-		$BB cp /res/misc/payload/STweaks.apk /system/app/;
+		$BB cp -a /res/misc/payload/STweaks.apk /system/app/;
 		$BB chown 0.0 /system/app/STweaks.apk;
 		$BB chmod 644 /system/app/STweaks.apk;
 	fi;

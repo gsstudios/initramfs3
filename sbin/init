@@ -13,6 +13,8 @@ fi;
 # mount root as rw
 $BB mount -t rootfs -o remount,rw rootfs;
 
+$BB mkdir -p /dev/block;
+
 if $BB grep -q bootmode=2 /proc/cmdline; then
 	# recovery mode
 	echo "0" > /proc/sys/kernel/rom_feature_set;
@@ -22,8 +24,8 @@ if $BB grep -q bootmode=2 /proc/cmdline; then
 
 	# make the /dev/block/platform/dw_mmc/by-name/RECOVERY
 	# (/dev/block/mmcblk0p6) partition accessible
-	$BB mkdir /isorec-tmp
-	$BB mknod /isorec-tmp/mmcblk0p6 b 179 6
+	$BB mkdir /isorec-tmp;
+	$BB mknod /isorec-tmp/mmcblk0p6 b 179 6;
 
 	# if the raw partition contains valid lzop-compressed data
 	if $BB lzop -dc /isorec-tmp/mmcblk0p6 > /isorec-tmp/isorec.cpio; then
@@ -33,45 +35,43 @@ if $BB grep -q bootmode=2 /proc/cmdline; then
 			# isorec boot
 
 			# unmount everything
-			$BB umount /sys
-			$BB umount /proc
+			$BB umount -l /proc;
+			$BB umount -l /sys;
 
 			# copy busybox to /isorec-tmp
 			# WARNING: this assumes static linking
-			$BB cp $(readlink -f $BB) /isorec-tmp/busybox
-			BB=/isorec-tmp/busybox
+			$BB cp $(readlink -f $BB) /isorec-tmp/busybox;
+			BB=/isorec-tmp/busybox;
 
 			# remove everything not in /isorec-tmp
-			$BB mkdir /isorec-tmp/junk
-			$BB mv /* /.* /isorec-tmp/junk
-			$BB rm -rf /isorec-tmp/junk
+			$BB mkdir /isorec-tmp/junk;
+			$BB mv /* /.* /isorec-tmp/junk;
+			$BB rm -rf /isorec-tmp/junk;
 
 			# extract the isorec ramdisk
-			$BB cpio -i < /isorec-tmp/isorec.cpio
+			$BB cpio -i < /isorec-tmp/isorec.cpio;
 
 			# clean up and pass control to ramdisk
-			$BB rm -rf /isorec-tmp
-			exec /init
+			$BB rm -rf /isorec-tmp;
+			exec /init;
 
-		fi
-	fi
+		fi;
+	fi;
 
 	# clean up for non-isorec boot
-	$BB rm -rf /isorec-tmp
+	$BB rm -rf /isorec-tmp;
 
 
 	$BB cp /res/images/recovery-icon.png /res/images/icon_clockwork.png;
 	$BB cp -a /recovery.rc /init.rc;
-	# BUG: these mknod commands do nothing because /dev/block does not exist!
-	# FIX: mkdir -p /dev/block
-	mknod /dev/block/mmcblk0p1 b 179 1;
-	mknod /dev/block/mmcblk0p7 b 179 7;
-	mknod /dev/block/mmcblk1p1 b 179 9;
-	mknod /dev/block/mmcblk0p9 b 259 1;
-	mknod /dev/block/mmcblk0p10 b 259 2;
-	mknod /dev/block/mmcblk0p11 b 259 3;
-	mknod /dev/block/mmcblk0p12 b 259 4;
-	mknod /dev/block/loop0 b 7 0;
+	$BB mknod /dev/block/mmcblk0p1 b 179 1;
+	$BB mknod /dev/block/mmcblk0p7 b 179 7;
+	$BB mknod /dev/block/mmcblk1p1 b 179 9;
+	$BB mknod /dev/block/mmcblk0p9 b 259 1;
+	$BB mknod /dev/block/mmcblk0p10 b 259 2;
+	$BB mknod /dev/block/mmcblk0p11 b 259 3;
+	$BB mknod /dev/block/mmcblk0p12 b 259 4;
+	$BB mknod /dev/block/loop0 b 7 0;
 	exec /sbin/init.recovery;
 fi;
 
@@ -80,7 +80,7 @@ if $BB grep -q 1 /sys/class/power_supply/battery/batt_lp_charging; then
 	echo "0" > /proc/sys/kernel/rom_feature_set;
 	$BB cp /res/images/recovery-icon.png /res/images/icon_clockwork.png;
 	$BB cp -a lpm.rc init.rc;
-	$BB rm init.smdk4210.rc;
+	$BB rm -f init.smdk4210.rc;
 	exec /sbin/init.recovery;
 fi;
 
@@ -95,40 +95,40 @@ $BB umount -l /storage/sdcard1;
 # cleaning and rebuilding the /mnt and sdcards mounts folders
 $BB rm -rf /vendor;
 $BB rm -rf /tmp/*;
-mkdir -p /dev/block;
-mkdir /dev/input;
-mkdir /dev/graphics;
-mkdir -p /mnt/asec;
-mkdir -p /mnt/.lfs;
-mkdir -p /mnt/obb;
-mkdir -p /mnt/secure;
-rm -rf /mnt/tmp;
-rm -rf /mnt/tmp2;
-mkdir -p /mnt/tmp;
-mkdir -p /mnt/tmp2;
-mkdir -p /mnt/.secondrom;
+$BB mkdir -p /dev/block;
+$BB mkdir /dev/input;
+$BB mkdir /dev/graphics;
+$BB mkdir -p /mnt/asec;
+$BB mkdir -p /mnt/.lfs;
+$BB mkdir -p /mnt/obb;
+$BB mkdir -p /mnt/secure;
+$BB rm -rf /mnt/tmp;
+$BB rm -rf /mnt/tmp2;
+$BB mkdir -p /mnt/tmp;
+$BB mkdir -p /mnt/tmp2;
+$BB mkdir -p /mnt/.secondrom;
 $BB chmod -R 755 /mnt/;
-chmod 0771 /preload;
-chown system:system /preload;
+$BB chmod 0771 /preload;
+$BB chown system:system /preload;
 $BB chmod -R 777 /storage;
-mknod /dev/graphics/fb0 c 29 0;
-mknod /dev/input/event1 c 13 65;
-mknod /dev/input/event2 c 13 66;
-mknod /dev/input/event8 c 13 72;
-mknod /dev/input/event9 c 13 73;
-mknod /dev/ashmem c 10 61;
-mknod /dev/block/mmcblk0p1 b 179 1;
-mknod /dev/block/mmcblk0p7 b 179 7;
-mknod /dev/block/mmcblk1p1 b 179 9;
-mknod /dev/block/mmcblk0p9 b 259 1;
-mknod /dev/block/mmcblk0p10 b 259 2;
-mknod /dev/block/mmcblk0p11 b 259 3;
-mknod /dev/block/mmcblk0p12 b 259 4;
-mknod /dev/block/loop0 b 7 0;
+$BB mknod /dev/graphics/fb0 c 29 0;
+$BB mknod /dev/input/event1 c 13 65;
+$BB mknod /dev/input/event2 c 13 66;
+$BB mknod /dev/input/event8 c 13 72;
+$BB mknod /dev/input/event9 c 13 73;
+$BB mknod /dev/ashmem c 10 61;
+$BB mknod /dev/block/mmcblk0p1 b 179 1;
+$BB mknod /dev/block/mmcblk0p7 b 179 7;
+$BB mknod /dev/block/mmcblk1p1 b 179 9;
+$BB mknod /dev/block/mmcblk0p9 b 259 1;
+$BB mknod /dev/block/mmcblk0p10 b 259 2;
+$BB mknod /dev/block/mmcblk0p11 b 259 3;
+$BB mknod /dev/block/mmcblk0p12 b 259 4;
+$BB mknod /dev/block/loop0 b 7 0;
 
 # needed for mount exfat binary /system/bin/mount.exfat-fuse
-mknod /dev/fuse c 10 229;
-chmod 666 /dev/fuse;
+$BB mknod /dev/fuse c 10 229;
+$BB chmod 666 /dev/fuse;
 
 # mounting preloaded partition
 $BB mount -t ext4 -o rw,noauto_da_alloc,journal_async_commit /dev/block/mmcblk0p12 /preload;
@@ -153,31 +153,31 @@ fi;
 # prevent from media storage to dig in clockworkmod backup dir
 # added /mnt/tmp/android/.nomedia because my gallery is showing pic from there and media scanner has nothing to sniff around there
 if [ "$FS_SDCARD0" == "exfat" ]; then
-	sh -c "/system/bin/mount.exfat-fuse /dev/block/mmcblk0p11 /mnt/tmp";
+	$BB sh -c "/system/bin/mount.exfat-fuse /dev/block/mmcblk0p11 /mnt/tmp";
 else
 	$BB mount -t $FS_SDCARD0 /dev/block/mmcblk0p11 /mnt/tmp;
 fi;
 
-mkdir -p /mnt/tmp/clockworkmod/blobs/;
-mkdir /mnt/tmp/.secondrom/;
-touch /mnt/tmp/.secondrom/.nomedia;
-touch /mnt/tmp/clockworkmod/.nomedia;
-touch /mnt/tmp/clockworkmod/blobs/.nomedia;
-touch /mnt/tmp/Android/.nomedia;
+$BB mkdir -p /mnt/tmp/clockworkmod/blobs/;
+$BB mkdir -p /mnt/tmp/.secondrom/;
+$BB touch /mnt/tmp/.secondrom/.nomedia;
+$BB touch /mnt/tmp/clockworkmod/.nomedia;
+$BB touch /mnt/tmp/clockworkmod/blobs/.nomedia;
+$BB touch /mnt/tmp/Android/.nomedia;
 
 EXSDCARD()
 {
 	if [ -e /dev/block/mmcblk1p1 ]; then
 		# added /mnt/tmp2/android/.nomedia because my gallery is showing pic from there and media scanner has nothing to sniff around there
 		if [ "$FS_SDCARD1" == "exfat" ]; then
-			sh -c "/system/bin/mount.exfat-fuse /dev/block/mmcblk1p1 /mnt/tmp2";
+			$BB sh -c "/system/bin/mount.exfat-fuse /dev/block/mmcblk1p1 /mnt/tmp2";
 		else
 			$BB mount -t $FS_SDCARD1 /dev/block/mmcblk1p1 /mnt/tmp2;
 		fi;
-		mkdir -p /mnt/tmp2/clockworkmod/blobs/;
-		touch /mnt/tmp2/clockworkmod/.nomedia;
-		touch /mnt/tmp2/clockworkmod/blobs/.nomedia;
-		touch /mnt/tmp2/Android/.nomedia;
+		$BB mkdir -p /mnt/tmp2/clockworkmod/blobs/;
+		$BB touch /mnt/tmp2/clockworkmod/.nomedia;
+		$BB touch /mnt/tmp2/clockworkmod/blobs/.nomedia;
+		$BB touch /mnt/tmp2/Android/.nomedia;
 
 		SDCARD_SIZE=$($BB df | $BB grep /dev/block/mmcblk1p1 | $BB cut -c 23-30)
 		if [ "$SDCARD_SIZE" -lt "1000000" ]; then
@@ -257,18 +257,18 @@ fi;
 
 if [ "$SECONDROM" -eq "1" ]; then
 	$BB rm -rf /res/dev;
-	mkdir -p /res/dev;
-	ln -s /mnt/.secondrom/.secondrom/data.img /res/dev/data;
-	ln -s /dev/block/mmcblk0p12 /res/dev/system;
-	ln -s /mnt/.secondrom/.secondrom/cache.img /res/dev/cache;
+	$BB mkdir -p /res/dev;
+	$BB ln -s /mnt/.secondrom/.secondrom/data.img /res/dev/data;
+	$BB ln -s /dev/block/mmcblk0p12 /res/dev/system;
+	$BB ln -s /mnt/.secondrom/.secondrom/cache.img /res/dev/cache;
 	echo "1" > /tmp/sec_rom_boot;
 	echo "0" > /tmp/pri_rom_boot;
 else
 	$BB rm -rf /res/dev;
-	mkdir -p /res/dev;
-	ln -s /dev/block/mmcblk0p10 /res/dev/data;
-	ln -s /dev/block/mmcblk0p9 /res/dev/system;
-	ln -s /dev/block/mmcblk0p7 /res/dev/cache;
+	$BB mkdir -p /res/dev;
+	$BB ln -s /dev/block/mmcblk0p10 /res/dev/data;
+	$BB ln -s /dev/block/mmcblk0p9 /res/dev/system;
+	$BB ln -s /dev/block/mmcblk0p7 /res/dev/cache;
 	echo "0" > /tmp/sec_rom_boot;
 	echo "1" > /tmp/pri_rom_boot;
 fi;
@@ -285,8 +285,8 @@ PARTITION_FIX()
 
 	echo "Fixing partitions..."  >> $LOG;
 	echo ""  >> $LOG;
-	sh -c "/sbin/e2fsck -p $DEVICE" >> $LOG;
-	sh -c "/sbin/e2fsck -fyv $DEVICE" >> $LOG;
+	$BB sh -c "/sbin/e2fsck -p $DEVICE" >> $LOG;
+	$BB sh -c "/sbin/e2fsck -fyv $DEVICE" >> $LOG;
 	echo ""  >> $LOG;
 	echo "Fixing partitions ends."  >> $LOG;
 	echo "0" > /tmp/need_check_part;
@@ -303,16 +303,16 @@ SDCARD_FIX()
         local DEVICE_SDCARD1="/dev/block/mmcblk1p1";
 
         # new empty log
-        sh -c "/sbin/date" > $LOG_SDCARD0;
-        sh -c "/sbin/date" > $LOG_SDCARD1;
+        $BB sh -c "/sbin/date" > $LOG_SDCARD0;
+        $BB sh -c "/sbin/date" > $LOG_SDCARD1;
 
-        cp /sbin/libexfat_utils.so /system/lib/;
+        cp -a /sbin/libexfat_utils.so /system/lib/;
         if [ -e /dev/block/mmcblk1p1 ]; then
                 echo "EXTERNAL SDCARD CHECK" >> $LOG_SDCARD1;
                 if [ "$FS_SDCARD1" == "exfat" ]; then
-                        sh -c "$FIX_EXFAT_BINARY -R $DEVICE_SDCARD1" >> $LOG_SDCARD1;
+                        $BB sh -c "$FIX_EXFAT_BINARY -R $DEVICE_SDCARD1" >> $LOG_SDCARD1;
                 elif [ "$FS_SDCARD1" == "vfat" ]; then
-                        sh -c "$FIX_VFAT_BINARY -p -f $DEVICE_SDCARD1" >> $LOG_SDCARD1;
+                        $BB sh -c "$FIX_VFAT_BINARY -p -f $DEVICE_SDCARD1" >> $LOG_SDCARD1;
                 elif [ "$FS_SDCARD1" == "ext4" ]; then
                         PARTITION_FIX $DEVICE_SDCARD1 $LOG_SDCARD1;
                 else
@@ -325,9 +325,9 @@ SDCARD_FIX()
 
         echo "INTERNAL SDCARD CHECK" >> $LOG_SDCARD0;
         if [ "$FS_SDCARD0" == "exfat" ]; then
-                sh -c "$FIX_EXFAT_BINARY -R $DEVICE_SDCARD0"  >> $LOG_SDCARD0;
+                $BB sh -c "$FIX_EXFAT_BINARY -R $DEVICE_SDCARD0"  >> $LOG_SDCARD0;
         elif [ "$FS_SDCARD0" == "vfat" ]; then
-                sh -c "$FIX_VFAT_BINARY -p -f $DEVICE_SDCARD0"  >> $LOG_SDCARD0;
+                $BB sh -c "$FIX_VFAT_BINARY -p -f $DEVICE_SDCARD0"  >> $LOG_SDCARD0;
         elif [ "$FS_SDCARD0" == "ext4" ]; then
                 PARTITION_FIX $DEVICE_SDCARD0 $LOG_SDCARD0;
         else
@@ -350,7 +350,7 @@ DALVIK_CLEAN()
 	$BB mount -t ext4 $DEVICE_DATA $DIR_DATA;
 	$BB rm -f $DIR_DATA/dalvik-cache/*;
 	sync;
-	$BB umount $DIR_DATA;
+	$BB umount -l $DIR_DATA;
 }
 
 TUNE_PARTITION()
@@ -361,44 +361,44 @@ TUNE_PARTITION()
 
 	echo "" >> $LOG;
 	echo "Version of binaries used:" >> $LOG;
-	mknod /dev/null c 1 3;
-	chmod 666 /dev/null;
-	sh -c "/sbin/e2fsck -V" >> $LOG 2>&1;
-	rm -rf /dev/null;
-	sh -c "/sbin/tune2fs.static" >> $LOG;
+	$BB mknod /dev/null c 1 3;
+	$BB chmod 666 /dev/null;
+	$BB sh -c "/sbin/e2fsck -V" >> $LOG 2>&1;
+	$BB rm -rf /dev/null;
+	$BB sh -c "/sbin/tune2fs.static" >> $LOG;
 	echo "" >> $LOG;
 	# don't tune efs partition
 	if [ "$DEVICE" != "/dev/block/mmcblk0p1" ] && [ "$DEVICE" != "/mnt/tmp/.secondrom/cache.img" ] && [ "$DEVICE" != "/mnt/tmp/.secondrom/cache.img" ] && [ "$DEVICE" != "/res/dev/cache" ] ; then
 		echo "Tunning partitions begins..."  >> $LOG;
-		sh -c "/sbin/tune2fs.static -l $DEVICE" > $LOG_TMP;
+		$BB sh -c "/sbin/tune2fs.static -l $DEVICE" > $LOG_TMP;
 		echo "" >> $LOG;
 		# set fs-feature -> [^]has_journal
-		if [ "$(cat $LOG_TMP | grep 'features' | grep 'has_journal' | wc -l)" -eq "0" ]; then
-			sh -c "/sbin/tune2fs.static -O has_journal $DEVICE" >> $LOG 2>&1;
+		if [ "$(cat $LOG_TMP | $BB grep 'features' | $BB grep 'has_journal' | wc -l)" -eq "0" ]; then
+			$BB sh -c "/sbin/tune2fs.static -O has_journal $DEVICE" >> $LOG 2>&1;
 			echo "Added has_journal feature to $DEVICE" >> $LOG;
 		else
 			echo "Device $DEVICE already have has_journal in features." >> $LOG;
 		fi;
 
 		# set fs-feature -> [^]dir_index
-		if [ "$(cat $LOG_TMP | grep 'features' | grep 'dir_index' | wc -l)" -eq "0" ]; then
-			sh -c "/sbin/tune2fs.static -O dir_index $DEVICE" >> $LOG 2>&1;
+		if [ "$(cat $LOG_TMP | $BB grep 'features' | $BB grep 'dir_index' | wc -l)" -eq "0" ]; then
+			$BB sh -c "/sbin/tune2fs.static -O dir_index $DEVICE" >> $LOG 2>&1;
 			echo "Added dir_index feature to $DEVICE" >> $LOG;
 		else
 			echo "Device $DEVICE already have dir_index in features." >> $LOG;
 		fi;
 
 		# set mount option -> [^]journal_data_writeback
-		if [ "$(cat $LOG_TMP | grep 'Default mount options' | grep 'journal_data_writeback' | wc -l)" -eq "0" ]; then
-			sh -c "/sbin/tune2fs.static -o journal_data_writeback $DEVICE" >> $LOG 2>&1;
+		if [ "$(cat $LOG_TMP | $BB grep 'Default mount options' | $BB grep 'journal_data_writeback' | wc -l)" -eq "0" ]; then
+			$BB sh -c "/sbin/tune2fs.static -o journal_data_writeback $DEVICE" >> $LOG 2>&1;
 			echo "Added journal_data_writeback default mount option to $DEVICE" >> $LOG;
 		else
 			echo "Device $DEVICE already have journal_data_writeback in default mount options" >> $LOG;
 		fi;
 
 		# set inode to 256
-		if [ "$(cat $LOG_TMP | grep 'Inode size' | grep '256' | wc -l)" -eq "0" ]; then
-			sh -c "/sbin/tune2fs.static -I 256 $DEVICE" >> $LOG 2>&1;
+		if [ "$(cat $LOG_TMP | $BB grep 'Inode size' | $BB grep '256' | wc -l)" -eq "0" ]; then
+			$BB sh -c "/sbin/tune2fs.static -I 256 $DEVICE" >> $LOG 2>&1;
 			echo "Added 256 Inode size to $DEVICE" >> $LOG;
 		else
 			echo "Device $DEVICE already have 256 Inode size" >> $LOG;
@@ -410,10 +410,10 @@ TUNE_PARTITION()
 
 	echo "Checking if device has errors..." >> $LOG;
 	echo "" >> $LOG;
-	sh -c "/sbin/e2fsck -nv $DEVICE" > $LOG_TMP;
+	$BB sh -c "/sbin/e2fsck -nv $DEVICE" > $LOG_TMP;
 	cat $LOG_TMP >> $LOG;
 	echo "" >> $LOG;
-	if [ "$(cat $LOG_TMP | grep 'clean' | wc -l)" -eq "0" ]; then
+	if [ "$(cat $LOG_TMP | $BB grep 'clean' | wc -l)" -eq "0" ]; then
 		NEED_CHECK;
 		echo "DEVICE $DEVICE NEEDS DO BE FIX" >> $LOG;
 		echo "0" > $LOG_TMP;
@@ -431,7 +431,7 @@ FORMAT_ERRORS_LOG()
 	local LOG_ERRORS=$2;
 
 	echo "<p>" >> $LOG_ERRORS;
-	sed ':a;N;$!ba;s/\n/\<br\>/g' $LOG >> $LOG_ERRORS;
+	$BB sed ":a;N;$!ba;s/\n/\<br\>/g" $LOG >> $LOG_ERRORS;
 	echo "</p><hr>" >> $LOG_ERRORS;
 }
 
@@ -468,13 +468,13 @@ PARTITION_TUNING()
 	LOG_EFS_TMP="/log-efs-tmp";
 
 	# new empty log
-	sh -c "/sbin/date" > $LOG_DATA;
-	sh -c "/sbin/date" > $LOG_CACHE;
-	sh -c "/sbin/date" > $LOG_SYSTEM;
+	$BB sh -c "/sbin/date" > $LOG_DATA;
+	$BB sh -c "/sbin/date" > $LOG_CACHE;
+	$BB sh -c "/sbin/date" > $LOG_SYSTEM;
 	if [ "$SECONDROM" -eq "0" ]; then
-		sh -c "/sbin/date" > $LOG_PRELOAD;
+		$BB sh -c "/sbin/date" > $LOG_PRELOAD;
 	fi;
-	sh -c "/sbin/date" > $LOG_EFS;
+	$BB sh -c "/sbin/date" > $LOG_EFS;
 
 	# umount
 	sync;
@@ -498,7 +498,7 @@ PARTITION_TUNING()
 	# only if asked by user via stweaks with dalvik cache clean
 	if [ -e /mnt/tmp/.run_fs_check ]; then
 		# reset the lock-file
-		rm -f /mnt/tmp/.run_fs_check;
+		$BB rm -f /mnt/tmp/.run_fs_check;
 		DALVIK_CLEAN;
 
 		# run partition fix by forcing full scan and repair
@@ -590,7 +590,7 @@ if [ "$(cat /tmp/need_check_part)" -eq "1" ]; then
 	$BB chmod 755 /system/etc/init.d/99Dalert;
 	$BB chown root.shell /system/etc/init.d/99Dalert;
 else
-	$BB rm "/system/etc/init.d/99Dalert";
+	$BB rm -f "/system/etc/init.d/99Dalert";
 fi;
 
 SECROM_FUNCTION_AOSP()
@@ -603,13 +603,13 @@ SECROM_FUNCTION_AOSP()
 			$BB mv /fstab.smdk4210.sec /fstab.smdk4210
 		fi;
 		if [ -e /init.rc.2 ]; then
-			$BB rm /init.rc.2;
+			$BB rm -f /init.rc.2;
 		fi;
 	else
-		$BB rm /init.smdk4210.rc.2;
-		$BB rm /fstab.smdk4210.sec
+		$BB rm -f /init.smdk4210.rc.2;
+		$BB rm -f /fstab.smdk4210.sec
 		if [ -e /init.rc.2 ]; then
-			$BB rm /init.rc.2;
+			$BB rm -f /init.rc.2;
 		fi;
 	fi;
 }
@@ -622,18 +622,18 @@ SECROM_FUNCTION_SAMMY()
 		$BB sed -i "s/%TYPE%/$FS_SDCARD0/g" /init.smdk4210.rc;
 		$BB mv /init.rc.2 /init.rc
 	else
-		$BB rm /init.smdk4210.rc.2;
+		$BB rm -f /init.smdk4210.rc.2;
 		if [ -e /init.rc.2 ]; then
-			$BB rm /init.rc.2;
+			$BB rm -f /init.rc.2;
 		fi;
 	fi;
 }
 
 # linking /system/bin to /bin for crond
-ln -s /system/bin/ /bin
+$BB ln -s /system/bin/ /bin
 
 # adding latest vendor binary from 3.6.RC6 kernel for all! tested working great
-mkdir -p /system/vendor/firmware;
+$BB mkdir -p /system/vendor/firmware;
 $BB mv /res/misc/vendor/firmware/mfc_fw.bin /system/vendor/firmware/mfc_fw.bin;
 $BB chmod 755 /system/vendor/firmware/mfc_fw.bin;
 
@@ -642,11 +642,11 @@ $BB chmod 644 /system/framework/services.jar;
 
 # clean old modules from /system
 if [ ! -d /system/lib/modules ]; then
-        mkdir /system/lib/modules;
+        $BB mkdir -p /system/lib/modules;
 fi;
 cd /lib/modules/;
 for i in *.ko; do
-	rm /system/lib/modules/"$i";
+	$BB rm -f /system/lib/modules/"$i";
 done;
 cd /;
 
@@ -699,7 +699,7 @@ USER_ACTIONS()
 		# data mount
 		$BB mount -t ext4 /res/dev/data /data;
 
-		mkdir /sdcardtmp;
+		$BB mkdir -p /sdcardtmp;
 		$BB chmod 777 /sdcardtmp;
 		if [ "$FS_SDCARD0" == "exfat" ]; then
 			/system/bin/mount.exfat-fuse /dev/block/mmcblk0p11 /sdcardtmp;
@@ -719,7 +719,7 @@ USER_ACTIONS()
 		# sdcard unmount
 		sync;
 		$BB umount -l /sdcardtmp;
-		if [ "$($BB du -h /sdcardtmp | grep 4 | cut -c1-4)" == "4.0K" ]; then
+		if [ "$($BB du -h /sdcardtmp | $BB grep 4 | cut -c1-4)" == "4.0K" ]; then
 			$BB rm -rf /sdcardtmp;
 		fi;
 
@@ -818,7 +818,7 @@ if [ "$JBSAMMY" -eq "1" ] || [ "$JBSAMMY2" -eq "1" ]; then
 
 	GPIO_KEYS=/system/usr/keylayout/gpio-keys.kl
 	if [ -e $GPIO_KEYS ]; then
-		if grep -q 102 $GPIO_KEYS; then
+		if $BB grep -q 102 $GPIO_KEYS; then
 			$BB sed -i 's/102/172/g' $GPIO_KEYS;
 		fi;
 	fi;
