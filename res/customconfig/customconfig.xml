@@ -766,6 +766,14 @@
 
 	</settingsPane>	
 
+
+	<settingsPane description="Trims your system, cache, data and preload partitions to keep your phone running smooth." name="PARTITIONS TRIMMER">
+
+                <button description="Use this to trim your DATA, SYSTEM, CACHE and PRELOAD partitions. Trimming will take max 2 to 5 mins based on your partitions sizes." name="TRIM-PARTITIONS" action="push-actions/trim_partitions" label="TRIM PARTITIONS"/>
+
+
+	</settingsPane>
+
 	<settingsPane description="Software CRCs help protect the integrity of data, preventing data loss after a sudden power cut. Enabling software CRCs on the data blocks can be a significant (30%) performance overhead, and for other reasons may not always be desired." name="Software CRC control">
 
 		<checkbox description="Enable or disable software CRCs. I do not recommend disabling this as you will be at risk of data loss! However for whatever reason you want to disable this, you can do so by unchecking this. This should only be changed if you know what you are doing! (Default: Enabled)" name="Toggle Software CRCs"  action="generic01 /sys/module/mmc_core/parameters/use_spi_crc" label="Software CRCs"/>
