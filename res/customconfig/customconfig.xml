@@ -438,6 +438,32 @@
 
 	</settingsPane>
 
+	<settingsPane description="UKSM lets the hypervisor system to share identical memory pages amongst different processes." name="UKSM">
+
+		<checkbox description="UKSM Main Switch." name="Ultra Kernel Samepage Merging"
+			action="generic01 /sys/kernel/mm/uksm/run" label="UKSM Switch"/>
+
+		<spinner description="UKSM CPU Governor Power when screen is ON. You can set high or low operational power for scanning and sharing memory across apps (Default: Medium Power)." name="UKSM CPU AWAKE GOVERNOR"
+			action="uksm_gov_on">
+			<spinnerItem name="Full Power" value="full"/> 
+			<spinnerItem name="Medium Power" value="medium"/> 
+			<spinnerItem name="Low Power" value="low"/> 
+			<spinnerItem name="No Power (idle)" value="quiet"/> 
+		</spinner>
+
+		<spinner description="UKSM CPU Governor Power when screen is OFF. You can set high or low operational power for scanning and sharing memory across apps (Default: No Power)." name="UKSM CPU SLEEP GOVERNOR"
+			action="generic_cortex /tmp/uksm_gov_sleep">
+			<spinnerItem name="Full Power" value="full"/> 
+			<spinnerItem name="Medium Power" value="medium"/> 
+			<spinnerItem name="Low Power" value="low"/> 
+			<spinnerItem name="No Power (idle)" value="quiet"/> 
+		</spinner>
+
+		<seekBar description="The lower is set, more RAM we can gain at cost of slight performance (Default: 1000 ms)." name="UKSM Scan Delay Interval"
+			action="generic /sys/kernel/mm/uksm/sleep_millisecs" unit="ms" min="50" reversed="false" step="50" max="1000"/>
+
+	</settingsPane>
+
 </settingsTab>
 
 <settingsTab name="GPU">
