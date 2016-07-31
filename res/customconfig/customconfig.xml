@@ -583,7 +583,7 @@
 			<spinnerItem name="Movie" value="movie"/> 
 		</spinner>
 
-		<spinner description="MDNIE scenario. Setting this option allows you to select from a few predefined MDNIE scenarios via their values between 0 and 7. Depending on kernel, rom and platform, different values are being supported and also their meaning is different. Affects colours and contrast. (Default: UI_MODE)" name="MDNIE scenario" action="mdnie_scenario">
+		<spinner description="MDNIE scenario. Setting this option allows you to select from a few predefined MDNIE scenarios via their values between 0 and 7. Depending on kernel, rom and platform, different values are being supported and also their meaning is different. Affects colours and contrast. (Default: UI)" name="MDNIE scenario" action="mdnie_scenario">
 			<spinnerItem name="UI" value="ui"/> 
 			<spinnerItem name="VIDEO" value="video"/> 
 			<spinnerItem name="CAMERA" value="camera"/> 
@@ -942,7 +942,7 @@
 
 		<checkbox description="Enable or Disable Eco-Tweaks. !!! Depends on CortexBrain-Background-Process !!!" name="Eco-Tweaks" action="generic_cortex /tmp/cortexbrain_eco" label="Eco-Tweaks"/>
 
-		<spinner description="Set the threshold percentage battery life when you want eco-mode is activated. Only for Intelliplug. !!! Depends on CortexBrain-Eco-Tweaks !!!" name="Eco-Level" action="generic_cortex /tmp/cortexbrain_eco_level">
+		<spinner description="Set the threshold percentage battery life when you want eco-mode to be activated. Only for Intelliplug. !!! Depends on CortexBrain-Eco-Tweaks !!!" name="Eco-Level" action="generic_cortex /tmp/cortexbrain_eco_level">
 			<spinnerItem name="2%" value="2"/> 
 			<spinnerItem name="5%" value="5"/> 
 			<spinnerItem name="10%" value="10"/> 
