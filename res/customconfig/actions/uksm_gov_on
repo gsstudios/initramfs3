@@ -21,7 +21,7 @@ case "${uksm_gov_on}" in
 		echo "quiet" > /sys/kernel/mm/uksm/cpu_governor;
 	;;
 	*)
-		uksm_gov_on=full;
+		uksm_gov_on=medium;
 	;;
 	esac;
 fi;
