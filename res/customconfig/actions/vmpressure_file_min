@@ -4,8 +4,6 @@
 # $2 - value=
 # Created By Dorimanx
 
-BB=/sbin/busybox
-
 if [ "a$2" != "a" ]; then
 	vmpressure_file_min=$2;
 
