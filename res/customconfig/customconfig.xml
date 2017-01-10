@@ -121,8 +121,6 @@
 			<spinnerItem name="pegasusq" value="pegasusq"/> 
 			<spinnerItem name="sleepy" value="sleepy"/> 
 			<spinnerItem name="zzmoove" value="zzmoove"/>
-			<spinnerItem name="performance" value="performance"/>
-			<spinnerItem name="powersave" value="powersave"/>
 		</spinner>
 
 		<button description="Use this button to apply all CPU governor changes. The sleep tuning will be automatically added on screen off, to screen off governor. You must press this button otherwise all changes the CPU governors will be ignored." name="Apply CPU governor changes" action="push-actions/cpu_tuning_update" label="Push CPU Governor tuning"/>
@@ -244,7 +242,6 @@
 			<spinnerItem name="ondemand" value="ondemand"/> 
 			<spinnerItem name="pegasusq" value="pegasusq"/> 
 			<spinnerItem name="sleepy" value="sleepy"/> 
-			<spinnerItem name="powersave" value="powersave"/>
 		</spinner>
 
 	</settingsPane>
