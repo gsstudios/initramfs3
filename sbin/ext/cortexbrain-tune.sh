@@ -1516,17 +1516,6 @@ MOUNT_FIX()
 	fi;
 }
 
-UKSM_CONTROL()
-{
-	local state="$1";
-
-	if [ "$state" == "awake" ]; then
-		echo "$uksm_gov_on" > /sys/kernel/mm/uksm/cpu_governor;
-	elif [ "$state" == "sleep" ]; then
-		echo "$uksm_gov_sleep" > /sys/kernel/mm/uksm/cpu_governor;
-	fi;
-	log -p i -t "$FILE_NAME" "*** UKSM_CONTROL $state ***: done";
-}
 
 # ==============================================================
 # TWEAKS: if Screen-ON
@@ -1560,7 +1549,6 @@ AWAKE_MODE()
 			WIFI "awake";
 			IO_SCHEDULER "awake";
 			WORKQUEUE_CONTROL "awake";
-			UKSM_CONTROL "awake";
 			GESTURES "awake";
 			MOUNT_SD_CARD;
 
@@ -1642,7 +1630,6 @@ SLEEP_MODE()
 			CPU_GOV_TWEAKS "sleep";
 			IO_SCHEDULER "sleep";
 			WORKQUEUE_CONTROL "sleep";
-			UKSM_CONTROL "sleep";
 			BUS_THRESHOLD "sleep";
 #			KERNEL_SCHED "sleep";
 			NET "sleep";
