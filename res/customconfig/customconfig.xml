@@ -397,15 +397,6 @@
 
 		<checkbox description="Enable AUTO OOM control using below profiles, disable if you want to set your own OOM tuning via APP or Script." name="Auto OOM" action="generic01 /sys/module/lowmemorykiller/parameters/auto_oom" label="AUTO OOM CONTROL"/>
 
-		<checkbox description="Enabling Adaptive LMK will increase responsiveness at the cost of reduced multitasking capabilities and battery life. It helps to free up RAM faster when low RAM and vmpressure is in range from 85% to 94%. Apps will be cleared from RAM." name="Adaptive LMK" action="generic01 /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk" label="Adaptive LMK"/>
-
-
-		<seekBar description="When RAM pressure is higher than set in here, LMK is ordered to release RAM and allow faster load for something BIG into memory. The effect is that apps are loading faster. Lower the value, more apps gets killed. For best performance, keep it in range from 85% to 90% (Default: 85%)." name="Adaptive LMK Pressure Range" action="generic /sys/module/lowmemorykiller/parameters/vm_pressure_adaptive_start" unit="%" min="75" reversed="false" step="1" max="94"/>
-
-
-		<seekBar description="When RAM pressure is higher than set above, and RAM is lower than set here, kernel will start releasing RAM by stopping background apps. Value calculation here is based on this formula PR * 4096 (example: 68 * 4096 = 278MB free RAM) default 68 PR" name="Adaptive LMK Lowest RAM Allowed"
-action="vmpressure_file_min" unit="PR" min="65" reversed="false" step="1" max="78"/>
-
 		<spinner description="Here you can set the level of low mem management by kernel lowmemkiller function. More aggressive, equals more free RAM but more killed apps. For best performance, keep this set to default or higher!" name="OOM Level Screen ON" action="oom_config_screen_on">
 			<spinnerItem name="medium" value="medium"/> 
 			<spinnerItem name="default" value="default"/> 
