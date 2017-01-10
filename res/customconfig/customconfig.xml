@@ -46,8 +46,6 @@
 			<spinnerItem name="Idle only" value="0"/> 
 		</spinner>
 
-		<checkbox description="Enable or disable Power-efficient work queues will help to reduce power consumption at the cost of slight performance overhead. By enabling this, PE work queues are used for unbound scheduled work to save load on sibling CPU cores and queuing work on CPU 0. Enable for battery savings, disable for performance. (Default: Enabled)" name="Power-efficient Work queues"  action="generic01 /sys/module/workqueue/parameters/power_efficient" label="Power-efficient Workqueues"/>
-
 		<seekBar description="This is for CPU BUS-FREQ UP-FREQ-Scaling, based on CPU load. It sets the the load threshold on which BUS frequency will rise. (Default: 25%)" name="busfreq_up_threshold" action="generic /sys/devices/system/cpu/cpufreq/busfreq_up_threshold" unit="%" min="23" reversed="false" step="1" max="90"/>
 
 		<seekBar description="This is for CPU BUS-FREQ UP-FREQ-Scaling on sleep, based on CPU load. It sets the the load threshold on which BUS frequency will rise. (Default sleep: 30%)" name="busfreq_up_threshold_sleep" action="generic_cortex /tmp/busfreq_up_threshold_sleep" unit="%" min="23" reversed="false" step="1" max="90"/>

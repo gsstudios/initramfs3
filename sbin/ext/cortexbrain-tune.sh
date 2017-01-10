@@ -400,22 +400,6 @@ TWEAK_HOTPLUG_ECO()
 	log -p i -t "$FILE_NAME" "*** TWEAK_HOTPLUG_ECO: $state ***";
 }
 
-WORKQUEUE_CONTROL()
-{
-	local state="$1";
-
-	if [ "$state" == "awake" ]; then
-		if [ "$power_efficient" == "on" ]; then
-			echo "Y" > /sys/module/workqueue/parameters/power_efficient;
-		else
-			echo "N" > /sys/module/workqueue/parameters/power_efficient;
-		fi;
-	elif [ "$state" == "sleep" ]; then
-		echo "Y" > /sys/module/workqueue/parameters/power_efficient;
-	fi;
-	log -p i -t "$FILE_NAME" "*** WORKQUEUE_CONTROL ***: done";
-}
-
 
 CPU_GOV_TWEAKS()
 {
@@ -1544,7 +1528,6 @@ AWAKE_MODE()
 			MOBILE_DATA "awake";
 			WIFI "awake";
 			IO_SCHEDULER "awake";
-			WORKQUEUE_CONTROL "awake";
 			GESTURES "awake";
 			MOUNT_SD_CARD;
 
@@ -1625,7 +1608,6 @@ SLEEP_MODE()
 			CENTRAL_CPU_FREQ "sleep_freq";
 			CPU_GOV_TWEAKS "sleep";
 			IO_SCHEDULER "sleep";
-			WORKQUEUE_CONTROL "sleep";
 			BUS_THRESHOLD "sleep";
 #			KERNEL_SCHED "sleep";
 			NET "sleep";
