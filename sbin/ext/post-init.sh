@@ -432,14 +432,6 @@ ROOT_RW;
 	# correct touch keys light, if rom mess user configuration
 	$BB sh /res/uci.sh generic /sys/class/misc/notification/led_timeout_ms "$led_timeout_ms";
 
-	# Update UKSM in case ROM changed to other setting.
-	if [ "$run" == "on" ]; then
-		$BB echo "1" > /sys/kernel/mm/uksm/run;
-	else
-		$BB echo "0" > /sys/kernel/mm/uksm/run;
-	fi;
-	$BB echo "$sleep_millisecs" > /sys/kernel/mm/uksm/sleep_millisecs;
-	$BB echo "10" > /sys/kernel/mm/uksm/max_cpu_percentage;
 )&
 
 (
