@@ -553,7 +553,7 @@
 			<spinnerItem name="Movie" value="movie"/> 
 		</spinner>
 
-		<spinner description="MDNIE scenario. Setting this option allows you to select from a few predefined MDNIE scenarios via their values between 0 and 7. Depending on kernel, rom and platform, different values are being supported and also their meaning is different. Affects colours and contrast. (Default: UI_MODE)" name="MDNIE scenario" action="mdnie_scenario">
+		<spinner description="MDNIE scenario. Setting this option allows you to select from a few predefined MDNIE scenarios via their values between 0 and 7. Depending on kernel, rom and platform, different values are being supported and also their meaning is different. Affects colours and contrast. (Default: UI)" name="MDNIE scenario" action="mdnie_scenario">
 			<spinnerItem name="UI" value="ui"/> 
 			<spinnerItem name="VIDEO" value="video"/> 
 			<spinnerItem name="CAMERA" value="camera"/> 
@@ -969,15 +969,15 @@
 
 	<settingsPane description="Here you can choose some profiles. You can also switch the default profiles (battery, default, performance) via Kernel-Recovery. Please ignore the indicated changes if you've modified these profiles." name="Built-in profiles">
 
-		<button description="Under-clocked CPU to 1.0GHz, CPU governor changed to Ondemand, CPU frequency will scale up slower, GPU will scale up slower, IO scheduler set to CFQ. Not recommended for intensive applications." name="Extreme battery profile" action="push-actions/config_backup_restore 6" label="EXTREME BATTERY"/>
+		<button description="Under-clocked CPU to 1.0GHz, CPU governor changed to Ondemand, CPU frequency will scale up slower, GPU will scale up slower, IO scheduler set to ZEN. Not recommended for intensive applications." name="Extreme battery profile" action="push-actions/config_backup_restore 6" label="EXTREME BATTERY"/>
 
-		<button description="Under-clocked CPU to 1.0GHz, CPU governor changed to Ondemand, CPU frequency will scale up slower, GPU will scale up slower, IO scheduler set to CFQ. Not recommended for intensive applications." name="Battery profile" action="push-actions/config_backup_restore 3" label="BATTERY"/>
+		<button description="Under-clocked CPU to 1.0GHz, CPU governor changed to Ondemand, CPU frequency will scale up slower, GPU will scale up slower, IO scheduler set to ZEN. Not recommended for intensive applications." name="Battery profile" action="push-actions/config_backup_restore 3" label="BATTERY"/>
 
-		<button description="CPU frequency set to 1.2GHz, CPU governor set to HYPER, CPU thresholds are balanced, IO scheduler set to CFQ. Good performance and battery life." name="Default profile" action="push-actions/config_backup_restore 4" label="DEFAULT"/>
+		<button description="CPU frequency set to 1.2GHz, CPU governor set to HYPER, CPU thresholds are balanced, IO scheduler set to ZEN. Good performance and battery life." name="Default profile" action="push-actions/config_backup_restore 4" label="DEFAULT"/>
 
-		<button description="CPU frequency set to 1.2GHz, CPU governor set to HYPER, CPU frequency will scale up faster, IO scheduler set to CFQ. Good performance at the cost of battery life." name="Performance profile" action="push-actions/config_backup_restore 5" label="PERFORMANCE"/>
+		<button description="CPU frequency set to 1.2GHz, CPU governor set to HYPER, CPU frequency will scale up faster, IO scheduler set to ZEN. Good performance at the cost of battery life." name="Performance profile" action="push-actions/config_backup_restore 5" label="PERFORMANCE"/>
 
-		<button description="CPU frequency set to 1.3GHz, CPU governor set to HYPER, CPU frequency will scale up faster, IO scheduler set to CFQ. Best for performance/gaming, make sure to keep charger nearby :)" name="Extreme performance profile" action="push-actions/config_backup_restore 7" label="EXTREME PERFORMANCE"/>
+		<button description="CPU frequency set to 1.3GHz, CPU governor set to HYPER, CPU frequency will scale up faster, IO scheduler set to ZEN. Best for performance/gaming, make sure to keep charger nearby :)" name="Extreme performance profile" action="push-actions/config_backup_restore 7" label="EXTREME PERFORMANCE"/>
 
 	</settingsPane>
 
