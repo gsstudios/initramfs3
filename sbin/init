@@ -685,8 +685,6 @@ if [ -f /system/recovery.cpio.gz ]; then
 fi;
 
 # ROM check init
-CM_AOSP_12_1_LP=$($BB cat /system/build.prop | $BB grep "ro.build.version.release=5.1" | $BB wc -l);
-CM_AOSP_13_MM=$($BB cat /system/build.prop | $BB grep "ro.build.version.release=6.0" | $BB wc -l);
 LOS_CM_14_1_N=$($BB cat /system/build.prop | $BB grep "ro.build.version.release=7.1" | $BB wc -l);
 
 USER_ACTIONS()
@@ -758,32 +756,8 @@ if [ "$LOS_CM_14_1_N" -eq "1" ]; then
 	$BB echo "3" > /proc/sys/kernel/rom_feature_set;
 	$BB cp -a /res/misc/Nougat-LOS-CM-14.1/* /;
 	$BB rm -rf /res/misc/Nougat-*;
-	$BB rm -rf /res/misc/Marshmallow-*;
-	$BB rm -rf /res/misc/Lollipop-*;
 	# for sbin/ext/install.sh and sbin/ext/post-init.sh
 	# $BB echo "1" > /tmp/cm-installed;
-
-	SECROM_FUNCTION_AOSP;
-
-elif [ "$CM_AOSP_13_MM" -eq "1" ]; then
-	$BB echo "3" > /proc/sys/kernel/rom_feature_set;
-	$BB cp -a /res/misc/Marshmallow-CM-AOSP-13/* /;
-	$BB rm -rf /res/misc/Marshmallow-*;
-	$BB rm -rf /res/misc/Lollipop-*;
-	# for sbin/ext/install.sh and sbin/ext/post-init.sh
-	$BB echo "1" > /tmp/cm-installed;
-
-	SECROM_FUNCTION_AOSP;
-
-elif [ "$CM_AOSP_12_1_LP" -eq "1" ]; then
-	$BB echo "3" > /proc/sys/kernel/rom_feature_set;
-	$BB cp -a /res/misc/Lollipop-CM-AOSP-12.1/* /;
-	$BB rm -rf /res/misc/Marshmallow-*;
-	$BB rm -rf /res/misc/Lollipop-*;
-	# for sbin/ext/install.sh and sbin/ext/post-init.sh
-	$BB echo "1" > /tmp/cm-installed;
-	# for support cm12.1
-	$BB echo "1" > /tmp/cm12.1-installed;
 
 	SECROM_FUNCTION_AOSP;
 else
