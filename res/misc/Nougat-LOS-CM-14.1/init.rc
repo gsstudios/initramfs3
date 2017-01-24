@@ -9,7 +9,7 @@ import /init.usb.rc
 import /init.${ro.hardware}.rc
 import /init.usb.configfs.rc
 import /init.${ro.zygote}.rc
-#import /init.smdk4210.dm_kernel.rc
+import /init.smdk4210.dm_kernel.rc
 
 # Include CM's extra init file
 import /init.cm.rc
