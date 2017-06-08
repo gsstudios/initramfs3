@@ -757,7 +757,7 @@ if [ "$LOS_CM_14_1_N" -eq "1" ]; then
 	$BB cp -a /res/misc/Nougat-LOS-CM-14.1/* /;
 	$BB rm -rf /res/misc/Nougat-*;
 	# for sbin/ext/install.sh and sbin/ext/post-init.sh
-	# $BB echo "1" > /tmp/cm-installed;
+	$BB echo "1" > /tmp/cm-installed;
 
 	SECROM_FUNCTION_AOSP;
 else
