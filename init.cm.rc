@@ -1,7 +1,21 @@
-# CyanogenMod and AOSP Extras
+# LineageOS and AOSP Extras
 on init
     export ANDROID_CACHE /cache
     export TERMINFO /system/etc/terminfo
+
+    # Set up the BFQIO hierarchy
+    mkdir /dev/bfqio 0755 root system
+    mount cgroup none /dev/bfqio bfqio
+    chown root system /dev/bfqio/tasks
+    chmod 0664 /dev/bfqio/tasks
+    chmod 0220 /dev/bfqio/cgroup.event_control
+
+    # Soft realtime class for display service
+    mkdir /dev/bfqio/rt-display 0755 root system
+    write /dev/bfqio/rt-display/bfqio.ioprio_class 1
+    chown system system /dev/bfqio/rt-display/tasks
+    chmod 0664 /dev/bfqio/rt-display/tasks
+    chmod 0220 /dev/bfqio/rt-display/cgroup.event_control
 
 on post-fs-data
     mkdir /data/ssh 0750 root shell
@@ -11,10 +25,32 @@ on post-fs-data
     # Run sysinit
     start sysinit
 
+    # Change permissions on fsck log so it can be added to the dropbox
+    chown root log /dev/fscklogs/log
+    chmod 0640 /dev/fscklogs/log
+
 on boot
     chown system system /sys/block/mmcblk0/queue/scheduler
     chmod 0664 /sys/block/mmcblk0/queue/scheduler
     restorecon /sys/block/mmcblk0/queue/scheduler
+
+    # LiveDisplay sysfs
+    chown system system /sys/devices/virtual/graphics/fb0/aco
+    chmod 0660 /sys/devices/virtual/graphics/fb0/aco
+    chown system system /sys/devices/virtual/graphics/fb0/cabc
+    chmod 0660 /sys/devices/virtual/graphics/fb0/cabc
+    chown system system /sys/devices/virtual/graphics/fb0/hbm
+    chmod 0660 /sys/devices/virtual/graphics/fb0/hbm
+    chown system system /sys/devices/virtual/graphics/fb0/rgb
+    chmod 0660 /sys/devices/virtual/graphics/fb0/rgb
+    chown system system /sys/devices/virtual/graphics/fb0/sre
+    chmod 0660 /sys/devices/virtual/graphics/fb0/sre
+    chown system system /sys/devices/virtual/graphics/fb0/color_enhance
+    chmod 0660 /sys/devices/virtual/graphics/fb0/color_enhance
+
+    # Vibrator intensity control
+    chown system system /sys/class/timed_output/vibrator/vtg_level
+    chmod 0644 /sys/class/timed_output/vibrator/vtg_level
 
     # Define TCP delayed ack settings for WiFi & LTE
     chown system system /sys/kernel/ipv4/tcp_delack_seg
@@ -36,8 +72,8 @@ service sysinit /system/bin/sysinit
     disabled
 
 # bugreport is triggered by holding down volume down, volume up and power
-service bugreport /system/bin/dumpstate -d -p -B \
-        -o /data/data/com.android.shell/files/bugreports/bugreport
+service bugreport /system/bin/dumpstate -d -p -B -z \
+        -o /data/user_de/0/com.android.shell/files/bugreports/bugreport
     oneshot
     disabled
     keycodes 114 115 116

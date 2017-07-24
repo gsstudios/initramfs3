@@ -96,12 +96,12 @@ config.                 u:object_r:config_prop:s0
 ro.config.              u:object_r:config_prop:s0
 dalvik.                 u:object_r:dalvik_prop:s0
 ro.dalvik.              u:object_r:dalvik_prop:s0
-#line 1 "/home/rinando/android/system/out/target/product/i9100/obj/ETC/sectxfile_nl_intermediates/sectxfile_nl"
+#line 1 "/mnt/lineage/cm-14.1/out/target/product/i9100/obj/ETC/sectxfile_nl_intermediates/sectxfile_nl"
 
 #line 1 "vendor/cm/sepolicy/property_contexts"
 adb.network.port              u:object_r:adbtcp_prop:s0
 recovery.perf.mode            u:object_r:recovery_prop:s0
 ro.adb.secure                 u:object_r:adbsecure_prop:s0
 cm.userinit.active            u:object_r:userinit_prop:s0
-#line 1 "/home/rinando/android/system/out/target/product/i9100/obj/ETC/sectxfile_nl_intermediates/sectxfile_nl"
+#line 1 "/mnt/lineage/cm-14.1/out/target/product/i9100/obj/ETC/sectxfile_nl_intermediates/sectxfile_nl"
 

@@ -18,7 +18,20 @@ on init
     write /sys/block/mmcblk0/queue/iosched/slice_idle 0
 
 on fs
+    # verify filesystem (UMS)
+    exec sformat /dev/block/mmcblk0p11 %TYPE_SDCARD0%
+
+    # make sure sdcard is mounted because we need apps2sd to work and we may have our data and cache partitions on it
+    mount %TYPE_SDCARD0% /dev/block/mmcblk0p11 /mnt/.secondrom wait utf8
+    mkdir /mnt/.secondrom/.android_secure 0700 root root
+    mkdir /mnt/.secondrom/.secondrom 0700 root root
+
+    # mount partitions.
+    mount %TYPE_CACHE% loop@/res/dev/cache /cache nosuid nodev wait
+    mount ext4 /dev/block/mmcblk0p1 /efs nosuid nodev wait
+    mount %TYPE_DATA% loop@/res/dev/data /data nosuid nodev wait
     mount_all /fstab.smdk4210
+    swapon_all /fstab.smdk4210
 
     mkdir /efs/bluetooth
     mkdir /efs/wifi
@@ -31,14 +44,6 @@ on fs
     mkdir /data/misc/radio 0775 radio system
     mkdir /data/radio 0770 radio radio
     chmod 0770 /data/misc/wifi 
-
-on charger
-
-# CPU Frequency Governor
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor powersave
-
-# EHCI runtime enable for LPA
-    write /sys/devices/platform/s5p-ehci/power/control auto
 
 on post-fs-data
 # insmod kernel modules
@@ -67,9 +72,6 @@ on post-fs-data
     chmod 0660 /data/misc/wifi/wpa_supplicant.conf
     mkdir /data/misc/wifi/sockets 0770 wifi wifi
     chown wifi root /dev/rfkill
-
-# fix permission for telephony
-    chmod 0644 /proc/cmdline
 
 #DRM directory creation
     mkdir /system/etc/security/.drm 0775
@@ -270,10 +272,6 @@ on post-fs-data
     chown system system /dev/ttyGS2
     chown system system /dev/ttyGS3
 
-# DVFS - cpufreq ondemand
-#    write /sys/devices/system/cpu/cpufreq/ondemand/down_differential 5
-#    write /sys/devices/system/cpu/cpufreq/ondemand/up_threshold 85
-
 #panorama directory creation
     mkdir /data/pxtmpdir 0775
     chown system system /data/pxtmpdir
@@ -304,6 +302,9 @@ on post-fs-data
 # for device encryption
     setprop vold.post_fs_data_done 1
 
+# Touchkeys
+    write /sys/devices/virtual/sec/sec_touchkey/touchkey_led_on_keypress 1
+
 on boot
     mount debugfs /sys/kernel/debug /sys/kernel/debug
     setprop wifi.interface wlan0
@@ -319,36 +320,12 @@ on boot
     setprop status.battery.level_raw  50
     setprop status.battery.level_scale 9
 
-# increase read-ahead value to 256 kb
-#    write /sys/block/mmcblk0/queue/read_ahead_kb 256
-
-# Flash storage isn't a good entropy source, and only causes
-# locking overhead in the kernel. Turn it off.
-#    write /sys/block/mmcblk0/queue/add_random 0
-#    write /sys/block/mmcblk1/queue/add_random 0
-
-# KSM
-#    write /sys/kernel/mm/ksm/deferred_timer 1
-#    write /sys/kernel/mm/ksm/pages_to_scan 100
-#    write /sys/kernel/mm/ksm/sleep_millisecs 500
-#    write /sys/kernel/mm/ksm/run 1
-
-# Swapping 1 page at a time is ok
-#    write /proc/sys/vm/page-cluster 0
-#
-#    write /proc/sys/vm/swappiness 100
-
 # For RIL
 service cpboot-daemon /sbin/cbd -d -p 8
     class main
     user root
     group radio cache inet misc audio sdcard_rw log sdcard_r
     seclabel u:r:cpboot-daemon:s0
-
-service charger /sbin/healthd -c
-    class charger
-    critical
-    seclabel u:r:healthd:s0
 
 service p2p_supplicant /system/bin/wpa_supplicant \
     -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \

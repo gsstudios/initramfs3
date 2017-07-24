@@ -353,10 +353,6 @@ ROOT_RW;
 		done;
 	fi;
 
-	if [ -e /tmp/cm12.1-installed ]; then
-		$BB mount -o remount,rw /storage/sdcard0;
-	fi;
-
 	# script finish here, so let me know when
 	$BB echo "Done Booting" > /data/dm-boot-check;
 	$BB date >> /data/dm-boot-check;
