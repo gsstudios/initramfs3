@@ -1,0 +1,29 @@
+#!/sbin/busybox sh
+
+# $1 - "uksm_gov_on"
+# $2 - value=
+# Created By Dorimanx
+
+if [ "a$2" != "a" ]; then
+	uksm_gov_on=$2;
+
+case "${uksm_gov_on}" in
+	full)
+		echo "full" > /sys/kernel/mm/uksm/cpu_governor;
+	;;
+	medium)
+		echo "medium" > /sys/kernel/mm/uksm/cpu_governor;
+	;;
+	low)
+		echo "low" > /sys/kernel/mm/uksm/cpu_governor;
+	;;
+	quiet)
+		echo "quiet" > /sys/kernel/mm/uksm/cpu_governor;
+	;;
+	*)
+		uksm_gov_on=medium;
+	;;
+	esac;
+fi;
+
+echo ${uksm_gov_on};
