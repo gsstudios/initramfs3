@@ -19,6 +19,7 @@ on init
 
 on fs
     mount_all /fstab.smdk4210
+    swapon_all /fstab.smdk4210
 
     mkdir /efs/bluetooth
     mkdir /efs/wifi
@@ -31,14 +32,6 @@ on fs
     mkdir /data/misc/radio 0775 radio system
     mkdir /data/radio 0770 radio radio
     chmod 0770 /data/misc/wifi 
-
-on charger
-
-# CPU Frequency Governor
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor powersave
-
-# EHCI runtime enable for LPA
-    write /sys/devices/platform/s5p-ehci/power/control auto
 
 on post-fs-data
 # insmod kernel modules
@@ -67,9 +60,6 @@ on post-fs-data
     chmod 0660 /data/misc/wifi/wpa_supplicant.conf
     mkdir /data/misc/wifi/sockets 0770 wifi wifi
     chown wifi root /dev/rfkill
-
-# fix permission for telephony
-    chmod 0644 /proc/cmdline
 
 #DRM directory creation
     mkdir /system/etc/security/.drm 0775
@@ -270,10 +260,6 @@ on post-fs-data
     chown system system /dev/ttyGS2
     chown system system /dev/ttyGS3
 
-# DVFS - cpufreq ondemand
-#    write /sys/devices/system/cpu/cpufreq/ondemand/down_differential 5
-#    write /sys/devices/system/cpu/cpufreq/ondemand/up_threshold 85
-
 #panorama directory creation
     mkdir /data/pxtmpdir 0775
     chown system system /data/pxtmpdir
@@ -304,6 +290,9 @@ on post-fs-data
 # for device encryption
     setprop vold.post_fs_data_done 1
 
+# Touchkeys
+    write /sys/devices/virtual/sec/sec_touchkey/touchkey_led_on_keypress 1
+
 on boot
     mount debugfs /sys/kernel/debug /sys/kernel/debug
     setprop wifi.interface wlan0
@@ -319,36 +308,12 @@ on boot
     setprop status.battery.level_raw  50
     setprop status.battery.level_scale 9
 
-# increase read-ahead value to 256 kb
-#    write /sys/block/mmcblk0/queue/read_ahead_kb 256
-
-# Flash storage isn't a good entropy source, and only causes
-# locking overhead in the kernel. Turn it off.
-#    write /sys/block/mmcblk0/queue/add_random 0
-#    write /sys/block/mmcblk1/queue/add_random 0
-
-# KSM
-#    write /sys/kernel/mm/ksm/deferred_timer 1
-#    write /sys/kernel/mm/ksm/pages_to_scan 100
-#    write /sys/kernel/mm/ksm/sleep_millisecs 500
-#    write /sys/kernel/mm/ksm/run 1
-
-# Swapping 1 page at a time is ok
-#    write /proc/sys/vm/page-cluster 0
-#
-#    write /proc/sys/vm/swappiness 100
-
 # For RIL
 service cpboot-daemon /sbin/cbd -d -p 8
     class main
     user root
     group radio cache inet misc audio sdcard_rw log sdcard_r
     seclabel u:r:cpboot-daemon:s0
-
-service charger /sbin/healthd -c
-    class charger
-    critical
-    seclabel u:r:healthd:s0
 
 service p2p_supplicant /system/bin/wpa_supplicant \
     -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
@@ -378,7 +343,6 @@ service wpa_supplicant /system/bin/wpa_supplicant \
     socket wpa_wlan0 dgram 660 wifi wifi
     disabled
     oneshot
-
 
 service macloader /system/bin/macloader
     class main

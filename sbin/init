@@ -729,6 +729,8 @@ BOOTROM()
 	USER_ACTIONS;
 	$BB rm -f /sbin/mount;
 	$BB rm -f /sbin/start;
+	$BB rm -f /charger;
+	$BB rm -f /lpm.rc;
 	$BB rm -f /sbin/getprop;
 	$BB rm -f /recovery.rc;
 	$BB chmod -R 777 /tmp;
