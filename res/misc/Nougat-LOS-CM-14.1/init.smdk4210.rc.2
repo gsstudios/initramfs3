@@ -31,7 +31,6 @@ on fs
     mount ext4 /dev/block/mmcblk0p1 /efs nosuid nodev wait
     mount %TYPE_DATA% loop@/res/dev/data /data nosuid nodev wait
     mount_all /fstab.smdk4210
-    swapon_all /fstab.smdk4210
 
     mkdir /efs/bluetooth
     mkdir /efs/wifi
