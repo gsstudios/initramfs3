@@ -195,6 +195,7 @@
 			<spinnerItem name="ZaneZam InZane" value="9"/> 
 			<spinnerItem name="ZaneZam Gaming" value="10"/> 
 			<spinnerItem name="ZaneZam Relax" value="11"/> 
+			<spinnerItem name="asad007 lwk" value="12"/> 
 		</spinner>
 
 		<seekBar description="Max sampling down factor which should be set by momentum (0 disable momentum, possible range from sampling_down_factor up to 100000. (Default: 0)" name="sampling_down_max_mom" action="generic_cortex /tmp/sampling_down_max_mom" unit="int" min="0" reversed="false" step="10" max="100000"/>
