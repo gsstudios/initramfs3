@@ -116,19 +116,17 @@ IO_TWEAKS()
 
 		if [ -e /sys/block/mmcblk1/queue/read_ahead_kb ]; then
 			if [ "$cortexbrain_read_ahead_kb" -eq "0" ]; then
-
 				if [ "$SDCARD_SIZE" -eq "1" ]; then
-					echo "256" > /sys/block/mmcblk1/queue/read_ahead_kb;
+					echo "128" > /sys/block/mmcblk1/queue/read_ahead_kb;
 				elif [ "$SDCARD_SIZE" -eq "4" ]; then
+					echo "256" > /sys/block/mmcblk1/queue/read_ahead_kb;
+				elif [ "$SDCARD_SIZE" -eq "8" ]; then
 					echo "512" > /sys/block/mmcblk1/queue/read_ahead_kb;
-				elif [ "$SDCARD_SIZE" -eq "8" ] || [ "$SDCARD_SIZE" -eq "16" ]; then
+				elif [ "$SDCARD_SIZE" -eq "16" ]; then
 					echo "1024" > /sys/block/mmcblk1/queue/read_ahead_kb;
-				elif [ "$SDCARD_SIZE" -eq "32" ]; then
+				elif [ "$SDCARD_SIZE" -eq "32" ] || [ "$SDCARD_SIZE" -eq "64" ]; then
 					echo "2048" > /sys/block/mmcblk1/queue/read_ahead_kb;
-				elif [ "$SDCARD_SIZE" -eq "64" ]; then
-					echo "2560" > /sys/block/mmcblk1/queue/read_ahead_kb;
 				fi;
-
 			else
 				echo "$cortexbrain_read_ahead_kb" > /sys/block/mmcblk1/queue/read_ahead_kb;
 			fi;

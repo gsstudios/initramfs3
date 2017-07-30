@@ -356,7 +356,7 @@
 			<spinnerItem name="512 kB" value="512"/> 
 			<spinnerItem name="1024 kB" value="1024"/> 
 			<spinnerItem name="2048 kB" value="2048"/> 
-			<spinnerItem name="2560 kB" value="2560"/> 
+			<spinnerItem name="3072 kB" value="3072"/> 
 		</spinner>
 
 		<spinner description="This will set the default AWAKE IO scheduler. (Default: ZEN)" name="Default Awake IO Scheduler" action="scheduler">
