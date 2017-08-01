@@ -416,10 +416,10 @@ TUNE_PARTITION()
 
 	$BB echo "Checking if device has errors..." >> $LOG;
 	$BB echo "" >> $LOG;
-	$BB sh -c "/sbin/e2fsck -nv $DEVICE" > $LOG_TMP;
+	$BB sh -c "/sbin/e2fsck -nvf $DEVICE" > $LOG_TMP;
 	$BB cat $LOG_TMP >> $LOG;
 	$BB echo "" >> $LOG;
-	if [ "$($BB cat $LOG_TMP | $BB grep 'clean' | $BB wc -l)" -eq "0" ]; then
+	if [ "$($BB cat $LOG_TMP | $BB grep '0 bad blocks' | $BB wc -l)" -eq "0" ]; then
 		NEED_CHECK;
 		$BB echo "DEVICE $DEVICE NEEDS DO BE FIX" >> $LOG;
 		$BB echo "0" > $LOG_TMP;
