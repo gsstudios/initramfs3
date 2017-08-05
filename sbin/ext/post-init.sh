@@ -290,10 +290,8 @@ ROOT_RW;
 
 (
 	# mount apps2sd partition point for CyanogenMod
-	if [ -e /tmp/cm-installed ]; then
-		if [ "$($BB cat /tmp/sec_rom_boot)" -eq "1" ]; then
-			$BB mount --bind /mnt/.secondrom/.android_secure /mnt/secure/asec;
-		fi;
+	if [ "$($BB cat /tmp/sec_rom_boot)" -eq "1" ]; then
+		$BB mount --bind /mnt/.secondrom/.android_secure /mnt/secure/asec;
 	fi;
 
 	SD_COUNTER=0;
