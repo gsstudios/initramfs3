@@ -28,7 +28,7 @@ $BB cp -a /res/misc/lights.exynos4.so /system/lib/hw/lights.exynos4.so;
 $BB chown root:root /system/lib/hw/lights.exynos4.so;
 $BB chmod 644 /system/lib/hw/lights.exynos4.so;
 
-#use old PowerHAL library for correctly support STweraks
+#use old PowerHAL library for correctly support STweaks
 $BB echo "Copying old PowerHAL library";
 $BB cp -a /res/misc/power.smdk4210.so /system/lib/hw/power.smdk4210.so;
 $BB chown root:root /system/lib/hw/power.smdk4210.so;
