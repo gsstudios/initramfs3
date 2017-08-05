@@ -28,6 +28,12 @@ $BB cp -a /res/misc/lights.exynos4.so /system/lib/hw/lights.exynos4.so;
 $BB chown root:root /system/lib/hw/lights.exynos4.so;
 $BB chmod 644 /system/lib/hw/lights.exynos4.so;
 
+#use old PowerHAL library for correctly support STweraks
+$BB echo "Copying old PowerHAL library";
+$BB cp -a /res/misc/power.smdk4210.so /system/lib/hw/power.smdk4210.so;
+$BB chown root:root /system/lib/hw/power.smdk4210.so;
+$BB chmod 644 /system/lib/hw/power.smdk4210.so;
+
 # add gesture_set.sh with default gustures to data to be used by user.
 if [ ! -e /data/gesture_set.sh ]; then
 	$BB cp -a /res/misc/gesture_set.sh /data/;
