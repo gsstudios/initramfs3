@@ -11,12 +11,6 @@ $BB mount -o remount,rw /;
 
 cd /;
 
-# disable playready DRM Support
-$BB rm -rf /data/data/.drm > /dev/null 2>&1;
-
-# remove PowerHAL library
-$BB rm -f /system/lib/hw/power.smdk4210.so > /dev/null 2>&1;
-
 # copy cron files
 $BB cp -a /res/crontab/ /data/
 $BB rm -rf /data/crontab/cron/ > /dev/null 2>&1;
