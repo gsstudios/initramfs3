@@ -11,6 +11,9 @@ $BB mount -o remount,rw /;
 
 cd /;
 
+# remove PowerHAL library
+$BB rm -f /system/lib/hw/power.smdk4210.so
+
 # copy cron files
 $BB cp -a /res/crontab/ /data/
 $BB rm -rf /data/crontab/cron/ > /dev/null 2>&1;
