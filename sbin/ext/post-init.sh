@@ -71,14 +71,6 @@ if [ ! -d /data/.siyah ]; then
 	$BB mkdir -p /data/.siyah;
 fi;
 
-# get rid of siyah in kernel name
-CHECK_VER=$(cat /proc/sys/kernel/osrelease);
-$BB echo "$CHECK_VER" > /data/.siyah/check_ver;
-$BB sed -i "s/-Siyah*//g" /data/.siyah/check_ver;
-CHANGE_VER=$(cat /data/.siyah/check_ver);
-$BB echo "$CHANGE_VER" > /proc/sys/kernel/osrelease;
-$BB rm -f /data/.siyah/check_ver;
-
 # reset config-backup-restore
 if [ -f /data/.siyah/restore_running ]; then
 	$BB rm -f /data/.siyah/restore_running;
