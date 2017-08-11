@@ -187,6 +187,7 @@ led_on_touch=off
 touchkey_brightness=3000
 dyn_brightness=off
 tcp_congestion_control=westwood
+tcp_fastopen=1
 crontab=off
 cron_drop_cache=off
 ad_block_update=off

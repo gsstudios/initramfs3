@@ -772,7 +772,7 @@ action="vmpressure_file_min" unit="PR" min="65" reversed="false" step="1" max="7
 
 <settingsTab name="Other">
 
-		<settingsPane description="Congestion control concerns controlling traffic entry into a telecommunications network, so as to avoid congestive collapse by attempting to avoid oversubscription of any of the processing or link capabilities of the intermediate nodes and networks and taking resource reducing steps." name="Net Congestion Control">
+	<settingsPane description="Congestion control concerns controlling traffic entry into a telecommunications network, so as to avoid congestive collapse by attempting to avoid oversubscription of any of the processing or link capabilities of the intermediate nodes and networks and taking resource reducing steps." name="Net Congestion Control">
 
 		<spinner description="Allows user to change TCP algorithm. If you are unsure of what to set here, just keep it to the defaults (Default: Westwood). Otherwise, I highly recommend using Westwood. If you experience problems, change this back to Cubic." name="Net Congestion Control" action="generic /proc/sys/net/ipv4/tcp_congestion_control">
 			<spinnerItem name="Set CUBIC" value="cubic"/> 
@@ -791,8 +791,9 @@ action="vmpressure_file_min" unit="PR" min="65" reversed="false" step="1" max="7
 
 		</spinner>
 
-	</settingsPane>	
+		<seekBar description="Enable TCP Fast Open (RFC7413) to send and accept data in the opening SYN packet. Value is 0 for disabling TCP Fast Open. Value is 1 for client support only. Value is 2 for server support only. Value is 3 for client and server support. (Default: 1)" name="TCP Fast Open" action="generic /proc/sys/net/ipv4/tcp_fastopen" unit="" min="0" reversed="false" step="1" max="3"/>
 
+	</settingsPane>	
 
 	<settingsPane description="Trims your system, cache, data and preload partitions to keep your phone running smooth." name="PARTITIONS TRIMMER">
 
