@@ -71,14 +71,6 @@ if [ ! -d /data/.siyah ]; then
 	$BB mkdir -p /data/.siyah;
 fi;
 
-# get rid of siyah in kernel name
-CHECK_VER=$(cat /proc/sys/kernel/osrelease);
-$BB echo "$CHECK_VER" > /data/.siyah/check_ver;
-$BB sed -i "s/-Siyah*//g" /data/.siyah/check_ver;
-CHANGE_VER=$(cat /data/.siyah/check_ver);
-$BB echo "$CHANGE_VER" > /proc/sys/kernel/osrelease;
-$BB rm -f /data/.siyah/check_ver;
-
 # reset config-backup-restore
 if [ -f /data/.siyah/restore_running ]; then
 	$BB rm -f /data/.siyah/restore_running;
@@ -86,7 +78,7 @@ fi;
 
 # reset profiles auto trigger to be used by kernel ADMIN, in case of need, if new value added in default profiles
 # just set number $RESET_MAGIC + 1 and profiles will be reset one time on next boot with new kernel.
-RESET_MAGIC=4;
+RESET_MAGIC=5;
 if [ ! -e /data/.siyah/reset_profiles ]; then
 	$BB echo "0" > /data/.siyah/reset_profiles;
 fi;
