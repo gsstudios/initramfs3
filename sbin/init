@@ -35,9 +35,8 @@ if $BB grep -q bootmode=2 /proc/cmdline; then
 			$BB umount -l /proc;
 			$BB umount -l /sys;
 
-			# copy busybox to /isorec-tmp
-			# WARNING: this assumes static linking
-			$BB cp $(readlink -f $BB) /isorec-tmp/busybox;
+			# copy busybox to /isorec-tmp (use old busybox for correct work cpio unpack)
+			$BB cp -a /sbin/recovery /isorec-tmp/busybox;
 			BB=/isorec-tmp/busybox;
 
 			# remove everything not in /isorec-tmp
@@ -46,7 +45,7 @@ if $BB grep -q bootmode=2 /proc/cmdline; then
 			$BB rm -rf /isorec-tmp/junk;
 
 			# extract the isorec ramdisk
-			$BB cpio -i < /isorec-tmp/isorec.cpio;
+			$BB cpio -idmu < /isorec-tmp/isorec.cpio;
 
 			# clean up and pass control to ramdisk
 			$BB rm -rf /isorec-tmp;
@@ -679,10 +678,6 @@ EXSDCARD;
 
 # one more time set "/" rw just for good sleep
 $BB mount -o remount,rw /;
-
-if [ -f /system/recovery.cpio.gz ]; then
-	$BB zcat /system/recovery.cpio.gz | cpio -idmu;
-fi;
 
 # ROM check init
 LOS_CM_14_1_N=$($BB cat /system/build.prop | $BB grep "ro.build.version.release=7.1" | $BB wc -l);
